@@ -11,6 +11,16 @@ export const signup = async (Registerdata) =>{
         console.log('response from backend' ,response);
         return response
     } catch (error) {
-        
+        console.log(error);
+    }
+}
+
+export const login = async (email, password) =>{
+    try {
+        let response = await axiosApi.post(userRoutes.login , email, password)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
     }
 }
