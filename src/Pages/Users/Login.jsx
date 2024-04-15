@@ -34,8 +34,6 @@ function Login(props) {
     }
   }
 
-
-
   return (
     <>
       <ClientNav/>
@@ -48,7 +46,7 @@ function Login(props) {
           <input
             type="email"
             name="email"
-            value={email}
+            
             placeholder="enter your email address"
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={(e) => setEmail(e.target.value)}
@@ -56,7 +54,7 @@ function Login(props) {
           <input
             type="password"
             name="password"
-            value={password}
+            
             placeholder="enter your email address"
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={(e) => setPassword(e.target.value)}

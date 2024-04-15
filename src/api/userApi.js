@@ -17,7 +17,9 @@ export const signup = async (Registerdata) =>{
 
 export const login = async (email, password) =>{
     try {
-        let response = await axiosApi.post(userRoutes.login , email, password)
+
+        let data = { email ,password}
+        let response = await axiosApi.post(userRoutes.login ,data)
         console.log('response from backend' ,response);
         return response
     } catch (error) {
