@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom"
 import ClientNav from "../../Components/Client/ClientNav";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,12 @@ function Login(props) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-
+  useEffect(() => {
+    if (localStorage.getItem("user_token")) {
+      //if already logged in
+      navigate('/')
+    }
+  }, [navigate])
 
   const handleSubmit = async (event) =>{
 
