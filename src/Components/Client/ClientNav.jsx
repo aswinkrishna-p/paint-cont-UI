@@ -9,8 +9,11 @@ import {
 //  Button,
  Input,
 } from "@material-tailwind/react";
+import { useNavigate } from 'react-router-dom';
 
 function ClientNav(props) {
+
+  const Navigate = useNavigate()
     return (
         <Navbar
       variant="gradient"
@@ -61,9 +64,10 @@ function ClientNav(props) {
 
           {/* Adding profile and logout icons */}
           <div className="flex items-center gap-3">
-            <a href="#" className="text-white">
-              <RiUserLine className="text-lg" />
-            </a>
+          <span onClick={() => Navigate("/profile")} className="cursor-pointer">
+          <RiUserLine className="text-lg" />
+          </span>
+
             <a href="#" className="text-white">
               <RiLogoutCircleLine className="text-lg" />
             </a>
