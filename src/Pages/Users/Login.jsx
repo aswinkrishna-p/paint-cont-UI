@@ -27,8 +27,11 @@ function Login(props) {
       dispatch(signInStart())
 
       const res = await login(email, password)
+      console.log('userdataa ',res.data.token);
 
       dispatch(signInSuccess(res.data))
+
+      localStorage.setItem('user_token',res.data.token)
 
       if(res.status === 200){
         navigate('/')

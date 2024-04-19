@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {useDispatch} from 'react-redux'
 import {Link, useNavigate} from 'react-router-dom'
 import { signup } from '../../api/userApi';
@@ -9,6 +9,13 @@ function Register(props) {
   const [FormData , setFormData] = useState({})
   const dispatch =  useDispatch()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (localStorage.getItem("user_token")) {
+      //if already logged in
+      navigate('/')
+    }
+  }, [navigate])
 
 const handleSubmit = async (event) =>{
 

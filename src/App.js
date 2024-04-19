@@ -4,6 +4,9 @@ import Login from './Pages/Users/Login';
 import Register from './Pages/Users/Register';
 import Home from './Pages/Users/Home';
 import OtpPage from './Components/CommonComponents/otpPage';
+import Profile from './Pages/Users/Profile';
+import AdminLogin from './Pages/Admin/AdminLogin';
+import AdminDash from './Pages/Admin/AdminDash';
 
 function App(props) {
   return (
@@ -11,10 +14,16 @@ function App(props) {
 
    <BrowserRouter>
     <Routes>
+      {/* adminRoutes */}
+      <Route path='/adminlogin' element = {<AdminLogin/>} />
+      <Route path='/dashboard' element = {<AdminDash/>} />
+
+      {/* userRoutes */}
       <Route path='/' element = {<Home/>} />
       <Route path='/register' element = {<Register/>} />
       <Route path='/login' element = {<Login/>} />
       <Route path='/otp' element = {<OtpPage/>} />
+      <Route path='/profile' element = {<Profile/>} />
     </Routes>
 
    </BrowserRouter>
