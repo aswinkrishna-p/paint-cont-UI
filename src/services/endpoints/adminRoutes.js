@@ -1,7 +1,8 @@
 
 const adminRoutes = {
     login:'/admin/adminlogin',
-    dashboard:'/admin/dashboard'
+    dashboard:'/admin/dashboard',
+    logout:'/admin/logout'
 }
 
 export default adminRoutes

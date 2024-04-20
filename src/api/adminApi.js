@@ -15,3 +15,14 @@ export const adminLogin = async (username ,password) =>{
         console.log(error);
     }
 }
+
+
+export const adminlogout = async () =>{
+    try {
+        const response = await axiosApi.post(adminRoutes.logout)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}

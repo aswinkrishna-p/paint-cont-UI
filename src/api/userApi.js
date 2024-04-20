@@ -26,3 +26,13 @@ export const login = async (email, password) =>{
         console.log(error);
     }
 }
+
+export const Logout = async () =>{
+    try {
+        let response = await axiosApi.post(userRoutes.logout)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -16,10 +16,23 @@ import {
     InboxIcon,
     PowerIcon,
 } from "@heroicons/react/24/solid";
+import { adminlogout } from '../../api/adminApi';
+import { useNavigate } from 'react-router-dom';
 
 function AdminNav() {
+
+    const Navigate = useNavigate()
+    const handlelogout = async () =>{
+        let res = await adminlogout()
+
+        if(res.status === 200){
+            localStorage.clear('admin_token')
+            Navigate('/adminlogin')
+        }
+    }
+    
     return (
-        <Card className="h-[calc(110vh-2rem)] max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 bg-custom-color">
+        <Card className="h-screen max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 bg-custom-color">
             <div className="mb-2 p-4">
                 <Typography className='text-3xl' variant="h5" color="blue-gray">
                     Paintcont
@@ -59,7 +72,7 @@ function AdminNav() {
                     </ListItemPrefix>
                     Subscriptions
                 </ListItem >
-                <ListItem className='m-2'>
+                <ListItem className='m-2' onClick={handlelogout}>
                     <ListItemPrefix>
                         <PowerIcon className="h-5 w-5" />
                     </ListItemPrefix>
