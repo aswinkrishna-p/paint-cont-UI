@@ -7,6 +7,7 @@ import OtpPage from './Components/CommonComponents/otpPage';
 import Profile from './Pages/Users/Profile';
 import AdminLogin from './Pages/Admin/AdminLogin';
 import AdminDash from './Pages/Admin/AdminDash';
+import AdminUserManagement from './Pages/Admin/AdminUserManagement';
 
 function App(props) {
   return (
@@ -17,6 +18,7 @@ function App(props) {
       {/* adminRoutes */}
       <Route path='/adminlogin' element = {<AdminLogin/>} />
       <Route path='/dashboard' element = {<AdminDash/>} />
+      <Route path='/user' element = {<AdminUserManagement/>} />
 
       {/* userRoutes */}
       <Route path='/' element = {<Home/>} />

@@ -39,13 +39,13 @@ function AdminNav() {
                 </Typography>
             </div>
             <List>
-                <ListItem className='m-1'>
+                <ListItem className='m-1' onClick={() => Navigate('/dashboard')}>
                     <ListItemPrefix>
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     Dashboard
                 </ListItem>
-                <ListItem className='m-2'>
+                <ListItem className='m-2' onClick={() => Navigate('/user')}>
                     <ListItemPrefix>
                         <ShoppingBagIcon className="h-5 w-5" />
                     </ListItemPrefix>
