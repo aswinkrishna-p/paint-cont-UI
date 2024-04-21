@@ -4,6 +4,9 @@ import ClientNav from "../../Components/Client/ClientNav";
 import { useDispatch } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../../Redux/user/UserSlice";
 import { login } from "../../api/userApi";
+import toast ,{Toaster} from "react-hot-toast";
+import { isValidEmail, isValidPassword } from "../../services/validations";
+
 
 function Login(props) {
 
@@ -21,9 +24,21 @@ function Login(props) {
 
   const handleSubmit = async (event) =>{
 
-    event.preventDefault()
-
     try {
+      event.preventDefault()
+
+      if(!email || !password){
+        return toast.error("Missing required fields")
+      }
+
+      if(!isValidEmail(email)){
+        return toast.error("Invalid email format")
+      }
+
+      // if(!isValidPassword(password)){
+      //   return toast.error("Password must be at least 6 characters long")
+      // }
+
       dispatch(signInStart())
 
       const res = await login(email, password)
@@ -46,6 +61,7 @@ function Login(props) {
     <>
       <ClientNav/>
     <div className=" w-screen h-screen flex flex-col justify-center  items-center bg-cover bg-center ">
+      <Toaster/>
       <div className="flex flex-col items-center gap-4 w-96 bg-black rounded-lg">
         <div>
           <h1 className="text-white uppercase mt-7 font-semibold text-3xl "> sign in</h1>
@@ -54,7 +70,7 @@ function Login(props) {
           <input
             type="email"
             name="email"
-            
+            id="email"
             placeholder="enter your email address"
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={(e) => setEmail(e.target.value)}
@@ -62,7 +78,7 @@ function Login(props) {
           <input
             type="password"
             name="password"
-            
+            id="password"
             placeholder="enter your email address"
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={(e) => setPassword(e.target.value)}

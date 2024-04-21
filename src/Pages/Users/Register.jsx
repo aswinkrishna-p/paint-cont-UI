@@ -1,8 +1,10 @@
 import React, { useState,useEffect } from 'react';
 import {useDispatch} from 'react-redux'
+import toast,{Toaster} from 'react-hot-toast'
 import {Link, useNavigate} from 'react-router-dom'
 import { signup } from '../../api/userApi';
 import { signInStart ,signInFailure ,signInSuccess  } from '../../Redux/user/UserSlice';
+import { isValidEmail, isValidPassword, isValiduserName } from '../../services/validations';
 
 function Register(props) {
 
@@ -19,18 +21,54 @@ function Register(props) {
 
 const handleSubmit = async (event) =>{
 
-  event.preventDefault();
-  
-   try {
+  try {
+     event.preventDefault();
+
+     if(FormData.password !== FormData.confirmpassword){
+        return toast('Password mismatch', { icon: '⛔', });
+     }
+
+     const Tformdata ={
+      ...FormData,
+      username:FormData.username.trim(),
+      email:FormData.email.trim(),
+      password:FormData.password.trim(),
+      confirmpassword:FormData.confirmpassword.trim()
+     }
+
+     if(!Tformdata.username || !Tformdata.email || !Tformdata.password){
+      return toast.error("Missing required fields");
+     }
+
+     
+     if(!isValiduserName(Tformdata.username)){
+       
+       return toast.error("Invalid userName");
+      }
+      
+      if(!isValidPassword(Tformdata.password)){
+
+        return toast.error("Password must be at least 6 characters long");
+      }
+    
+    if(!isValidEmail(Tformdata.email)){
+
+      return toast.error("Invalid email format");
+    }
 
     dispatch(signInStart())
-    const Registerdata = FormData
-    let res = await signup(Registerdata)
-
+    let res = await signup(Tformdata)
+    // console.log('resssssss' ,res);
     dispatch(signInSuccess(res.data))
     
-    if(res.status===200){
-      navigate('/login')
+    if(res.status === 200){
+      toast.success('Signup successful \n Please Login to continue')
+      setTimeout(() => {
+        
+        navigate('/login')
+      }, 2000);
+    }else{
+      toast.error('user already exists')
     }
    } catch (error) {
     dispatch(signInFailure(error.message))
@@ -46,6 +84,7 @@ const handleChange =(event) =>{
 
     return (
         <div className=" w-screen h-screen flex flex-col justify-center items-center bg-cover bg-center ">
+          <Toaster/>
       <div className="flex flex-col items-center gap-4 w-96 h-auto  bg-black rounded-md">
         <div>
           <h1 className="text-white uppercase mt-7 font-semibold text-3xl ">Create Account</h1>
@@ -54,6 +93,7 @@ const handleChange =(event) =>{
           <input
             type="text"
             name="username"
+            id='username'
             placeholder="username"
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={handleChange}
@@ -61,6 +101,7 @@ const handleChange =(event) =>{
           <input
             type="email"
             name="email"
+            id='email'
             placeholder="email address"
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={handleChange}
@@ -68,6 +109,7 @@ const handleChange =(event) =>{
           <input
             type="password"
             name="password"
+            id='password'
             placeholder="password"
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={handleChange}
@@ -75,6 +117,7 @@ const handleChange =(event) =>{
           <input
             type="password"
             name="confirmpassword"
+            id='confirmpassword'
             placeholder="confirm password "
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={handleChange}
