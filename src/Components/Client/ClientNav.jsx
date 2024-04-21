@@ -10,15 +10,25 @@ import {
  Input,
 } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
+import { Logout } from '../../api/userApi';
 
 function ClientNav(props) {
 
   const Navigate = useNavigate()
+
+  const logout =async () =>{
+    let res = await Logout()
+
+    if(res.status === 200){
+      localStorage.clear('user_token')
+      Navigate('/login')
+    }
+  }
     return (
         <Navbar
       variant="gradient"
       color="blue-gray"
-      className=" mx-auto w-full px-4 py-3 h-[60px] fixed z-50 bg-gradient-to-r from-purple-900 to-blue-800 "
+      className=" mx-auto max-w-full w-full px-4 py-3 rounded-none h-[60px] fixed z-50 bg-gradient-to-r from-purple-900 to-blue-800"
     >
       <div className="flex flex-wrap items-center justify-between gap-y-4 text-white">
         <Typography
@@ -46,18 +56,20 @@ function ClientNav(props) {
           </a>
         </div>
 
-        <div className="flex items-center w-full sm:w-auto gap-10">
+        <div className="relative flex w-full gap-2 md:w-max">
           <Input
             type="search"
             color="white"
+            label='Type here...'
             className="pr-10 bg-transparent border-b border-white focus:outline-none"
             containerProps={{
               className: "min-w-[288px]",
             }}
           />
           {/* <Button
+            size="sm"
             color="white"
-            className=" ml-2 p-1 bg-transparent border border-white rounded hover:bg-white hover:text-blue-gray-900 transition duration-300 h-6 text-xm"
+            className="!absolute right-1 top-1 rounded"
           >
             Search
           </Button> */}
@@ -68,9 +80,11 @@ function ClientNav(props) {
           <RiUserLine className="text-lg" />
           </span>
 
-            <a href="#" className="text-white">
+            <button onClick={logout}>
               <RiLogoutCircleLine className="text-lg" />
-            </a>
+
+            </button>
+            
           </div>
         </div>
       </div>
