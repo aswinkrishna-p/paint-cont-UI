@@ -26,3 +26,23 @@ export const adminlogout = async () =>{
         console.log(error);
     }
 }
+
+export const getUsers = async () =>{
+    try {
+        const response = await axiosApi.get(adminRoutes.getUsers)
+        // console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const BlockUser = async (userId) =>{
+    try {
+        const response = await axiosApi.patch(`${adminRoutes.BlockUser}/${userId}`)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -32,7 +32,7 @@ function AdminNav() {
     }
     
     return (
-        <Card className="h-screen max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 bg-custom-color">
+        <Card className=" h-screen max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 bg-[#0D0E26]">
             <div className="mb-2 p-4">
                 <Typography className='text-3xl' variant="h5" color="blue-gray">
                     Paintcont

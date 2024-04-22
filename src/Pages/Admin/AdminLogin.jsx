@@ -3,7 +3,6 @@ import { useNavigate} from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../../Redux/user/UserSlice";
 import { adminLogin } from "../../api/adminApi";
-import AdminNav from "../../Components/Admin/AdminNav";
 
 function AdminLogin(props) {
 
@@ -15,7 +14,7 @@ function AdminLogin(props) {
   useEffect(() => {
     if (localStorage.getItem("admin_token")) {
       //if already logged in
-      navigate('/')
+      navigate('/dashboard')
     }
   }, [navigate])
 
@@ -44,7 +43,7 @@ function AdminLogin(props) {
 
   return (
     <>
-    <AdminNav/>
+    
       <div className="flex justify-center items-center h-screen bg-gradient-to-r from-[#200a31] to-[#1f3752]">
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] p-10 bg-black bg-opacity-50 rounded-lg shadow-lg">
           <h2 className="text-white text-center mb-8 font-serif text-4xl">
