@@ -6,7 +6,7 @@ import {
  Navbar,
  Typography,
 //  IconButton,
-//  Button,
+ Button,
  Input,
 } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
@@ -42,9 +42,9 @@ function ClientNav(props) {
 
         <div className="flex md:flex flex-wrap gap-4 sm:gap-14 md:mr-4 sm:mr-4">
           {/* Convert text into links */}
-          <a href="#" className="text-white">
+          <span onClick={() => Navigate('/')} className="text-white cursor-pointer">
             Home
-          </a>
+          </span>
           <a href="#" className="text-white">
             Painter
           </a>
@@ -66,13 +66,14 @@ function ClientNav(props) {
               className: "min-w-[288px]",
             }}
           />
-          {/* <Button
+          <Button
             size="sm"
             color="white"
             className="!absolute right-1 top-1 rounded"
           >
             Search
-          </Button> */}
+          </Button>
+          </div>
 
           {/* Adding profile and logout icons */}
           <div className="flex items-center gap-3">
@@ -86,7 +87,6 @@ function ClientNav(props) {
             </button>
             
           </div>
-        </div>
       </div>
     </Navbar>
     );

@@ -85,7 +85,7 @@ const handleChange =(event) =>{
     return (
         <div className=" w-screen h-screen flex flex-col justify-center items-center bg-cover bg-center ">
           <Toaster/>
-      <div className="flex flex-col items-center gap-4 w-96 h-auto  bg-black rounded-md">
+      <div className="flex flex-col items-center gap-4 w-96 h-auto  bg-[#0D0E26] rounded-md">
         <div>
           <h1 className="text-white uppercase mt-7 font-semibold text-3xl ">Create Account</h1>
         </div>

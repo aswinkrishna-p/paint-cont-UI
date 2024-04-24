@@ -62,7 +62,7 @@ function Login(props) {
       <ClientNav/>
     <div className=" w-screen h-screen flex flex-col justify-center  items-center bg-cover bg-center ">
       <Toaster/>
-      <div className="flex flex-col items-center gap-4 w-96 bg-black rounded-lg">
+      <div className="flex flex-col items-center gap-4 w-96 bg-[#0D0E26] rounded-lg">
         <div>
           <h1 className="text-white uppercase mt-7 font-semibold text-3xl "> sign in</h1>
         </div>
