@@ -1,27 +1,51 @@
 import React from 'react';
+import ClientNav from '../../Components/Client/ClientNav';
+import { useSelector } from 'react-redux';
 
 function Profile(props) {
+
+    const currentUser = useSelector((state) => state.user.currentUser);
+    // if(currentUser){
+    //     console.log(currentUser,'current user');
+    // }
     return (
-        <div className="flex justify-center items-center h-screen bg-black">
-            <div className="p-8 rounded-lg shadow-md bg-[#0D0E26]" >
-                <div className="flex justify-center mb-4">
-                    <div className="h-20 w-20 rounded-full overflow-hidden">
-                        <img className="object-cover h-full w-full" src="https://t4.ftcdn.net/jpg/04/00/24/31/360_F_400243185_BOxON3h9avMUX10RsDkt3pJ8iQx72kS3.jpg" alt="Profile" />
+        <>
+            <ClientNav />
+            <div className="flex items-center justify-center h-screen">
+                <div className="bg-[#0D0E26] flex flex-col items-center justify-center rounded-3xl shadow-2xl p-8 w-96">
+                    <div className="bg-purple-900 rounded-full overflow-hidden w-24 h-24 mb-4">
+                        <img
+                            src="https://t4.ftcdn.net/jpg/04/00/24/31/360_F_400243185_BOxON3h9avMUX10RsDkt3pJ8iQx72kS3.jpg" 
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="flex flex-col items-center ">
+                        <input
+                            type="text"
+                            readOnly
+                            value={currentUser.data.username}
+                            className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64"
+                        />
+                        <input
+                            type="email"
+                            readOnly
+                            value={currentUser.data.email}
+                            className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522(257) 563-7401"
+                            className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64"
+                        />
+                        <div className="flex justify-center align-middle">
+                            <button className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-20">Save</button>
+                            <button className="bg-purple-900 text-white border-b-2 ml-1 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-50">Transaction History</button>
+                        </div>
                     </div>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Username:</label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter your username" />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email:</label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email" />
-                </div>
-                <div className="flex justify-center">
-                    <button className='submit text-white bg-[#3E45DF] rounded-lg py-2 px-3 font-semibold uppercase hover:bg-[#1c2294] transition duration-300' >submit</button>
-                </div>
             </div>
-        </div>
+        </>
     );
 }
 

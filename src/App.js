@@ -8,6 +8,7 @@ import Profile from './Pages/Users/Profile';
 import AdminLogin from './Pages/Admin/AdminLogin';
 import AdminDash from './Pages/Admin/AdminDash';
 import AdminUserManagement from './Pages/Admin/AdminUserManagement';
+import PainterProfile from './Pages/Painters/PainterProfile';
 
 function App(props) {
   return (
@@ -26,6 +27,10 @@ function App(props) {
       <Route path='/login' element = {<Login/>} />
       <Route path='/otp' element = {<OtpPage/>} />
       <Route path='/profile' element = {<Profile/>} />
+
+      {/* painterRoutes */}
+
+      <Route path='painter/profile' element = {<PainterProfile/>} />
     </Routes>
 
    </BrowserRouter>
