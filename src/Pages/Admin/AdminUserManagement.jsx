@@ -23,6 +23,7 @@ import AdminNav from "../../Components/Admin/AdminNav";
 import { useEffect, useState } from "react";
 import { BlockUser, getUsers } from "../../api/adminApi";
 import toast, {Toaster} from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 const TABS = [
   {
@@ -42,6 +43,7 @@ const TABS = [
 function AdminUserManagement() {
   const [users, setUsers] = useState([]);
   const [change , setChange]= useState(true)
+  const [Search ,setSearch] = useState("")
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -53,17 +55,35 @@ function AdminUserManagement() {
       }
     };
     fetchUsers();
-  }, [change]);
+  },[change]);
 
 
   const handlechangeUserBlock = async(userId) =>{
-    console.log(userId);
-    const response = await BlockUser(userId)
-    if(response.success){
-      toast.success('successful')
-      setChange(!change)
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      background: "rgb(44,48,58)",
+      customClass: {
+          title: "swal-text-white", // Add this class to style the title
+      },
+    }).then(async (res)=>{
+      if(res.isConfirmed){
+        const response = await BlockUser(userId)
+        if(response.data.success){
+          toast.success(response.data.message)
+          setChange(!change)
+        }
+      }else return
+    })
+   
   }
+
+  // const handleSearch = users.filter((users) => users.username.toLowerCase().includes(Search.toLowerCase()))
+ 
 
   return (
     <div className="flex bg-black">
@@ -99,7 +119,7 @@ function AdminUserManagement() {
                 {TABS.map(({ label, value }) => (
                   <Tab key={value} value={value}>
                     &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                  </Tab>
+                  </Tab>  
                 ))}
               </TabsHeader>
             </Tabs>
@@ -107,6 +127,8 @@ function AdminUserManagement() {
               <Input
                 label="Search"
                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                onChange={ (e) => setSearch(e.target.value)}
+                value={Search}
               />
             </div>
           </div>
@@ -191,8 +213,8 @@ function AdminUserManagement() {
                       <Chip
                         variant="ghost"
                         size="sm"
-                        value={isBlocked ? "Blocked" : "Unblocked"}
-                        color={isBlocked ? "red" : "green"}
+                        value={isBlocked ? "Unblock" : "blocked"}
+                        color={isBlocked ? "green" : "red"}
                       />
                     </div>
                   </td>
