@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ClientNav from '../../Components/Client/ClientNav';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Profile(props) {
 
+    
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!localStorage.getItem("user_token")) {
+            //if already logged in
+            navigate('/')
+        }
+    }, [navigate])
     const currentUser = useSelector((state) => state.user.currentUser);
     // if(currentUser){
-    //     console.log(currentUser,'current user');
+        //     console.log(currentUser,'current user');
     // }
     return (
         <>
