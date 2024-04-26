@@ -17,17 +17,16 @@ function Home(props) {
     }, [navigate]);
 
     return (
-      <div className='h-full bg-blue-gray-600 w-full flex flex-row'>
+      <div className='h-screen w-full flex flex-row '>
         <ClientNav />
-          <div className="w-[23rem] h-full bg-black">
+          <div className="w-[23rem]  h-full bg-black">
             <ClientCard />
             <ClientHash />
             <ClientVIP />
           </div>
-            <div className='bg-white h-full flex '></div>
-          <div className="flex">
+            <div className='h-full w-full flex items-center justify-center'>
             <ClientPosts />
-          </div>
+            </div>
         </div>
     );
 }
