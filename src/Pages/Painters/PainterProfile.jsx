@@ -115,7 +115,7 @@ function PainterProfile() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col bg-white h-[35rem] w-[50rem] rounded-2xl">
+        <div className="flex flex-col bg-white h-[35rem] w-[50rem] rounded-2xl mb-6">
           <p className="m-3 uppercase font-semibold">Available slots:</p>
 
           {/* First set of blocks */}
@@ -154,6 +154,12 @@ function PainterProfile() {
               <p>Edit slot</p>
             </div>
           </div>
+        </div>
+
+        {/* My posts  */} 
+
+        <div className=" min-w-[90rem] max-auto rounded-2xl bg-[#0D0E26] min-h-[30rem]">
+              
         </div>
       </div>
     </>
