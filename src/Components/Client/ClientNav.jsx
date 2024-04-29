@@ -27,8 +27,8 @@ function ClientNav(props) {
     return (
         <Navbar
       variant="gradient"
-      color="blue-gray"
-      className=" mx-auto max-w-full w-full px-4 py-3 rounded-none h-[60px] fixed z-50 bg-gradient-to-r from-purple-900 to-blue-800"
+      color=""
+      className=" mx-auto max-w-full w-full px-4 py-3 rounded-none h-[60px] fixed z-50 bg-black"
     >
       <div className="flex flex-wrap items-center justify-between gap-y-4 text-white">
         <Typography
