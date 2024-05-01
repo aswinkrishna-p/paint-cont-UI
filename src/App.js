@@ -9,6 +9,7 @@ import AdminLogin from './Pages/Admin/AdminLogin';
 import AdminDash from './Pages/Admin/AdminDash';
 import AdminUserManagement from './Pages/Admin/AdminUserManagement';
 import PainterProfile from './Pages/Painters/PainterProfile';
+import PainterRegister from './Pages/Painters/PainterRegister';
 
 function App(props) {
   return (
@@ -30,6 +31,7 @@ function App(props) {
 
       {/* painterRoutes */}
 
+      <Route path='painter/register' element = {<PainterRegister/>} />
       <Route path='painter/profile' element = {<PainterProfile/>} />
     </Routes>
 
