@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { otpVerification } from "../../api/painterApi";
+import { useNavigate } from "react-router-dom";
 
 
 function PainterOtpPage({email:initialEmail}) {
   const [email, setEmail] = useState(initialEmail || "");
   const [otp, setOtp] = useState("");
+  const Navigate = useNavigate()
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -12,6 +15,16 @@ function PainterOtpPage({email:initialEmail}) {
   const handleOtpChange = (event) => {
     setOtp(event.target.value);
   };
+
+  const handleSubmit = async (event) =>{
+    let data = {email,otp}
+    
+    let verify = await otpVerification(data)
+
+    if(verify?.success){
+      Navigate('/painter/login')
+    }
+  }
    
   return (
     <div className="flex justify-center items-center h-screen">
@@ -58,7 +71,7 @@ function PainterOtpPage({email:initialEmail}) {
           </div>
         </div>
 
-        <button className="submit text-white bg-[#3E45DF] rounded-lg py-2 px-3 font-semibold uppercase hover:bg-[#1c2294] transition duration-300">
+        <button onClick={handleSubmit} className="submit text-white bg-[#3E45DF] rounded-lg py-2 px-3 font-semibold uppercase hover:bg-[#1c2294] transition duration-300">
           submit
         </button>
       </div>

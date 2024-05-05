@@ -1,6 +1,8 @@
 
 const painterRoutes = {
-    register:'/painter/register'
+    register:'/painter/register',
+    login:'/painter/login',
+    otp:'/painter/otp'
 }
 
 export default painterRoutes
