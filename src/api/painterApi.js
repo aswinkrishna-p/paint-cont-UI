@@ -26,7 +26,7 @@ export const login = async (email, password) =>{
 }
 export const otpVerification = async (email, otp) =>{
     try {
-
+        console.log('inside otp verify front');
         let data = { email ,otp}
         let response = await axiosApi.post(painterRoutes.otp ,data)
         console.log('response from backend' ,response);

@@ -62,13 +62,10 @@ const handleSubmit = async (event) =>{
     dispatch(signInSuccess(res.data))
     
     if(res.status === 200){
-      toast.success('Signup successful \n Please Login to continue')
       setTimeout(() => {
         
         navigate('/painter/otp',{state:{email:FormData.email}})
       }, 2000);
-    }else{
-      toast.error('user already exists')
     }
    } catch (error) {
     dispatch(signInFailure(error.message))
