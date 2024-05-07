@@ -35,3 +35,14 @@ export const otpVerification = async (email, otp) =>{
         console.log(error);
     }
 }
+export const resendOTP = async (email) =>{
+    try {
+        console.log('inside otp verify front');
+        let data = { email}
+        let response = await axiosApi.post(painterRoutes.resendOTP ,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { otpVerification } from "../../api/painterApi";
+import React, { useEffect, useState } from "react";
+import { otpVerification, resendOTP } from "../../api/painterApi";
 import { useNavigate } from "react-router-dom";
 import toast,{Toaster} from 'react-hot-toast'
 
@@ -7,6 +7,8 @@ import toast,{Toaster} from 'react-hot-toast'
 function PainterOtpPage({email:initialEmail}) {
   const [email, setEmail] = useState(initialEmail || "");
   const [otp, setOtp] = useState("");
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [timer, setTimer] = useState(30);
   const Navigate = useNavigate()
 
   const handleEmailChange = (event) => {
@@ -29,6 +31,34 @@ function PainterOtpPage({email:initialEmail}) {
       toast.error('user already exists')
     }
   }
+
+  const handleResendOTP = async () =>{
+    console.log('inside resend otp front end');
+    try {
+      const res = await resendOTP(email)
+
+      if(res.success){
+        console.log('resended otp');
+        setTimer(30)
+        setResendDisabled(false)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() =>{
+    const timerInterval = setInterval(() =>{
+      setTimer((prevTimer) =>{
+        if(prevTimer === 1){
+          setResendDisabled(true)
+          clearInterval(timerInterval)
+        }
+        return prevTimer -1;
+      })
+    },1000)
+    return () => clearInterval(timerInterval)
+  },[timer])
    
   return (
     <div className="flex justify-center items-center h-screen">
@@ -71,11 +101,20 @@ function PainterOtpPage({email:initialEmail}) {
           />
           </div>
         </div>
-
+        <div className="flex flex-row justify-between">
         <button onClick={handleSubmit} className="submit text-white bg-[#3E45DF] rounded-lg py-2 px-3 font-semibold uppercase hover:bg-[#1c2294] transition duration-300">
-          submit
+          submit otp
         </button>
-      </div>
+        {timer > 0 ? (
+          <span className="text-white opcity-10  text-sm">Resend OTP in {timer} seconds </span>
+        ):(
+          <button onClick={handleResendOTP} className="submit text-white bg-orange-900 rounded-lg py-2 px-3 font-semibold uppercase hover:bg-deep-orange-900 transition duration-300">
+          Resent otp
+        </button>
+
+        )}
+        </div>
+       </div>
     </div>
   );
 }
