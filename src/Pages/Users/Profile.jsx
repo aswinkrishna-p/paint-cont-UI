@@ -2,6 +2,9 @@ import React, { useEffect ,useState} from 'react';
 import ClientNav from '../../Components/Client/ClientNav';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal'
+import { add_address } from '../../api/userApi';
+
 
 function Profile(props) {
 
@@ -36,7 +39,7 @@ function Profile(props) {
             address: { ...address },
             userId:user?._id
           };
-          const response = await axios.put('/user/add-address', data);
+          const response = await add_address(data)
           console.log(response,"from the client profile");
           setPhone("");
           setAddress({ houseNo: "", location: "", pin: "" });

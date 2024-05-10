@@ -26,6 +26,16 @@ export const login = async (email, password) =>{
         console.log(error);
     }
 }
+export const add_address = async (userData) =>{
+    try {
+
+        let response = await axiosApi.put(userRoutes.add_address, userData)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const Logout = async () =>{
     try {
