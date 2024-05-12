@@ -7,7 +7,7 @@ import { add_address } from '../../api/userApi';
 
 
 function Profile(props) {
-
+ 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState({ houseNo: "",location: "",pin: "", });
@@ -21,7 +21,7 @@ function Profile(props) {
         }
     }, [navigate])
     const currentUser = useSelector((state) => state.user.currentUser);
-
+console.log('current user ',currentUser);
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -32,12 +32,13 @@ function Profile(props) {
       };
     
       const handleAddressSubmit = async (e) => {
+        console.log('inside handleaddresssubmit');
         e.preventDefault();
         try {
           const data = {
             phoneNo: phone,
             address: { ...address },
-            userId:user?._id
+            userId:currentUser.data._id
           };
           const response = await add_address(data)
           console.log(response,"from the client profile");
@@ -70,12 +71,12 @@ function Profile(props) {
           <div className="flex flex-col items-center">
 
 
-  {user ? (
+  {currentUser ? (
     <>
-      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{user.username}</div>
-      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{user.email}</div>
+      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{currentUser.data.username}</div>
+      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{currentUser.data.email}</div>
       <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">
-  {user.address? `${user.address.houseNo}, ${user.address.location}, ${user.address.pin}` : "No address available"}
+  {currentUser.data.address? `${currentUser.data.address.houseNo}, ${currentUser.data.address.location}, ${currentUser.data.address.pin}` : "No address available"}
 </div>
     </>
   ) : (
@@ -129,7 +130,7 @@ function Profile(props) {
                 />
 
                 <div className="flex justify-between">
-                  <button onClick={handleAddressSubmit} className="bg-slate-600 text-white py-2 px-6 rounded-lg mr-4">Save</button>
+                  <button onClick={handleAddressSubmit} className="bg-red-800 text-white py-2 px-6 rounded-lg mr-4">Save</button>
                   <button onClick={closeModal} className="bg-red-800 text-white py-2 px-6 rounded-lg">Close Modal</button>
                 </div>
               </div>
