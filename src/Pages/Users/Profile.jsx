@@ -1,17 +1,21 @@
-import React, { useEffect ,useState} from 'react';
+import React, { useEffect ,useRef,useState} from 'react';
 import ClientNav from '../../Components/Client/ClientNav';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal'
-import { add_address } from '../../api/userApi';
+import { add_address, saveProfilepic } from '../../api/userApi';
+import { isValidImageType } from '../../services/validations';
+import toast, { Toaster } from 'react-hot-toast';
+import uploadImageToFirebase from '../../services/Firebase/imageUploader';
 
 
 function Profile(props) {
- 
+    const fileRef = useRef(null)
+    const [image ,setImage] = useState(undefined)
+    const [imageUrl, setImageUrl] = useState("")
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState({ houseNo: "",location: "",pin: "", });
-    const [user, setUser] = useState(null);
     const navigate = useNavigate()
     
     useEffect(() => {
@@ -20,8 +24,12 @@ function Profile(props) {
             navigate('/login')
         }
     }, [navigate])
+
+    useEffect (() =>{
+      handleProfileUpdate()
+    },[image])
     const currentUser = useSelector((state) => state.user.currentUser);
-console.log('current user ',currentUser);
+    console.log('current user ',currentUser);
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -56,12 +64,51 @@ console.log('current user ',currentUser);
           [e.target.name]: e.target.value,
         });
       };
+
+      const handleFileChange = (e) =>{
+        if(e.target.files && e.target.files[0]){
+          if(!isValidImageType(e.target.files[0].name)){
+            return toast.error("only images are allowed")
+          }else{
+            setImage(e.target.files[0])
+          }
+        }
+      }
+
+      const handleProfileUpdate = async () =>{
+          if(image){
+            try {
+              const fileUrl = await uploadImageToFirebase(image , "profilepic/")
+              if(!fileUrl) return toast.error("error uploading image")
+
+                const data = {
+                  imageUrl: fileUrl,
+                  userId : currentUser.data._id
+                }
+
+                const savepic = await saveProfilepic(data)
+
+                if(savepic.success){
+                  setImageUrl(fileUrl)
+                  toast.success("profile pic updated successfully")
+                }else{
+                  toast.error("error in updating profile pic")
+                }
+            } catch (error) {
+              console.log(error);
+            }
+          }
+      }
     return (
         <>
             <ClientNav />
             <div className="flex items-center justify-center h-screen">
-        <div className="flex flex-col items-center bg-gradient-to-br from-purple-950 to-purple-950 rounded-3xl shadow-2xl p-8 h-[420px] w-96">
+        <div className="flex flex-col items-center bg-[#0D0E26] rounded-3xl shadow-2xl p-8 h-[420px] w-96">
+          <Toaster/>
           <div className="bg-purple-900 rounded-full overflow-hidden w-24 h-24 mb-4">
+            <input type="file" ref={fileRef}  accept='image/*' 
+              onClick={handleFileChange}
+            />
             <img
               src="/profileIcon.png"
               alt="Profile"
@@ -90,7 +137,9 @@ console.log('current user ',currentUser);
 
 
           <div>
-            <button onClick={openModal} className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-32">AddAddress</button>
+            <button onClick={openModal} className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-32">
+            {currentUser.data.address? "Edit Address" : "Add Address"}
+            </button>
             {/* Modal component */}
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} contentLabel="Add Post Modal" className="absolute inset-0 flex items-center justify-center" overlayClassName="fixed inset-0 bg-gray-700 bg-opacity-75" closeTimeoutMS={200}>
               <div className="bg-white rounded-lg p-8 max-w-lg w-full">
