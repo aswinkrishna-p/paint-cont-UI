@@ -121,7 +121,7 @@ const handleChange =(event) =>{
           />
 
           <button type='submit' className=" text-white bg-[#3E45DF] rounded-2xl py-2 px-4 font-bold hover:bg-[#1c2294] transition duration-300 ">Create Account</button>
-          <button className=" text-white bg-[#3E45DF] rounded-2xl py-2 px-4 font-bold hover:bg-[#1c2294] transition duration-300 ">Create Account</button>
+          <button className=" text-white bg-[#BF0000] rounded-2xl py-2 px-4  font-bold hover:bg-[#bf0000c6] transition duration-300 "> Sign up with google</button>
           <span className="text-white uppercase text-center">Already have an account? <Link to= '/login' className="font-bold text-blue-700" >Login</Link> </span>
         </form>
       </div>

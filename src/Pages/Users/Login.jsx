@@ -43,13 +43,15 @@ function Login(props) {
 
       const res = await login(email, password)
       console.log('userdataa ',res.data.token);
+      if(res.data.success){
+        dispatch(signInSuccess(res.data))
+        localStorage.setItem('user_token',res.data.token)
+      }
 
-      dispatch(signInSuccess(res.data))
-
-      localStorage.setItem('user_token',res.data.token)
-
-      if(res.status === 200){
+      if(res.data.success){
         navigate('/')
+      }else{
+        toast.error(res.data.message)
       }
     } catch (error) {
       dispatch(signInFailure(error.message))
@@ -83,7 +85,7 @@ function Login(props) {
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className=" text-white bg-[#3E45DF] rounded-2xl py-2 px-4 uppercase font-bold hover:bg-[#1c2294] transition duration-300 ">Create Account</button>
+          <button className=" text-white bg-[#3E45DF] rounded-2xl py-2 px-4 uppercase font-bold hover:bg-[#1c2294] transition duration-300 "> sign in</button>
           <button className=" text-white bg-[#BF0000] rounded-2xl py-2 px-4  font-bold hover:bg-[#bf0000c6] transition duration-300 "> Sign up with google</button>
         </form>
           <span className="text-white uppercase mb-3 text-center">Don't have an account? <Link to= '/register' className="font-bold text-blue-700" >Register</Link> </span>
