@@ -10,13 +10,14 @@ import uploadImageToFirebase from '../../services/Firebase/imageUploader';
 
 
 function Profile(props) {
-    const fileRef = useRef(null)
     const [image ,setImage] = useState(undefined)
     const [imageUrl, setImageUrl] = useState("")
+    const [isImageChanged, setIsImageChanged] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState({ houseNo: "",location: "",pin: "", });
     const navigate = useNavigate()
+    const fileRef = useRef(null)
     
     useEffect(() => {
         if (!localStorage.getItem("user_token")) {
@@ -25,9 +26,7 @@ function Profile(props) {
         }
     }, [navigate])
 
-    useEffect (() =>{
-      handleProfileUpdate()
-    },[image])
+
     const currentUser = useSelector((state) => state.user.currentUser);
     console.log('current user ',currentUser);
 
@@ -67,28 +66,38 @@ function Profile(props) {
 
       const handleFileChange = (e) =>{
         if(e.target.files && e.target.files[0]){
+          console.log('inside file chanegee');
           if(!isValidImageType(e.target.files[0].name)){
             return toast.error("only images are allowed")
           }else{
             setImage(e.target.files[0])
+            setIsImageChanged(true)
           }
         }
       }
 
+      useEffect (() =>{
+        if(isImageChanged){
+          handleProfileUpdate()  
+          setIsImageChanged(false)
+        }
+      },[isImageChanged])
+
       const handleProfileUpdate = async () =>{
-          if(image){
+        if(image){
+            console.log('inside the profile update');
             try {
               const fileUrl = await uploadImageToFirebase(image , "profilepic/")
               if(!fileUrl) return toast.error("error uploading image")
 
-                const data = {
-                  imageUrl: fileUrl,
-                  userId : currentUser.data._id
-                }
+                // const data = {
+                //   imageUrl: fileUrl, 
+                //   userId : currentUser.data._id
+                // }
 
-                const savepic = await saveProfilepic(data)
+                const savepic = await saveProfilepic(fileUrl,currentUser.data._id)
 
-                if(savepic.success){
+                if(savepic.data.success){
                   setImageUrl(fileUrl)
                   toast.success("profile pic updated successfully")
                 }else{
@@ -106,13 +115,14 @@ function Profile(props) {
         <div className="flex flex-col items-center bg-[#0D0E26] rounded-3xl shadow-2xl p-8 h-[420px] w-96">
           <Toaster/>
           <div className="bg-purple-900 rounded-full overflow-hidden w-24 h-24 mb-4">
-            <input type="file" ref={fileRef}  accept='image/*' 
-              onClick={handleFileChange}
+            <input type="file" id='profilepic' name='profilepic' ref={fileRef} hidden accept='image/*' 
+              onChange={handleFileChange}
             />
             <img
-              src="/profileIcon.png"
+              src={`${imageUrl}` || currentUser?.data?.profile  ||"https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg" }
               alt="Profile"
               className="w-full h-full object-cover"
+              onClick={() => fileRef.current.click()}
             />
           </div>
           <div className="flex flex-col items-center">

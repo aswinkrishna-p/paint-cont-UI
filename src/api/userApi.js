@@ -36,9 +36,9 @@ export const add_address = async (userData) =>{
         console.log(error);
     }
 }
-export const saveProfilepic = async (userData) =>{
+export const saveProfilepic = async (userId,imageUrl) =>{
     try {
-        let response = await axiosApi.patch(userRoutes.profileupdate, userData)
+        let response = await axiosApi.patch(userRoutes.profileupdate,{userId,imageUrl})
         console.log('response from backend' ,response);
         return response
     } catch (error) {
