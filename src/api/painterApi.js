@@ -46,3 +46,23 @@ export const resendOTP = async (email) =>{
         console.log(error);
     }
 }
+
+export const saveProfilepic = async (userId,imageUrl) =>{
+    try {
+        let response = await axiosApi.patch(painterRoutes.profilepic,{userId,imageUrl})
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const Logout = async () =>{
+    try {
+        let response = await axiosApi.post(painterRoutes.logout)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}

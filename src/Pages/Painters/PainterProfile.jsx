@@ -1,23 +1,117 @@
-import React from "react";
-import ClientNav from "../../Components/Client/ClientNav";
+import React, { useRef, useState,useEffect } from "react";
+import Modal from 'react-modal'
+import PainterNav from "../../Components/Painter/PainterNav";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { isValidImageType } from "../../services/validations";
+import toast, { Toaster } from "react-hot-toast";
+import uploadImageToFirebase from "../../services/Firebase/imageUploader";
+import { saveProfilepic } from "../../api/painterApi";
 
 function PainterProfile() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [image, setImage] = useState(undefined)
+  const [isImageChanged, setIsImageChanged] = useState(false);
+  const [imageUrl,setImageUrl] = useState("")
+  const [previewAvatar, setPreviewAvatar] = useState(null);
+  const [description, setDescription] = useState("");
+  const descriptionRef = useRef(null);
+  const navigate = useNavigate()
+  const fileRef = useRef(null)
+
+
+  useEffect(() => {
+    if (!localStorage.getItem("painter_token")) {
+        //if already logged in
+        navigate('/painter/login')
+    }
+}, [navigate])
+
+const currentpainter = useSelector((state) => state.painter.currentUser)
+console.log(currentpainter);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+
+  const  handleFileChange = (e) =>{
+    if(e.target.files && e.target.files[0]){
+      console.log('inside file chanegee');
+      if(!isValidImageType(e.target.files[0].name)){
+        return toast.error("only images are allowed")
+      }else{
+        setImage(e.target.files[0])
+        setIsImageChanged(true)
+      }
+    }
+  }
+
+  useEffect (() =>{
+    if(isImageChanged){
+      handleProfileUpdate()  
+      setIsImageChanged(false)
+    }
+  },[isImageChanged])
+
+  const handleProfileUpdate = async () =>{
+    if(image){
+      console.log('inside the profile update');
+      try {
+        const fileUrl = await uploadImageToFirebase(image , "PainterProfilePic/")
+        if(!fileUrl) return toast.error("error uploading image")
+
+          // const data = {
+          //   imageUrl: fileUrl, 
+          //   userId : currentUser.data._id
+          // }
+
+          const savepic = await saveProfilepic(fileUrl,currentpainter.user._id)
+
+          if(savepic.data.success){
+            setImageUrl(fileUrl)
+            toast.success("profile pic updated successfully")
+          }else{
+            toast.error("error in updating profile pic")
+          }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+
+  const handleAvatarChange = () =>{
+
+  }
+
+  const handlePostSubmit = () =>{
+
+  }
   return (
     <>
-      <ClientNav />
+      <PainterNav/>
       <div className="flex h-full flex-col items-center bg-deep-orange-900">
+        <Toaster/>
         <div className=" pt-8 w-full ">
           <div className="flex flex-col gap-6 mt-7 w-full">
             {/* Profile Section */}
             <div className=" relative  mb-6">
               <div className="bg-white shadow rounded-lg p-6">
                 <div className="flex flex-col items-start">
+                  <input type="file" id="profilepic" name="profilepic" ref={fileRef} hidden  accept="image/*"
+                  onChange={handleFileChange}
+                  />
                   <img
-                    src="/profileIcon.png"
+                    src={`${imageUrl}` || currentpainter.user.profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"}
                     className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
                     alt="Profile"
                   />{" "}
-                  <h1 className="text-xl font-bold">Painter Name</h1>
+                  <h1 className="text-xl font-bold">{currentpainter.user.username}</h1>
                   <p className="text-gray-700">Professional Painter</p>
                   <p className="text-gray-700">Location:Kerala ,Calicut</p>
                   <p className="text-gray-700">Phone:2345362346345</p>
@@ -159,7 +253,70 @@ function PainterProfile() {
         {/* My posts  */} 
 
         <div className=" min-w-[90rem] max-auto rounded-2xl bg-[#0D0E26] min-h-[30rem]">
-              
+                              {/* Conditional rendering for Add Post button */}
+                              {!modalIsOpen && (
+                  <div className="relative inline-block  m-2">
+                    {/* Button to open modal */}
+                    <button
+                      className="border-transparent relative z-10 py-2 px-3 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
+                      onClick={openModal}
+                    >
+                      Add Post
+                    </button>
+                  </div>
+                )}
+
+
+                  {/* Modal component */}
+                  <Modal
+                  isOpen={modalIsOpen}
+                  onRequestClose={closeModal}
+                  contentLabel="Add Post Modal"
+                  className="absolute inset-0 flex items-center justify-center"
+                  overlayClassName="fixed inset-0 bg-gray-700 bg-opacity-75"
+                  closeTimeoutMS={200} // Adjust modal close animation time
+                >
+                  <div className="bg-white rounded-lg p-8 max-w-lg w-full">
+                    <h2 className="text-2xl font-bold mb-4">Add Post</h2>
+                    <input
+                      type="file"
+                      className="py-2 px-4 text-white rounded-full mb-4"
+                      accept="image/*"
+                      onChange={(e) => handleAvatarChange(e.target.files)}
+                    />
+                    <div className="w-40 h-40 mb-4">
+                      <img
+                        src={previewAvatar}
+                        alt="Profile pic"
+                        className="w-full h-full rounded-full  object-cover"
+                      />
+                    </div>
+                    <input
+                      className="border py-2 px-4 mb-4 w-full"
+                      placeholder="Type post description"
+                      type="text"
+                      name="description"
+                      id="description"
+                      ref={descriptionRef}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                    <div className="flex justify-between">
+                      <button
+                        onClick={handlePostSubmit}
+                        className=" bg-blue-800 text-white py-2 px-6 rounded-lg mr-4"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={closeModal}
+                        className="bg-red-800 text-white py-2 px-6 rounded-lg"
+                      >
+                        Close Modal
+                      </button>
+                    </div>
+                  </div>
+                </Modal>
         </div>
       </div>
     </>

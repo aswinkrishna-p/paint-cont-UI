@@ -2,7 +2,7 @@ import React, { useState ,useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom"
 import ClientNav from "../../Components/Client/ClientNav";
 import { useDispatch } from "react-redux";
-import { signInFailure, signInStart, signInSuccess } from "../../Redux/user/UserSlice";
+import { signInFailure, signInStart, signInSuccess } from "../../Redux/painter/PainterSlice";
 import { login } from "../../api/painterApi";
 import toast ,{Toaster} from "react-hot-toast";
 import { isValidEmail, isValidPassword } from "../../services/validations";
@@ -43,13 +43,15 @@ function PainterLogin(props) {
 
       const res = await login(email, password)
       console.log('userdataa ',res.data.token);
-
-      dispatch(signInSuccess(res.data))
-
-      localStorage.setItem('painter_token',res.data.token)
-
-      if(res.status === 200){
+      if(res.data.success){
+        dispatch(signInSuccess(res.data))
+        localStorage.setItem('painter_token',res.data.token)
+      }
+      
+      if(res.data.success){
         navigate('/')
+      }else{
+        toast.error(res.data.message)
       }
     } catch (error) {
       dispatch(signInFailure(error.message))
