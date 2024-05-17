@@ -5,20 +5,26 @@ import ClientHash from '../../Components/Client/ClientHash';
 import ClientPosts from '../../Components/Client/ClientPosts';
 import { useNavigate } from 'react-router-dom';
 import ClientVIP from '../../Components/Client/ClientVIP';
+import PainterNav from '../../Components/Painter/PainterNav';
 
 function Home(props) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-      if (!localStorage.getItem("user_token")) {
-        //if not logged in
-        navigate('/login');
-      }
-    }, [navigate]);
+  const userToken = localStorage.getItem("user_token");
+  const painterToken = localStorage.getItem("painter_token");
+
+
+  useEffect(() => {
+    if (!userToken && !painterToken) {
+      navigate('/login');
+    }
+  }, [navigate,userToken,painterToken]);
+  
 
     return (
       <div className='h-screen w-full flex flex-row '>
-        <ClientNav />
+       {userToken && <ClientNav />} 
+       {painterToken && <PainterNav />} 
           <div className="w-[23rem]  h-full bg-black">
             <ClientCard />
             <ClientHash />

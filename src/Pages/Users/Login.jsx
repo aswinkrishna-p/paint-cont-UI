@@ -46,9 +46,6 @@ function Login(props) {
       if(res.data.success){
         dispatch(signInSuccess(res.data))
         localStorage.setItem('user_token',res.data.token)
-      }
-
-      if(res.data.success){
         navigate('/')
       }else{
         toast.error(res.data.message)

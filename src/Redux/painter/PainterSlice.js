@@ -40,6 +40,6 @@ export const {
   signInFailure,
   signOut,
   clearError,
-} = userSlice.actions;
+} = painterSlice.actions;
 
 export default painterSlice.reducer;
