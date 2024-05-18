@@ -57,6 +57,16 @@ export const saveProfilepic = async (userId,imageUrl) =>{
     }
 }
 
+export const uploadPost = async (data) =>{
+    try {
+        let response = await axiosApi.post(painterRoutes.createpost,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const Logout = async () =>{
     try {
         let response = await axiosApi.post(painterRoutes.logout)

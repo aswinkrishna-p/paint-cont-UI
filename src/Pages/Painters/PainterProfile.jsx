@@ -6,13 +6,14 @@ import { useSelector } from "react-redux";
 import { isValidImageType } from "../../services/validations";
 import toast, { Toaster } from "react-hot-toast";
 import uploadImageToFirebase from "../../services/Firebase/imageUploader";
-import { saveProfilepic } from "../../api/painterApi";
+import { saveProfilepic, uploadPost } from "../../api/painterApi";
 
 function PainterProfile() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [image, setImage] = useState(undefined)
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [imageUrl,setImageUrl] = useState("")
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [previewAvatar, setPreviewAvatar] = useState(null);
   const [description, setDescription] = useState("");
   const descriptionRef = useRef(null);
@@ -85,12 +86,54 @@ console.log(currentpainter);
   }
 
 
-  const handleAvatarChange = () =>{
+  const handleAvatarChange = (files) => {
+    if (files && files.length > 0) {
+      const selectedFile = files[0];
 
-  }
+      if (isValidImageType(selectedFile.name)) {
+        setSelectedAvatar(selectedFile);
+        setPreviewAvatar(URL.createObjectURL(selectedFile)); // Create object URL for preview
+      } else {
+        // Display error message for invalid file format
+        toast.error("Invalid file format. Please select an image (JPEG, PNG, GIF, BMP).");
+        setSelectedAvatar(null);
+        setPreviewAvatar(null);
+      }
+    } else {
+      setSelectedAvatar(null);
+      setPreviewAvatar(null);
+    }
+  };
 
-  const handlePostSubmit = () =>{
+  const handlePostSubmit = async (e) =>{
+      e.preventDefault();
 
+      if(selectedAvatar){
+        try {
+          const fileUrl = await uploadImageToFirebase(selectedAvatar, "PainterPost/")
+          if(!fileUrl) return toast.error("Error uploading files")
+            console.log('file url',fileUrl);
+            const data ={
+             imageUrl:fileUrl,
+             description:descriptionRef.current.value,
+             painterId:currentpainter.user._id
+            }
+
+            const uploadpost = await uploadPost(data)
+            if(uploadpost.data.success){
+              toast.success('post uploaded successfully')
+              setDescription('')
+              setPreviewAvatar(null)
+              closeModal()
+            }else{
+              toast.error(uploadpost.data.message)
+            }
+        } catch (error) {
+          console.error('error uploading image ',error);
+        }
+      }else{
+        console.log("NO  image selected");
+      }
   }
   return (
     <>
@@ -108,9 +151,10 @@ console.log(currentpainter);
                   />
                   <img
                     src={`${imageUrl}` || currentpainter.user.profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"}
-                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
+                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 cursor-pointer shrink-0"
                     alt="Profile"
-                  />{" "}
+                    onClick={() => fileRef.current.click()}
+                  />
                   <h1 className="text-xl font-bold">{currentpainter.user.username}</h1>
                   <p className="text-gray-700">Professional Painter</p>
                   <p className="text-gray-700">Location:Kerala ,Calicut</p>
