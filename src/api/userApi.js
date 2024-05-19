@@ -45,6 +45,15 @@ export const saveProfilepic = async (userId,imageUrl) =>{
         console.log(error);
     }
 }
+export const getAllPosts = async () =>{
+    try {
+        let response = await axiosApi.get(userRoutes.getPosts)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const Logout = async () =>{
     try {
