@@ -43,7 +43,7 @@ function Home(props) {
         <ClientHash />
         <ClientVIP />
       </div>
-      <div className='h-full w-full overflow-y-auto flex items-center  justify-center'>
+      <div className='h-full w-full overflow-y-auto flex items-center justify-center'>
         <ClientPosts posts={posts} />
       </div>
     </div>

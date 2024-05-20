@@ -29,7 +29,7 @@ function PainterProfile() {
 }, [navigate])
 
 const currentpainter = useSelector((state) => state.painter.currentUser)
-console.log(currentpainter);
+console.log(currentpainter,'currentpainter');
 
   const openModal = () => {
     setModalIsOpen(true);
