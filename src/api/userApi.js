@@ -36,6 +36,31 @@ export const add_address = async (userData) =>{
         console.log(error);
     }
 }
+
+export const otpVerification = async (email, otp) =>{
+    try {
+        console.log('inside otp verify front');
+        let data = { email ,otp}
+        let response = await axiosApi.post(userRoutes.userotp ,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const resendOTP = async (email) =>{
+    try {
+        console.log('inside otp verify front');
+        let data = { email}
+        let response = await axiosApi.post(userRoutes.resendotp ,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const saveProfilepic = async (userId,imageUrl) =>{
     try {
         let response = await axiosApi.patch(userRoutes.profileupdate,{userId,imageUrl})

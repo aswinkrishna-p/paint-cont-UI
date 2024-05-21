@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './Pages/Users/Login';
 import Register from './Pages/Users/Register';
 import Home from './Pages/Users/Home';
-import UserOtpPage from './Pages/Users/UserOtpPage';
 import Profile from './Pages/Users/Profile';
 import AdminLogin from './Pages/Admin/AdminLogin';
 import AdminDash from './Pages/Admin/AdminDash';
@@ -13,6 +12,7 @@ import PainterRegister from './Pages/Painters/PainterRegister';
 import PainterLogin from './Pages/Painters/PainterLogin';
 import PainterOtpPage from './Pages/Painters/PainterOtpPage';
 import ClientPainterProfile from './Pages/Users/UserPainterProfile';
+import UserOtpPage from './Pages/Users/UserOtpPage';
 
 function App(props) {
   return (

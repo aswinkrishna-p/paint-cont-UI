@@ -130,10 +130,10 @@ function Profile(props) {
 
   {currentUser ? (
     <>
-      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{currentUser.data.username}</div>
-      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{currentUser.data.email}</div>
+      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{currentUser.user.username}</div>
+      <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">{currentUser.user.email}</div>
       <div className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-64">
-  {currentUser.data.address? `${currentUser.data.address.houseNo}, ${currentUser.data.address.location}, ${currentUser.data.address.pin}` : "No address available"}
+  {currentUser.user.address? `${currentUser.user.address.houseNo}, ${currentUser.user.address.location}, ${currentUser.user.address.pin}` : "No address available"}
 </div>
     </>
   ) : (
@@ -148,7 +148,7 @@ function Profile(props) {
 
           <div>
             <button onClick={openModal} className="bg-purple-900 text-white border-b-2 border-purple-700 px-4 py-2 mb-2 rounded-md focus:outline-none w-32">
-            {currentUser.data.address? "Edit Address" : "Add Address"}
+            {currentUser.user.address? "Edit Address" : "Add Address"}
             </button>
             {/* Modal component */}
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} contentLabel="Add Post Modal" className="absolute inset-0 flex items-center justify-center" overlayClassName="fixed inset-0 bg-gray-700 bg-opacity-75" closeTimeoutMS={200}>
