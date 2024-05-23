@@ -43,12 +43,14 @@ function Login(props) {
 
       const res = await login(email, password)
       console.log('userdataa ',res.data.token);
-      if(res.data.success){
+      if(res.data && res.data.success){
         dispatch(signInSuccess(res.data))
         localStorage.setItem('user_token',res.data.token)
         navigate('/')
-      }else{
+      }else if(res.data){
         toast.error(res.data.message)
+      }else{
+        toast.error("Unexpected error occurred");
       }
     } catch (error) {
       dispatch(signInFailure(error.message))

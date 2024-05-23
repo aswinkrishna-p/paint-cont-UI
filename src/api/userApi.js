@@ -15,17 +15,25 @@ export const signup = async (Registerdata) =>{
     }
 }
 
-export const login = async (email, password) =>{
+export const login = async (email, password) => {
     try {
-
-        let data = { email ,password}
-        let response = await axiosApi.post(userRoutes.login ,data)
-        console.log('response from backend' ,response);
-        return response
+      let data = { email, password };
+      let response = await axiosApi.post(userRoutes.login, data);
+      console.log('response from backend', response);
+      return response;
     } catch (error) {
-        console.log(error);
+      console.error('Error in login:', error);
+      if (error.response) {
+        return error.response;
+      }
+      return {
+        data: {
+          success: false,
+          message: "An error occurred. Please try again later."
+        }
+      };
     }
-}
+  };
 export const add_address = async (userData) =>{
     try {
 

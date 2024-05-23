@@ -13,6 +13,7 @@ import PainterLogin from './Pages/Painters/PainterLogin';
 import PainterOtpPage from './Pages/Painters/PainterOtpPage';
 import ClientPainterProfile from './Pages/Users/UserPainterProfile';
 import UserOtpPage from './Pages/Users/UserOtpPage';
+import AdminPainterManagement from './Pages/Admin/AdminPainterManagement';
 
 function App(props) {
   return (
@@ -24,6 +25,7 @@ function App(props) {
       <Route path='/adminlogin' element = {<AdminLogin/>} />
       <Route path='/dashboard' element = {<AdminDash/>} />
       <Route path='/user' element = {<AdminUserManagement/>} />
+      <Route path='/painter' element = {<AdminPainterManagement/>} />
 
       {/* userRoutes */}
       <Route path='/' element = {<Home/>} />
