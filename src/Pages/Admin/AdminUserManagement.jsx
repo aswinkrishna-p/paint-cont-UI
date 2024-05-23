@@ -49,6 +49,7 @@ function AdminUserManagement() {
     const fetchUsers = async () => {
       try {
         const response = await getUsers();
+        console.log('user data ',response);
         setUsers(response.data.users.data);
       } catch (error) {
         console.log(error);
@@ -181,11 +182,11 @@ function AdminUserManagement() {
               </tr>
             </thead>
             <tbody>
-              {users.map(({ _id, username, email, isBlocked},index) => (
+              {users.map(({ _id, username, email,profile, isBlocked},index) => (
                 <tr key={_id}>
                   <td className="p-4 border-b border-blue-gray-50">
                     <div className="flex items-center gap-3">
-                      <Avatar src={''} alt={username} size="sm" />
+                      <Avatar src={profile} alt={username} size="sm" />
                       <div className="flex flex-col">
                         <Typography
                           variant="small"
@@ -213,8 +214,8 @@ function AdminUserManagement() {
                       <Chip
                         variant="ghost"
                         size="sm"
-                        value={isBlocked ? "Unblock" : "blocked"}
-                        color={isBlocked ? "green" : "red"}
+                        value={isBlocked ? "blocked" : "unblock"}
+                        color={isBlocked ? "red" : "green"}
                       />
                     </div>
                   </td>

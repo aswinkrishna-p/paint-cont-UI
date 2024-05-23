@@ -51,14 +51,11 @@ function AdminNav() {
                     </ListItemPrefix>
                     Users   
                 </ListItem>
-                <ListItem className='m-2'>
+                <ListItem className='m-2'onClick={() => Navigate('/painter')}>
                     <ListItemPrefix>
                         <InboxIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     Painters
-                    <ListItemSuffix>
-                        <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-                    </ListItemSuffix>
                 </ListItem>
                 <ListItem className='m-2'>
                     <ListItemPrefix>

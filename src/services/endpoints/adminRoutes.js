@@ -4,6 +4,7 @@ const adminRoutes = {
     dashboard:'/admin/dashboard',
     logout:'/admin/logout',
     getUsers:'/admin/allusers',
+    getPainters:'/admin/allpainters',
     BlockUser:'/admin/blockuser'
 }
 
