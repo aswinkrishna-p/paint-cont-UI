@@ -14,6 +14,8 @@ import PainterOtpPage from './Pages/Painters/PainterOtpPage';
 import ClientPainterProfile from './Pages/Users/UserPainterProfile';
 import UserOtpPage from './Pages/Users/UserOtpPage';
 import AdminPainterManagement from './Pages/Admin/AdminPainterManagement';
+import ClientProtectedRoute from './Routes/ClientProtectedRoutes';
+import PainterProtectedRoute from './Routes/PainterProtectedRoutes';
 
 function App(props) {
   return (
@@ -32,15 +34,15 @@ function App(props) {
       <Route path='/register' element = {<Register/>} />
       <Route path='/login' element = {<Login/>} />
       <Route path='/otp' element = {<UserOtpPage/>} />
-      <Route path='/profile' element = {<Profile/>} />
-      <Route path='/painterprofile' element = {<ClientPainterProfile/>} />
+      <Route path='/profile' element = {<ClientProtectedRoute allowedRole={'user'}> <Profile/> </ClientProtectedRoute> } />
+      <Route path='/painterprofile' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientPainterProfile/> </ClientProtectedRoute>} />
 
       {/* painterRoutes */}
 
       <Route path='painter/register' element = {<PainterRegister/>} />
       <Route path='painter/login' element = {<PainterLogin/>} />
       <Route path='painter/otp' element = {<PainterOtpPage/>} />
-      <Route path='painter/profile' element = {<PainterProfile/>} />
+      <Route path='painter/profile' element = {<PainterProtectedRoute allowedRole={'painter'}> <PainterProfile/> </PainterProtectedRoute>} />
     </Routes>
 
    </BrowserRouter>
