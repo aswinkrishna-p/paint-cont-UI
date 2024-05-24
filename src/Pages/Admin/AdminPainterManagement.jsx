@@ -21,7 +21,7 @@ import {
   } from "@material-tailwind/react";
   import AdminNav from "../../Components/Admin/AdminNav";
   import { useEffect, useState } from "react";
-  import { BlockUser, getPainters, } from "../../api/adminApi";
+  import { BlockPainter, getPainters, } from "../../api/adminApi";
   import toast, {Toaster} from 'react-hot-toast'
   import Swal from 'sweetalert2'
   
@@ -59,7 +59,7 @@ import {
     },[change]);
   
   
-    const handlechangeUserBlock = async(userId) =>{
+    const handlechangePainterBlock = async(userId) =>{
       Swal.fire({
         title: "Are you sure?",
         icon: "warning",
@@ -73,7 +73,7 @@ import {
         },
       }).then(async (res)=>{
         if(res.isConfirmed){
-          const response = await BlockUser(userId)
+          const response = await BlockPainter(userId)
           if(response.data.success){
             toast.success(response.data.message)
             setChange(!change)
@@ -230,7 +230,7 @@ import {
                     </td> */}
                     <td className="p-4 border-b border-blue-gray-50">
                       <Tooltip content="Edit User">
-                        <IconButton variant="text" onClick={() =>handlechangeUserBlock(_id)}>
+                        <IconButton variant="text" onClick={() =>handlechangePainterBlock(_id)}>
                           <PencilIcon className="h-4 w-4" />
                         </IconButton>
                       </Tooltip>

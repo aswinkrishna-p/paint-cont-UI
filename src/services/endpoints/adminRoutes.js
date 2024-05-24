@@ -5,7 +5,8 @@ const adminRoutes = {
     logout:'/admin/logout',
     getUsers:'/admin/allusers',
     getPainters:'/admin/allpainters',
-    BlockUser:'/admin/blockuser'
+    BlockUser:'/admin/blockuser',
+    BlockPainter:'/admin/blockpainter'
 }
 
 export default adminRoutes

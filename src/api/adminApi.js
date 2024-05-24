@@ -56,3 +56,13 @@ export const BlockUser = async (userId) =>{
         console.log(error);
     }
 }
+
+export const BlockPainter = async (painterId) =>{
+    try {
+        const response = await axiosApi.patch(`${adminRoutes.BlockPainter}/${painterId}`)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
