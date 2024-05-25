@@ -88,6 +88,16 @@ export const getAllPosts = async () =>{
     }
 }
 
+export const searchPainter = async (data) =>{
+    try {
+        let response = await axiosApi.post(userRoutes.search_painter,{name:data})
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const Logout = async () =>{
     try {
         let response = await axiosApi.post(userRoutes.logout)

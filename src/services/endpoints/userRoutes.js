@@ -6,6 +6,7 @@ const userRoutes = {
     resendotp:"/user/resend-otp",
     logout:"/user/logout",
     add_address:"/user/add-address",
+    search_painter:"/user/search",
     profileupdate:"/user/profile-update",
     getPosts:'/user/get-all-posts'
 }

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 // import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { RiUserLine ,RiLogoutCircleLine } from 'react-icons/ri'  // Importing profile and logout icons
 import {
@@ -10,11 +10,22 @@ import {
  Input,
 } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
-import { Logout } from '../../api/userApi';
+import { Logout, searchPainter } from '../../api/userApi';
 
 function ClientNav(props) {
 
   const Navigate = useNavigate()
+  const [searchQuery,setSearchQuery] = useState('') 
+
+  const handleSearch =  async () => {
+    try {
+      const response = await searchPainter(searchQuery)
+      // setPosts(response.data.filteredPosts )
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   const logout =async () =>{
     let res = await Logout()
@@ -24,6 +35,8 @@ function ClientNav(props) {
       Navigate('/login')
     }
   }
+
+
     return (
         <Navbar
       variant="gradient"
@@ -61,6 +74,8 @@ function ClientNav(props) {
             type="search"
             color="white"
             label='Type here...'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="pr-10 bg-transparent border-b border-white focus:outline-none"
             containerProps={{
               className: "min-w-[288px]",
@@ -70,6 +85,7 @@ function ClientNav(props) {
             size="sm"
             color="white"
             className="!absolute right-1 top-1 rounded"
+            onClick={handleSearch}
           >
             Search
           </Button>
