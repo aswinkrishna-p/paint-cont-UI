@@ -6,7 +6,7 @@ import ClientPosts from '../../Components/Client/ClientPosts';
 import { useNavigate } from 'react-router-dom';
 import ClientVIP from '../../Components/Client/ClientVIP';
 import PainterNav from '../../Components/Painter/PainterNav';
-import { getAllPosts } from '../../api/userApi';
+import { getAllPosts } from '../../api/postApi';
 
 function Home(props) {
   const navigate = useNavigate();
