@@ -1,5 +1,6 @@
 const postRoutes = {
-    getPosts:'/user/get-all-posts'
+    getPosts:'/post/get-all-posts',
+    reportPost:'/post/report-post'
 }
 
 
