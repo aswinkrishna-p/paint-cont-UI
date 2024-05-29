@@ -6,24 +6,31 @@ import toast ,{Toaster} from "react-hot-toast";
 function ClientPosts({ posts }) {
 
 
-  const [showReportButton, setShowReportButton] = useState(false);
-  const [reported, setReported] = useState(false);
+  const [showReportButton, setShowReportButton] = useState(null);
+  const [reportedPosts, setReportedPosts] = useState([]);
 
 
-  const toggleReportButton = () => {
-    setShowReportButton(!showReportButton);
+  const toggleReportButton = (postId) => {
+    setShowReportButton(showReportButton === postId ? null :postId);
   };
 
   const handleReport = async (postId) => {
+    if (reportedPosts.includes(postId)) {
+      toast.error('You have already reported this post.');
+      return;
+    }
+
     try {
       console.log(postId);
-      const response = await reportPost(postId)
+      const response = await reportPost(postId);
       if (response.data.success) {
-        setReported(true);
+        setReportedPosts([...reportedPosts, postId]);
+        toast.success('Reported successfully');
+      } else {
+        toast.error('Error in reporting the post.');
       }
-      if (response.data.reportLimitReached) toast.success('reported successfully')
-    } catch (error) { 
-      console.log('kkkkkkkk`',error.message);
+    } catch (error) {
+      console.log('Error:', error.message);
     }
   };
 
@@ -45,13 +52,13 @@ function ClientPosts({ posts }) {
             </div>
             <div className="flex items-center">
               <button className="text-white p-1 rounded-xl bg-blue-gray-300 mr-2">Connect</button>
-              <FiMoreHorizontal className="text-white cursor-pointer" onClick={toggleReportButton} />
-              {showReportButton && !reported && (
+              <FiMoreHorizontal className="text-white cursor-pointer" onClick={() => toggleReportButton(post._id)} />
+              {showReportButton === post._id && !reportedPosts.includes(post._id) &&  (
               <div className=" top-8 right-0 bg-gray-800 text-white rounded-md shadow-lg">
                 <button className="text-white" onClick={ () => handleReport(post._id)}>Report</button>
               </div>
             )}
-            {reported && (
+            {reportedPosts.includes(post._id) && (
               <div className="bg-gray-900 p-2 rounded-md bottom-7 right-0">
                 <p className="text-white">Reported</p>
               </div>
