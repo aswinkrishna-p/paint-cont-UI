@@ -67,6 +67,16 @@ export const uploadPost = async (data) =>{
     }
 }
 
+export const updateDetails = async (painterId,details) =>{
+    try {
+        let response = await axiosApi.post(painterRoutes.updateDetails,{painterId,details})
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const Logout = async () =>{
     try {
         let response = await axiosApi.post(painterRoutes.logout)

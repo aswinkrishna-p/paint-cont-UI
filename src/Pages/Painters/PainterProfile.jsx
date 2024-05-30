@@ -6,16 +6,23 @@ import { useSelector } from "react-redux";
 import { isValidImageType } from "../../services/validations";
 import toast, { Toaster } from "react-hot-toast";
 import uploadImageToFirebase from "../../services/Firebase/imageUploader";
-import { saveProfilepic, uploadPost } from "../../api/painterApi";
+import { saveProfilepic, uploadPost ,updateDetails } from "../../api/painterApi";
 
 function PainterProfile() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [detailsModalIsOpen, setDetailsModalIsOpen] = useState(false);
   const [image, setImage] = useState(undefined)
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [imageUrl,setImageUrl] = useState("")
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [previewAvatar, setPreviewAvatar] = useState(null);
   const [description, setDescription] = useState("");
+  const [age, setAge] = useState('');
+  const [experienceYears, setExperienceYears] = useState(''); 
+  const [location, setLocation] = useState(''); 
+  const [phone, setPhone] = useState(''); 
+  const [specialised, setSpecialised] = useState(''); 
+  const [aboutMe, setAboutMe] = useState(''); 
   const descriptionRef = useRef(null);
   const navigate = useNavigate()
   const fileRef = useRef(null)
@@ -29,6 +36,7 @@ function PainterProfile() {
 }, [navigate])
 
 const currentpainter = useSelector((state) => state.painter.currentUser)
+const id = currentpainter.user._id
 console.log(currentpainter,'currentpainter');
 
   const openModal = () => {
@@ -38,6 +46,15 @@ console.log(currentpainter,'currentpainter');
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  const openDetailsModal = () => {
+    setDetailsModalIsOpen(true);
+  };
+
+  const closeDetailsModal = () => {
+    setDetailsModalIsOpen(false);
+  };
+
 
 
   const  handleFileChange = (e) =>{
@@ -135,6 +152,28 @@ console.log(currentpainter,'currentpainter');
         console.log("NO  image selected");
       }
   }
+
+  const handleDetailsSubmit = async (e) => {
+    e.preventDefault()
+
+    const details = {
+      age,
+      experienceYears,
+      location,
+      phone,
+      specialised: specialised.split(","),
+      aboutMe,
+    };
+
+    try {
+      await updateDetails(id,details)
+      toast.success("Details updated successfully");
+      closeDetailsModal();
+    } catch (error) {
+      toast.error("Failed to update details");
+      console.error("Error updating details:", error);
+    }
+  }
   return (
     <>
       <PainterNav/>
@@ -159,19 +198,26 @@ console.log(currentpainter,'currentpainter');
                   <p className="text-gray-700">Professional Painter</p>
                   <p className="text-gray-700">Location:Kerala ,Calicut</p>
                   <p className="text-gray-700">Phone:2345362346345</p>
+                  
                   <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                    <a
-                      href="#"
-                      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                  {/* Conditional rendering for Add Post button */}
+                  {!modalIsOpen && (
+                  <div className="relative inline-block  m-2">
+                    {/* Button to open modal */}
+                    <button
+                      className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
+                      onClick={openModal}
                     >
-                      Follow
-                    </a>
-                    <a
-                      href="#"
-                      className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded"
+                      Add Post
+                    </button>
+                    <button
+                      className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
+                      onClick={openDetailsModal}
                     >
-                      Message
-                    </a>
+                      Details
+                    </button>
+                  </div>
+                )}
                   </div>
                 </div>
                 <hr className="my-6 border-t border-gray-300" />
@@ -294,23 +340,9 @@ console.log(currentpainter,'currentpainter');
           </div>
         </div>
 
-        {/* My posts  */} 
+                {/* My posts  */} 
 
-        <div className=" min-w-[90rem] max-auto rounded-2xl bg-[#0D0E26] min-h-[30rem]">
-                              {/* Conditional rendering for Add Post button */}
-                              {!modalIsOpen && (
-                  <div className="relative inline-block  m-2">
-                    {/* Button to open modal */}
-                    <button
-                      className="border-transparent relative z-10 py-2 px-3 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
-                      onClick={openModal}
-                    >
-                      Add Post
-                    </button>
-                  </div>
-                )}
-
-
+               <div className=" min-w-[90rem] max-auto rounded-2xl bg-[#0D0E26] min-h-[30rem]">
                   {/* Modal component */}
                   <Modal
                   isOpen={modalIsOpen}
@@ -359,6 +391,86 @@ console.log(currentpainter,'currentpainter');
                         Close Modal
                       </button>
                     </div>
+                  </div>
+                </Modal>
+
+                  {/* Add Details Modal */}
+                  <Modal
+                  isOpen={detailsModalIsOpen}
+                  onRequestClose={closeDetailsModal}
+                  contentLabel="Add/Edit Details Modal"
+                  className="absolute inset-0 flex items-center justify-center"
+                  overlayClassName="fixed inset-0 bg-gray-700 bg-opacity-75"
+                  closeTimeoutMS={200}
+                >
+                  <div className="bg-white rounded-lg p-8 max-w-lg w-full">
+                    <h2 className="text-2xl font-bold mb-4">
+                      {detailsModalIsOpen ? "Edit Details" : "Add Details"}
+                    </h2>
+                    <form onSubmit={handleDetailsSubmit}>
+                      <label htmlFor="age">Age</label>
+                      <input
+                        className="border py-2 px-4 mb-4 w-full"
+                        type="number"
+                        id="age"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                      />
+                      <label htmlFor="experienceYears">Experience Years</label>
+                      <input
+                        className="border py-2 px-4 mb-4 w-full"
+                        type="number"
+                        id="experienceYears"
+                        value={experienceYears}
+                        onChange={(e) => setExperienceYears(e.target.value)}
+                      />
+                      <label htmlFor="location">Location</label>
+                      <input
+                        className="border py-2 px-4 mb-4 w-full"
+                        type="text"
+                        id="location"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                      />
+                      <label htmlFor="phone">Phone</label>
+                      <input
+                        className="border py-2 px-4 mb-4 w-full"
+                        type="text"
+                        id="phone"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                      <label htmlFor="specialised">Specialised (comma separated)</label>
+                      <input
+                        className="border py-2 px-4 mb-4 w-full"
+                        type="text"
+                        id="specialised"
+                        value={specialised}
+                        onChange={(e) => setSpecialised(e.target.value)}
+                      />
+                      <label htmlFor="aboutMe">About Me</label>
+                      <textarea
+                        className="border py-2 px-4 mb-4 w-full"
+                        id="aboutMe"
+                        value={aboutMe}
+                        onChange={(e) => setAboutMe(e.target.value)}
+                      />
+                      <div className="flex justify-between">
+                        <button
+                          type="submit"
+                          className="bg-blue-800 text-white py-2 px-6 rounded-lg mr-4"
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          onClick={closeDetailsModal}
+                          className="bg-red-600 text-white py-2 px-6 rounded-lg"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </Modal>
         </div>
