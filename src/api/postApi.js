@@ -14,6 +14,17 @@ export const getAllPosts = async () =>{
     } catch (error) {
         console.log(error);
     }
+
+}
+
+export const getPainterPosts = async (painterId) =>{
+    try {
+        let response = await axiosApi.get(`${postRoutes.getPainterPost}/${painterId}`)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export const reportPost = async (postId) =>{
