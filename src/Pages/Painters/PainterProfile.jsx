@@ -7,6 +7,7 @@ import { isValidImageType } from "../../services/validations";
 import toast, { Toaster } from "react-hot-toast";
 import uploadImageToFirebase from "../../services/Firebase/imageUploader";
 import { saveProfilepic, uploadPost ,updateDetails } from "../../api/painterApi";
+import { getPainterPosts } from "../../api/postApi";
 
 function PainterProfile() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -26,6 +27,7 @@ function PainterProfile() {
   const descriptionRef = useRef(null);
   const navigate = useNavigate()
   const fileRef = useRef(null)
+  const [ painterPosts, setPainterPosts] = useState([])
 
 
   useEffect(() => {
@@ -56,6 +58,14 @@ console.log(currentpainter,'currentpainter');
   };
 
 
+  const fetchPainterPosts = async (id) => {
+ try {
+  const posts = await getPainterPosts(id)
+
+ } catch (error) {
+  console.log(error);
+ }
+  }
 
   const  handleFileChange = (e) =>{
     if(e.target.files && e.target.files[0]){
@@ -167,8 +177,16 @@ console.log(currentpainter,'currentpainter');
 
     try {
       await updateDetails(id,details)
-      toast.success("Details updated successfully");
-      closeDetailsModal();
+      if(updateDetails){
+        toast.success("Details updated successfully");
+        setAge('')
+        setExperienceYears('')
+        setLocation('')
+        setPhone('')
+        setSpecialised('')
+        setAboutMe('')
+        closeDetailsModal();
+      }
     } catch (error) {
       toast.error("Failed to update details");
       console.error("Error updating details:", error);
@@ -195,9 +213,9 @@ console.log(currentpainter,'currentpainter');
                     onClick={() => fileRef.current.click()}
                   />
                   <h1 className="text-xl font-bold">{currentpainter.user.username}</h1>
-                  <p className="text-gray-700">Professional Painter</p>
-                  <p className="text-gray-700">Location:Kerala ,Calicut</p>
-                  <p className="text-gray-700">Phone:2345362346345</p>
+                  <p className="text-gray-700 placeholder:Age ">Age:{currentpainter.user.age}</p>
+                  <p className="text-gray-700 placeholder:location ">Location:{currentpainter.user.location}</p>
+                  <p className="text-gray-700 placeholder:Phone ">Phone:{currentpainter.user.phone}</p>
                   
                   <div className="mt-6 flex flex-wrap gap-4 justify-center">
                   {/* Conditional rendering for Add Post button */}
@@ -226,12 +244,9 @@ console.log(currentpainter,'currentpainter');
                     specialised :
                   </span>
                   <ul className="flex ">
-                    <li className="mb-2 ml-4">#interior</li>
-                    <li className="mb-2 ml-4">#interior</li>
-                    <li className="mb-2 ml-4">#interior</li>
-                    <li className="mb-2 ml-4">#interior</li>
-                    <li className="mb-2 ml-4">#interior</li>
-                    <li className="mb-2 ml-4">#interior</li>
+                    {currentpainter.user.specialised.map((speciality ,index) => (
+                      <li key= {index} className="mb-2 ml-4">{speciality}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -252,6 +267,7 @@ console.log(currentpainter,'currentpainter');
               faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam
               erat volutpat. Nulla vulputate pharetra tellus, in luctus risus
               rhoncus id.
+              {/* {currentpainter.user.aboutMe} */}
             </p>
 
             <h2 className="text-xl font-bold mt-6 mb-4">Experience</h2>
