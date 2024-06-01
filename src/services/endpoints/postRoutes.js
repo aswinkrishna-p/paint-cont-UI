@@ -1,7 +1,8 @@
 const postRoutes = {
     getPosts:'/post/get-all-posts',
     reportPost:'/post/report-post',
-    getPainterPost:'/post/getpainterpost'
+    getPainterPost:'/post/getpainterpost',
+    deletePost:'/post/delete-post'
 }
 
 

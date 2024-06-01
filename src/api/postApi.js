@@ -36,3 +36,13 @@ export const reportPost = async (postId) =>{
         console.log(error);
     }
 }
+
+export const DeletePost = async (postId) =>{
+    try {
+        let response = await axiosApi.post(postRoutes.deletePost,{postId})
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
