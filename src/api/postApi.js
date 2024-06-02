@@ -39,7 +39,7 @@ export const reportPost = async (postId) =>{
 
 export const DeletePost = async (postId) =>{
     try {
-        let response = await axiosApi.post(postRoutes.deletePost,{postId})
+        let response = await axiosApi.delete(`${postRoutes.deletePost}/${postId}`)
         console.log('response from backend' ,response);
         return response
     } catch (error) {

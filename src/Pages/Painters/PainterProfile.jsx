@@ -9,6 +9,8 @@ import toast, { Toaster } from "react-hot-toast";
 import uploadImageToFirebase from "../../services/Firebase/imageUploader";
 import { saveProfilepic, uploadPost ,updateDetails } from "../../api/painterApi";
 import { DeletePost, getPainterPosts } from "../../api/postApi";
+import { deleteObject, ref } from "firebase/storage";
+import { storage } from "../../services/firebase";
 
 function PainterProfile() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -208,15 +210,20 @@ console.log(currentpainter,'currentpainter');
   };
 
   const deletePost = async (id) =>{
+    const dlt = ref(storage,painterPosts.media)
+    deleteObject(dlt).then(() => {
+      console.log('deleted success');
+    }).catch((err) =>{
+      console.log(err,'error');
+    })
     try {
-      
       const deleted = await DeletePost(id)
     } catch (error) {
       console.log(error);
     }
   }
 
-  const handleDelete = async () =>{
+  const handleDelete = async (id) =>{
       if(window.confirm("Are you sure you want to delete this post ?")){
         await deletePost(id)
       }
