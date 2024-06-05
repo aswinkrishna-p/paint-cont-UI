@@ -13,25 +13,11 @@ import { deleteObject, ref } from "firebase/storage";
 import { storage } from "../../services/firebase";
 
 function UserPainterProfile() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [detailsModalIsOpen, setDetailsModalIsOpen] = useState(false);
-  const [image, setImage] = useState(undefined)
-  const [isImageChanged, setIsImageChanged] = useState(false);
   const [imageUrl,setImageUrl] = useState("")
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-  const [previewAvatar, setPreviewAvatar] = useState(null);
-  const [description, setDescription] = useState("");
-  const [age, setAge] = useState('');
-  const [experienceYears, setExperienceYears] = useState(''); 
-  const [location, setLocation] = useState(''); 
-  const [phone, setPhone] = useState(''); 
-  const [specialised, setSpecialised] = useState(''); 
-  const [aboutMe, setAboutMe] = useState(''); 
-  const descriptionRef = useRef(null);
   const navigate = useNavigate()
-  const fileRef = useRef(null)
   const [ painterPosts, setPainterPosts] = useState([])
-  const [showDeleteButton, setShowDeleteButton] = useState(null);
+  const [showReportButton, setShowReportButton] = useState(null);
+  const [reportedPosts, setReportedPosts] = useState([]);
 
 
   useEffect(() => {
@@ -45,21 +31,7 @@ const currentpainter = useSelector((state) => state.painter.currentUser)
 const id = currentpainter.user._id
 console.log(currentpainter,'currentpainter');
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const openDetailsModal = () => {
-    setDetailsModalIsOpen(true);
-  };
-
-  const closeDetailsModal = () => {
-    setDetailsModalIsOpen(false);
-  };
 
 
   const fetchPainterPosts = async (id) => {
@@ -78,156 +50,41 @@ console.log(currentpainter,'currentpainter');
     fetchPainterPosts(id)
   },[])
 
-  const  handleFileChange = (e) =>{
-    if(e.target.files && e.target.files[0]){
-      console.log('inside file chanegee');
-      if(!isValidImageType(e.target.files[0].name)){
-        return toast.error("only images are allowed")
-      }else{
-        setImage(e.target.files[0])
-        setIsImageChanged(true)
-      }
+
+
+
+  const toggleReportButton = (postId) => {
+    setShowReportButton(showReportButton === postId ? null :postId);
+  };
+
+  const handleReport = async (postId) => {
+    if (reportedPosts.includes(postId)) {
+      toast.error('You have already reported this post.');
+      return;
     }
-  }
 
-  useEffect (() =>{
-    if(isImageChanged){
-      handleProfileUpdate()  
-      setIsImageChanged(false)
-    }
-  },[isImageChanged])
-
-  const handleProfileUpdate = async () =>{
-    if(image){
-      console.log('inside the profile update');
-      try {
-        const fileUrl = await uploadImageToFirebase(image , "PainterProfilePic/")
-        if(!fileUrl) return toast.error("error uploading image")
-
-          // const data = {
-          //   imageUrl: fileUrl, 
-          //   userId : currentUser.data._id
-          // }
-
-          const savepic = await saveProfilepic(fileUrl,currentpainter.user._id)
-
-          if(savepic.data.success){
-            setImageUrl(fileUrl)
-            toast.success("profile pic updated successfully")
-          }else{
-            toast.error("error in updating profile pic")
-          }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-
-
-  const handleAvatarChange = (files) => {
-    if (files && files.length > 0) {
-      const selectedFile = files[0];
-
-      if (isValidImageType(selectedFile.name)) {
-        setSelectedAvatar(selectedFile);
-        setPreviewAvatar(URL.createObjectURL(selectedFile)); // Create object URL for preview
+    try {
+      console.log(postId);
+      const response = await reportPost(postId);
+      if (response.data.success) {
+        setReportedPosts([...reportedPosts, postId]);
+        toast.success('Reported successfully');
       } else {
-        // Display error message for invalid file format
-        toast.error("Invalid file format. Please select an image (JPEG, PNG, GIF, BMP).");
-        setSelectedAvatar(null);
-        setPreviewAvatar(null);
+        toast.error('Error in reporting the post.');
       }
-    } else {
-      setSelectedAvatar(null);
-      setPreviewAvatar(null);
+    } catch (error) {
+      console.log('Error:', error.message);
     }
   };
 
-  const handlePostSubmit = async (e) =>{
-      e.preventDefault();
-
-      if(selectedAvatar){
-        try {
-          const fileUrl = await uploadImageToFirebase(selectedAvatar, "PainterPost/")
-          if(!fileUrl) return toast.error("Error uploading files")
-            console.log('file url',fileUrl);
-            const data ={
-             imageUrl:fileUrl,
-             description:descriptionRef.current.value,
-             painterId:currentpainter.user._id
-            }
-
-            const uploadpost = await uploadPost(data)
-            if(uploadpost.data.success){
-              toast.success('post uploaded successfully')
-              setDescription('')
-              setPreviewAvatar(null)
-              closeModal()
-            }else{
-              toast.error(uploadpost.data.message)
-            }
-        } catch (error) {
-          console.error('error uploading image ',error);
-        }
-      }else{
-        console.log("NO  image selected");
-      }
-  }
-
-  const handleDetailsSubmit = async (e) => {
-    e.preventDefault()
-
-    const details = {
-      age,
-      experienceYears,
-      location,
-      phone,
-      specialised: specialised.split(","),
-      aboutMe,
-    };
-
-    try {
-      await updateDetails(id,details)
-      if(updateDetails){
-        toast.success("Details updated successfully");
-        setAge('')
-        setExperienceYears('')
-        setLocation('')
-        setPhone('')
-        setSpecialised('')
-        setAboutMe('')
-        closeDetailsModal();
-      }
-    } catch (error) {
-      toast.error("Failed to update details");
-      console.error("Error updating details:", error);
-    }
-  }
 
 
-  const toggleDeleteButton = (postId) => {
-    setShowDeleteButton(!showDeleteButton);
-  };
 
-  const deletePost = async (id) =>{
-    const dlt = ref(storage,painterPosts.media)
-    deleteObject(dlt).then(() => {
-      console.log('deleted success');
-    }).catch((err) =>{
-      console.log(err,'error');
-    })
-    try {
-      const deleted = await DeletePost(id)
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
-  const handleDelete = async (id) =>{
-      if(window.confirm("Are you sure you want to delete this post ?")){
-        await deletePost(id)
-      }
-  }
+
+
+
+
 
 
   return (
@@ -241,14 +98,10 @@ console.log(currentpainter,'currentpainter');
             <div className=" relative  mb-6">
               <div className="bg-white shadow rounded-lg p-6">
                 <div className="flex flex-col items-start">
-                  <input type="file" id="profilepic" name="profilepic" ref={fileRef} hidden  accept="image/*"
-                  onChange={handleFileChange}
-                  />
                   <img
                     src={`${imageUrl}` || currentpainter.user.profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"}
                     className="w-32 h-32 bg-gray-300 rounded-full mb-4 cursor-pointer shrink-0"
                     alt="Profile"
-                    onClick={() => fileRef.current.click()}
                   />
                   <h1 className="text-xl font-bold">{currentpainter.user.username}</h1>
                   <p className="text-gray-700 placeholder:Age ">Age:{currentpainter.user.age ? currentpainter.user.age : 'Add your Age'}</p>
@@ -394,137 +247,6 @@ console.log(currentpainter,'currentpainter');
           </div>
         </div>
 
-            {/* Modal component */}
-            <Modal
-                  isOpen={modalIsOpen}
-                  onRequestClose={closeModal}
-                  contentLabel="Add Post Modal"
-                  className="absolute inset-0 flex items-center justify-center"
-                  overlayClassName="fixed inset-0 bg-gray-700 bg-opacity-75"
-                  closeTimeoutMS={200} // Adjust modal close animation time
-                >
-                  <div className="bg-white rounded-lg p-8 max-w-lg w-full">
-                    <h2 className="text-2xl font-bold mb-4">Add Post</h2>
-                    <input
-                      type="file"
-                      className="py-2 px-4 text-white rounded-full mb-4"
-                      accept="image/*"
-                      onChange={(e) => handleAvatarChange(e.target.files)}
-                    />
-                    <div className="w-40 h-40 mb-4">
-                      <img
-                        src={previewAvatar}
-                        alt="Profile pic"
-                        className="w-full h-full rounded-full  object-cover"
-                      />
-                    </div>
-                    <input
-                      className="border py-2 px-4 mb-4 w-full"
-                      placeholder="Type post description"
-                      type="text"
-                      name="description"
-                      id="description"
-                      ref={descriptionRef}
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                    />
-                    <div className="flex justify-between">
-                      <button
-                        onClick={handlePostSubmit}
-                        className=" bg-blue-800 text-white py-2 px-6 rounded-lg mr-4"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={closeModal}
-                        className="bg-red-800 text-white py-2 px-6 rounded-lg"
-                      >
-                        Close Modal
-                      </button>
-                    </div>
-                  </div>
-                </Modal>
-
-                  {/* Add Details Modal */}
-                  <Modal
-                  isOpen={detailsModalIsOpen}
-                  onRequestClose={closeDetailsModal}
-                  contentLabel="Add/Edit Details Modal"
-                  className="absolute inset-0 flex items-center justify-center"
-                  overlayClassName="fixed inset-0 bg-gray-700 bg-opacity-75"
-                  closeTimeoutMS={200}
-                >
-                  <div className="bg-white rounded-lg p-8 max-w-lg w-full">
-                    <h2 className="text-2xl font-bold mb-4">
-                      {detailsModalIsOpen ? "Edit Details" : "Add Details"}
-                    </h2>
-                    <form onSubmit={handleDetailsSubmit}>
-                      <label htmlFor="age">Age</label>
-                      <input
-                        className="border py-2 px-4 mb-4 w-full"
-                        type="number"
-                        id="age"
-                        value={age}
-                        onChange={(e) => setAge(e.target.value)}
-                      />
-                      <label htmlFor="experienceYears">Experience Years</label>
-                      <input
-                        className="border py-2 px-4 mb-4 w-full"
-                        type="number"
-                        id="experienceYears"
-                        value={experienceYears}
-                        onChange={(e) => setExperienceYears(e.target.value)}
-                      />
-                      <label htmlFor="location">Location</label>
-                      <input
-                        className="border py-2 px-4 mb-4 w-full"
-                        type="text"
-                        id="location"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                      />
-                      <label htmlFor="phone">Phone</label>
-                      <input
-                        className="border py-2 px-4 mb-4 w-full"
-                        type="text"
-                        id="phone"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                      />
-                      <label htmlFor="specialised">Specialised (comma separated)</label>
-                      <input
-                        className="border py-2 px-4 mb-4 w-full"
-                        type="text"
-                        id="specialised"
-                        value={specialised}
-                        onChange={(e) => setSpecialised(e.target.value)}
-                      />
-                      <label htmlFor="aboutMe">About Me</label>
-                      <textarea
-                        className="border py-2 px-4 mb-4 w-full"
-                        id="aboutMe"
-                        value={aboutMe}
-                        onChange={(e) => setAboutMe(e.target.value)}
-                      />
-                      <div className="flex justify-between">
-                        <button
-                          type="submit"
-                          className="bg-blue-800 text-white py-2 px-6 rounded-lg mr-4"
-                        >
-                          Save
-                        </button>
-                        <button
-                          type="button"
-                          onClick={closeDetailsModal}
-                          className="bg-red-600 text-white py-2 px-6 rounded-lg"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </Modal>
-
                 {/* My posts  */} 
                 {painterPosts.map((post) => (
                <div className=" min-w-[90rem] max-auto rounded-2xl p-5 bg-[#0D0E26] min-h-[30rem]">
@@ -542,13 +264,19 @@ console.log(currentpainter,'currentpainter');
             <p className="text-white font-semibold">{post.painterId.username}</p>
           </div>
           <div className="flex items-center">
-            <FiMoreHorizontal className="text-white cursor-pointer" onClick={() => toggleDeleteButton(post._id)} />
-               {showDeleteButton && (
-            <div className=" top-8 right-0 bg-gray-800 text-white rounded-md shadow-lg">
-              <button className="text-white" onClick={ () => handleDelete(post._id)}>Delete</button>
-            </div>
+              <button className="text-white p-1 rounded-xl bg-blue-gray-300 mr-2">Connect</button>
+              <FiMoreHorizontal className="text-white cursor-pointer" onClick={() => toggleReportButton(post._id)} />
+              {showReportButton === post._id && !reportedPosts.includes(post._id) &&  (
+              <div className=" top-8 right-0 bg-gray-800 text-white rounded-md shadow-lg">
+                <button className="text-white" onClick={ () => handleReport(post._id)}>Report</button>
+              </div>
             )}
-          </div>
+            {reportedPosts.includes(post._id) && (
+              <div className="bg-gray-900 p-2 rounded-md bottom-7 right-0">
+                <p className="text-white">Reported</p>
+              </div>
+            )}
+            </div>
         </div>
         {/* Post content */}
         <p className="text-white mb-2">{post.description}</p>
