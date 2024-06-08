@@ -4,13 +4,10 @@ import { FiMoreHorizontal, FiHeart, FiSend } from 'react-icons/fi'; // Importing
 import PainterNav from "../../Components/Painter/PainterNav";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { isValidImageType } from "../../services/validations";
 import toast, { Toaster } from "react-hot-toast";
-import uploadImageToFirebase from "../../services/Firebase/imageUploader";
-import { saveProfilepic, uploadPost ,updateDetails } from "../../api/painterApi";
-import { DeletePost, getPainterPosts } from "../../api/postApi";
-import { deleteObject, ref } from "firebase/storage";
-import { storage } from "../../services/firebase";
+import { reportPost } from "../../api/postApi";
+import { getPainterPosts } from "../../api/postApi";
+
 
 function UserPainterProfile() {
   const [imageUrl,setImageUrl] = useState("")
@@ -18,6 +15,10 @@ function UserPainterProfile() {
   const [ painterPosts, setPainterPosts] = useState([])
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
+  const [follow, setFollow] = useState(false);
+  const [countFollow, setCountFollow] = useState(0);
+  const [followers, setFollowers] = useState([]);
+  const [showChatModal, setShowChatModal] = useState(false);
 
 
   useEffect(() => {
@@ -77,6 +78,14 @@ console.log(currentpainter,'currentpainter');
     }
   };
 
+  const openModal = async () =>{
+    setShowChatModal(true)
+    try {
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
 
@@ -110,23 +119,23 @@ console.log(currentpainter,'currentpainter');
                   
                   <div className="mt-6 flex flex-wrap gap-4 justify-center">
                   {/* Conditional rendering for Add Post button */}
-                  {!modalIsOpen && (
+                  
                   <div className="relative inline-block  m-2">
                     {/* Button to open modal */}
                     <button
                       className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
-                      onClick={openModal}
+                    
                     >
-                      Add Post
+                      Follow
                     </button>
                     <button
                       className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
-                      onClick={openDetailsModal}
+                      onClick={openModal}
                     >
-                      Details
+                      Followers:
                     </button>
                   </div>
-                )}
+              
                   </div>
                 </div>
                 <hr className="my-6 border-t border-gray-300" />
