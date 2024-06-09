@@ -2,16 +2,18 @@ import React, { useRef, useState,useEffect } from "react";
 import Modal from 'react-modal'
 import { FiMoreHorizontal, FiHeart, FiSend } from 'react-icons/fi'; // Importing additional icons
 import PainterNav from "../../Components/Painter/PainterNav";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { reportPost } from "../../api/postApi";
 import { getPainterPosts } from "../../api/postApi";
+import { getPainter } from "../../api/painterApi";
 
 
 function UserPainterProfile() {
   const [imageUrl,setImageUrl] = useState("")
   const navigate = useNavigate()
+  const {id} = useParams()
   const [ painterPosts, setPainterPosts] = useState([])
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
@@ -22,15 +24,23 @@ function UserPainterProfile() {
 
 
   useEffect(() => {
-    if (!localStorage.getItem("painter_token")) {
+    if (!localStorage.getItem("user_token")) {
         //if already logged in
-        navigate('/painter/login')
+        navigate('/login')
     }
 }, [navigate])
 
-const currentpainter = useSelector((state) => state.painter.currentUser)
-const id = currentpainter.user._id
-console.log(currentpainter,'currentpainter');
+const currentUser = useSelector((state) => state.user.currentUser);
+console.log('current user ',currentUser);
+
+const fetchPainter = async () =>{
+  try {
+    
+    const painter = await getPainter(id)
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -46,6 +56,11 @@ console.log(currentpainter,'currentpainter');
       console.log(error);
     }
   };
+
+  
+useEffect(() => {
+  fetchPainter()
+},[id])
 
   useEffect(() =>{
     fetchPainterPosts(id)
@@ -107,16 +122,16 @@ console.log(currentpainter,'currentpainter');
             <div className=" relative  mb-6">
               <div className="bg-white shadow rounded-lg p-6">
                 <div className="flex flex-col items-start">
-                  <img
+                  {/* <img
                     src={`${imageUrl}` || currentpainter.user.profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"}
                     className="w-32 h-32 bg-gray-300 rounded-full mb-4 cursor-pointer shrink-0"
                     alt="Profile"
-                  />
-                  <h1 className="text-xl font-bold">{currentpainter.user.username}</h1>
-                  <p className="text-gray-700 placeholder:Age ">Age:{currentpainter.user.age ? currentpainter.user.age : 'Add your Age'}</p>
-                  <p className="text-gray-700 placeholder:location ">Location:{currentpainter.user.location ? currentpainter.user.location : ' Add your Location'}</p>
+                  /> */}
+                  {/* <h1 className="text-xl font-bold">{currentpainter.user.username}</h1>
+                  <p className="text-gray-700 ">Age:{currentpainter.user.age ? currentpainter.user.age : 'Add your Age'}</p>
+                  <p className="text-gray-700 ">Location:{currentpainter.user.location ? currentpainter.user.location : ' Add your Location'}</p>
                   <p className="text-gray-700 ">Phone:{currentpainter.user.phone ? currentpainter.user.phone : ' Add your phone number here'}</p>
-                  
+                   */}
                   <div className="mt-6 flex flex-wrap gap-4 justify-center">
                   {/* Conditional rendering for Add Post button */}
                   
@@ -144,9 +159,9 @@ console.log(currentpainter,'currentpainter');
                     specialised :
                   </span>
                   <ul className="flex ">
-                    {currentpainter.user.specialised.map((speciality ,index) => (
+                    {/* {currentpainter.user.specialised.map((speciality ,index) => (
                       <li key= {index} className="mb-2 ml-4">{speciality}</li>
-                    ))}
+                    ))} */}
                   </ul>
                 </div>
               </div>

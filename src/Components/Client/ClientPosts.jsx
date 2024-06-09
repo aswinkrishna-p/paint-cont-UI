@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { FiMoreHorizontal, FiHeart, FiSend } from 'react-icons/fi'; // Importing additional icons
 import { reportPost } from "../../api/postApi";
 import toast ,{Toaster} from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function ClientPosts({ posts }) {
 
 
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
+  const navigate = useNavigate()
 
 
   const toggleReportButton = (postId) => {
@@ -34,6 +36,10 @@ function ClientPosts({ posts }) {
     }
   };
 
+  const handleNavigate = (painterId) => {
+    navigate(`/painter/profile/${painterId}`)
+  }
+
   return (
     <div className="bg-[#0D0E26] w-full m-5 h-auto overflow-y-auto mt-[4rem] p-3"> {/* Adjusted margin-top */}
     <Toaster/>
@@ -48,7 +54,7 @@ function ClientPosts({ posts }) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="text-white font-semibold">{post.painterId.username}</p>
+              <p className="text-white font-semibold cursor-pointer" onClick={() => handleNavigate(post.painterId._id)}>{post.painterId.username}</p>
             </div>
             <div className="flex items-center">
               <button className="text-white p-1 rounded-xl bg-blue-gray-300 mr-2">Connect</button>
