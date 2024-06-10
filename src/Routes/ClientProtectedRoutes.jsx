@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
   const navigate = useNavigate();
   const token = localStorage.getItem('user_token');
 
-  console.log(token,"oooooooooooooooooooooooo");
 
   useEffect(() => {
     try {

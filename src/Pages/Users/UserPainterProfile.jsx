@@ -7,13 +7,14 @@ import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { reportPost } from "../../api/postApi";
 import { getPainterPosts } from "../../api/postApi";
-import { getPainter } from "../../api/painterApi";
+import { followPainter, getPainter } from "../../api/painterApi";
 
 
 function UserPainterProfile() {
   const [imageUrl,setImageUrl] = useState("")
   const navigate = useNavigate()
   const {id} = useParams()
+  const [painter ,setPainter] = useState(null)
   const [ painterPosts, setPainterPosts] = useState([])
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
@@ -22,33 +23,44 @@ function UserPainterProfile() {
   const [followers, setFollowers] = useState([]);
   const [showChatModal, setShowChatModal] = useState(false);
 
+  const userToken = localStorage.getItem("user_token");
+  const painterToken = localStorage.getItem("painter_token");
 
   useEffect(() => {
-    if (!localStorage.getItem("user_token")) {
-        //if already logged in
-        navigate('/login')
+    if (!userToken && !painterToken) {
+      navigate('/login');
     }
-}, [navigate])
+  }, [navigate, userToken, painterToken]);
 
 const currentUser = useSelector((state) => state.user.currentUser);
 console.log('current user ',currentUser);
 
-const fetchPainter = async () =>{
+const fetchPainter = async (id) => {
   try {
-    
-    const painter = await getPainter(id)
+    console.log('inside hereeeeeeeee');
+    const response = await getPainter(id);
+    if (response.data && response.data.painter) {
+      setPainter(response.data.painter);
+      console.log('Painter:', response.data.painter);
+    } else {
+      console.error('No painter data found');
+      setPainter(null);
+    }
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching painter:', error);
+    setPainter(null);
   }
-}
+};
 
-
-
-
+useEffect(() => {
+  fetchPainter(id)
+  },[id])
+  
+  // console.log('painter state',painter.username);
   const fetchPainterPosts = async (id) => {
     try {
       const posts = await getPainterPosts(id);
-      console.log(posts,'postsssssssss');
+      // console.log(posts,'postsssssssss');
       if (posts) {
         setPainterPosts(posts.data.posts);
       }
@@ -57,16 +69,10 @@ const fetchPainter = async () =>{
     }
   };
 
-  
-useEffect(() => {
-  fetchPainter()
-},[id])
 
   useEffect(() =>{
     fetchPainterPosts(id)
   },[])
-
-
 
 
   const toggleReportButton = (postId) => {
@@ -102,6 +108,17 @@ useEffect(() => {
     }
   }
 
+  const handleFollow = async () =>{
+    try {
+      const data = {painterId:id,userId:currentUser._id}
+      console.log('data in follow',data);
+
+      const res = await followPainter(data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
 
 
@@ -119,53 +136,52 @@ useEffect(() => {
         <div className=" pt-8 w-full ">
           <div className="flex flex-col gap-6 mt-7 w-full">
             {/* Profile Section */}
-            <div className=" relative  mb-6">
-              <div className="bg-white shadow rounded-lg p-6">
-                <div className="flex flex-col items-start">
-                  {/* <img
-                    src={`${imageUrl}` || currentpainter.user.profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"}
-                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 cursor-pointer shrink-0"
-                    alt="Profile"
-                  /> */}
-                  {/* <h1 className="text-xl font-bold">{currentpainter.user.username}</h1>
-                  <p className="text-gray-700 ">Age:{currentpainter.user.age ? currentpainter.user.age : 'Add your Age'}</p>
-                  <p className="text-gray-700 ">Location:{currentpainter.user.location ? currentpainter.user.location : ' Add your Location'}</p>
-                  <p className="text-gray-700 ">Phone:{currentpainter.user.phone ? currentpainter.user.phone : ' Add your phone number here'}</p>
-                   */}
-                  <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                  {/* Conditional rendering for Add Post button */}
-                  
-                  <div className="relative inline-block  m-2">
-                    {/* Button to open modal */}
-                    <button
-                      className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
-                    
-                    >
-                      Follow
-                    </button>
-                    <button
-                      className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
-                      onClick={openModal}
-                    >
-                      Followers:
-                    </button>
+            {painter ? (
+              <div className="relative mb-6">
+                <div className="bg-white shadow rounded-lg p-6">
+                  <div className="flex flex-col items-start">
+                    <img
+                      src={imageUrl || painter.profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"}
+                      className="w-32 h-32 bg-gray-300 rounded-full mb-4 cursor-pointer shrink-0"
+                      alt="Profile"
+                    />
+                    <h1 className="text-xl font-bold">{painter.username}</h1>
+                    <p className="text-gray-700">Age: {painter.age || 'Add your Age'}</p>
+                    <p className="text-gray-700">Location: {painter.location || 'Add your Location'}</p>
+                    <p className="text-gray-700">Phone: {painter.phone || 'Add your phone number here'}</p>
+                    <div className="mt-6 flex flex-wrap gap-4 justify-center">
+                      <div className="relative inline-block m-2">
+                        <button
+                          className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
+                          onClick={handleFollow}
+                        >
+                          Follow
+                        </button>
+                        <button
+                          className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
+                          onClick={openModal}
+                        >
+                          Followers:
+                        </button>
+                      </div>
+                    </div>
                   </div>
-              
+                  <hr className="my-6 border-t border-gray-300" />
+                  <div className="flex">
+                    <span className="text-gray-700 uppercase font-bold tracking-wider mb-2">
+                      Specialised:
+                    </span>
+                    <ul className="flex">
+                      {painter.specialised.map((speciality, index) => (
+                        <li key={index} className="mb-2 ml-4">{speciality}</li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-                <hr className="my-6 border-t border-gray-300" />
-                <div className="flex ">
-                  <span className="text-gray-700 uppercase font-bold tracking-wider mb-2">
-                    specialised :
-                  </span>
-                  <ul className="flex ">
-                    {/* {currentpainter.user.specialised.map((speciality ,index) => (
-                      <li key= {index} className="mb-2 ml-4">{speciality}</li>
-                    ))} */}
-                  </ul>
                 </div>
               </div>
-            </div>
+            ) : (
+              <p>Painter not found</p>
+            )}
           </div>
         </div>
         {/* About Me Section */}

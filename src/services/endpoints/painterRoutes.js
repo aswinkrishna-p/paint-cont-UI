@@ -5,6 +5,7 @@ const painterRoutes = {
     otp:'/painter/otp',
     resendOTP:'/painter/resend-otp',
     getPainter:'/painter/get-painter',
+    follow:'/painter/follow-painter',
     profilepic:'/painter/profile-update',
     createpost:'/painter/create-post',
     updateDetails:'/painter/update-details',

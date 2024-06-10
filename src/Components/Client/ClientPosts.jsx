@@ -37,7 +37,7 @@ function ClientPosts({ posts }) {
   };
 
   const handleNavigate = (painterId) => {
-    navigate(`/painter/profile/${painterId}`)
+    navigate(`/painterprofile/${painterId}`)
   }
 
   return (
