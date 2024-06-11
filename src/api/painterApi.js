@@ -97,6 +97,16 @@ export const followPainter = async (data) =>{
     }
 }
 
+export const getFollowers = async (painterId) =>{
+    try {
+        let response = await axiosApi.get(`${painterRoutes.followers}/${painterId}`)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 export const Logout = async () =>{
     try {

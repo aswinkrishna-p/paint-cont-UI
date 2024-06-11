@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { reportPost } from "../../api/postApi";
 import { getPainterPosts } from "../../api/postApi";
-import { followPainter, getPainter } from "../../api/painterApi";
+import { followPainter, getFollowers, getPainter } from "../../api/painterApi";
 
 
 function UserPainterProfile() {
@@ -33,6 +33,7 @@ function UserPainterProfile() {
   }, [navigate, userToken, painterToken]);
 
 const currentUser = useSelector((state) => state.user.currentUser);
+const userId = currentUser.user._id
 console.log('current user ',currentUser);
 
 const fetchPainter = async (id) => {
@@ -42,6 +43,8 @@ const fetchPainter = async (id) => {
     if (response.data && response.data.painter) {
       setPainter(response.data.painter);
       console.log('Painter:', response.data.painter);
+      setFollow(response.data.painter.followers.includes(userId))
+      setCountFollow(response.data.painter.followers.length)
     } else {
       console.error('No painter data found');
       setPainter(null);
@@ -102,7 +105,10 @@ useEffect(() => {
   const openModal = async () =>{
     setShowChatModal(true)
     try {
-      
+      const response = await getFollowers(id)
+      if(response.success){
+        setFollowers()
+      }
     } catch (error) {
       console.log(error);
     }
@@ -110,10 +116,14 @@ useEffect(() => {
 
   const handleFollow = async () =>{
     try {
-      const data = {painterId:id,userId:currentUser._id}
+      const data = {painterId:id,userId}
       console.log('data in follow',data);
 
       const res = await followPainter(data)
+      if(res.data.success){
+        setFollow(res.data.data)
+      
+      }
     } catch (error) {
       console.log(error);
     }
@@ -152,10 +162,10 @@ useEffect(() => {
                     <div className="mt-6 flex flex-wrap gap-4 justify-center">
                       <div className="relative inline-block m-2">
                         <button
-                          className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
+                          className="border-transparent relative z-10 py-2 px-4 w-24 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
                           onClick={handleFollow}
                         >
-                          Follow
+                        {follow ? "Unfollow" : "Follow"}
                         </button>
                         <button
                           className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
