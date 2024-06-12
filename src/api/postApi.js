@@ -27,6 +27,16 @@ export const getPainterPosts = async (painterId) =>{
     }
 }
 
+export const updateLike = async (data) =>{
+    try {
+        let response = await axiosApi.post(postRoutes.updateLike,data)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const reportPost = async (postId) =>{
     try {
         let response = await axiosApi.post(postRoutes.reportPost,{postId})

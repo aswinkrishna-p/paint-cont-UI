@@ -9,8 +9,17 @@ function ClientPosts({ posts }) {
 
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
+  const [liked, setLiked] = useState(posts?.liked);
+  const [countLike, setCountLike] = useState(posts?.likes?.length);
   const navigate = useNavigate()
 
+  const toggleLike = () =>{
+    try {
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const toggleReportButton = (postId) => {
     setShowReportButton(showReportButton === postId ? null :postId);
@@ -77,7 +86,7 @@ function ClientPosts({ posts }) {
           
           {/* Like button and comment box */}
           <div className="flex justify-between w-full mt-2">
-            <button className="flex items-center text-white">
+            <button className="flex items-center text-white" onClick={toggleLike}>
               <FiHeart className="mr-2" /> Like
             </button>
             <div className="flex flex-col w-52 ">
