@@ -106,8 +106,10 @@ useEffect(() => {
     setShowChatModal(true)
     try {
       const response = await getFollowers(id)
-      if(response.success){
-        setFollowers()
+      if(response.data.success){
+        console.log(response.data.data,'dataaaaaaa');
+        console.log(followers[0].profile,'prifileee');
+        setFollowers(response.data.data)
       }
     } catch (error) {
       console.log(error);
@@ -128,6 +130,10 @@ useEffect(() => {
       console.log(error);
     }
   }
+
+  const closeModal = () => {
+    setShowChatModal(false);
+  };
 
 
 
@@ -171,11 +177,35 @@ useEffect(() => {
                           className="border-transparent relative z-10 py-2 px-4 text-white font-bold text-lg rounded-[30px] cursor-pointer focus:outline-none bg-gradient-to-r from-blue-900 to-indigo-700"
                           onClick={openModal}
                         >
-                          Followers:
+                          Followers: {countFollow}
                         </button>
                       </div>
                     </div>
                   </div>
+                  <Modal isOpen={showChatModal} onRequestClose={closeModal} className="fixed inset-0 flex items-center justify-center bg-gray-800 mt-8 bg-opacity-75">
+        <div className="bg-white rounded-lg w-[350px] p-3 h-[500px]">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-xl font-bold">Followers List</h2>
+            <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">&times;</button>
+          </div>
+          <div className="h-[420px] border rounded-[20px]">
+            <div className="overflow-auto h-full">
+              {followers?.length > 0 ? (
+                followers?.map((follower, index) => (
+                  <div key={index} className="flex items-start mb-4 p-2 ml-8">
+                    <img src={followers[index].profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"} alt="Avatar" className="w-8 h-8 rounded-full mr-3" />
+                    <div className="bg-gray-100 rounded-lg p-1">
+                      <p className="text-sm text-gray-700">{follower.username}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center">0 followers</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </Modal>
                   <hr className="my-6 border-t border-gray-300" />
                   <div className="flex">
                     <span className="text-gray-700 uppercase font-bold tracking-wider mb-2">
