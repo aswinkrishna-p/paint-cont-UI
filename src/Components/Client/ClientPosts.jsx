@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FiMoreHorizontal, FiHeart, FiSend } from 'react-icons/fi'; // Importing additional icons
-import { reportPost } from "../../api/postApi";
+import { reportPost, updateLike } from "../../api/postApi";
 import toast ,{Toaster} from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function ClientPosts({ posts }) {
 
@@ -13,9 +14,30 @@ function ClientPosts({ posts }) {
   const [countLike, setCountLike] = useState(posts?.likes?.length);
   const navigate = useNavigate()
 
-  const toggleLike = () =>{
+  const currentpainter = localStorage.getItem('painter_token')
+  const currentuser = localStorage.getItem('user_token')
+
+  let likerId = null;
+  if (currentpainter) {
+    const decodedPainter = jwtDecode(currentpainter);
+    console.log(decodedPainter.userData,'painter decode');
+    likerId = decodedPainter.userData; 
+  } else if (currentuser) {
+    const decodedUser = jwtDecode(currentuser);
+    console.log(decodedUser.userData,'user decode');
+
+    likerId = decodedUser.userData; 
+  }
+
+  const toggleLike = async (postId) =>{
     try {
-      
+      const data = {postId ,userId:likerId}
+
+      const response = await updateLike(data)
+      console.log('after this');
+      if(response){
+        console.log('like updated');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +108,7 @@ function ClientPosts({ posts }) {
           
           {/* Like button and comment box */}
           <div className="flex justify-between w-full mt-2">
-            <button className="flex items-center text-white" onClick={toggleLike}>
+            <button className="flex items-center text-white" onClick={() => toggleLike(post._id)}>
               <FiHeart className="mr-2" /> Like
             </button>
             <div className="flex flex-col w-52 ">
