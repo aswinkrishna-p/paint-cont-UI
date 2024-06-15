@@ -386,7 +386,7 @@ console.log(currentpainter,'currentpainter');
           {/* Buttons */}
           <div className="flex flex-row items-center justify-center m-5">
             <div className="bg-amber-500 rounded-lg p-3 m-2">
-              <p>Add new slot</p>
+              <button >Add new slot</button>
             </div>
             <div className="bg-orange-900 p-3 rounded-lg">
               <p>Edit slot</p>
