@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMoreHorizontal, FiHeart, FiSend } from 'react-icons/fi'; // Importing additional icons
-import { reportPost, updateLike } from "../../api/postApi";
+import { addComment, reportPost, updateLike } from "../../api/postApi";
 import toast ,{Toaster} from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // Adjusted import
+import Modal from "react-modal";
 
 function ClientPosts({ posts }) {
-
-
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
-  const [liked, setLiked] = useState(posts?.liked);
+  const [likedPosts, setLikedPosts] = useState([]);
   const [countLike, setCountLike] = useState(posts?.likes?.length);
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [currentPostId, setCurrentPostId] = useState(null); // To track the current post
+  const [currentPostComments, setCurrentPostComments] = useState([]);
   const navigate = useNavigate()
 
   const currentpainter = localStorage.getItem('painter_token')
@@ -29,19 +33,72 @@ function ClientPosts({ posts }) {
     likerId = decodedUser.userData; 
   }
 
+  useEffect(() => {
+    const LikedPosts = posts
+      .filter(post => post.likes.includes(likerId))
+      .map(post => post._id);
+    setLikedPosts(LikedPosts);
+  }, [posts, likerId]);
+
+  useEffect(() => {
+    if (currentPostId) {
+      const post = posts.find(p => p._id === currentPostId);
+      if (post) {
+        setCurrentPostComments(post.comments || []);
+      }
+    }
+  }, [currentPostId, posts]);
+
   const toggleLike = async (postId) =>{
     try {
       const data = {postId ,userId:likerId}
 
       const response = await updateLike(data)
-      console.log('after this');
-      if(response){
-        console.log('like updated');
+      console.log(response.data.data.likes,'after this');
+      if (response.data.success) {
+        setLikedPosts((prevLikedPosts) =>
+          prevLikedPosts.includes(postId)
+            ? prevLikedPosts.filter((id) => id !== postId)
+            : [...prevLikedPosts, postId]
+        );
+        toast.success(response.data.message || 'Action successful');
+      } else {
+        toast.error('Error in liking the post.');
       }
     } catch (error) {
       console.log(error);
     }
   }
+
+  const openModal = (postId) => {
+    setCurrentPostId(postId);
+    setShowChatModal(true);
+  };
+
+  const closeModal = () => {
+    setShowChatModal(false);
+    setCurrentPostId(null);
+    setNewComment("");
+  };
+
+  const submitComment = async (postId) => {
+    try {
+      const data = { postId, userId: likerId, content: newComment };
+      const response = await addComment(data);
+      if(response.data.success){
+        const updatedComments = [...currentPostComments, response.data.data.text];
+        // console.log(response.data.data.text,'textt');
+        setCurrentPostComments(updatedComments);
+        setNewComment("");
+        toast.success('Comment added successfully');
+      } else {
+        toast.error('Error in adding comment.');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Error in adding comment.');
+    }
+  };
 
   const toggleReportButton = (postId) => {
     setShowReportButton(showReportButton === postId ? null :postId);
@@ -109,7 +166,8 @@ function ClientPosts({ posts }) {
           {/* Like button and comment box */}
           <div className="flex justify-between w-full mt-2">
             <button className="flex items-center text-white" onClick={() => toggleLike(post._id)}>
-              <FiHeart className="mr-2" /> Like
+            <FiHeart className="mr-2" color={likedPosts.includes(post._id) ? "red" : "white"} /> Like
+              
             </button>
             <div className="flex flex-col w-52 ">
               <div className="flex items-center justify-between border-b-2 rounded-md">
@@ -117,17 +175,52 @@ function ClientPosts({ posts }) {
                   type="text" 
                   placeholder="Add a comment..." 
                   className="bg-transparent text-white flex-1 w-8 p-1 focus:outline-none"
+                  onClick={() => openModal(post._id)}
                 />
                 <button className="text-white w-6 ">
                   <FiSend />
                 </button>
               </div>
               {/* Display comments */}
-              {/* <div className="mt-2 bg-gray-800 p-2 rounded-lg">
-                {post.comments && post.comments.map((comment, index) => (
-                  <p key={index} className="text-white mb-1">{comment}</p>
-                ))}
-              </div> */}
+              <Modal isOpen={showChatModal} onRequestClose={closeModal} className="fixed inset-0 flex items-center justify-center  bg-purple-950 bg-opacity-75 ">
+         {/* from-purple-900 via-purple-900 to-indigo-800  */}
+        <div className=" bg-[#50187bc4] rounded-lg w-[700px] p-5 h-[560px]">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-white">Comments</h2>
+            <button onClick={closeModal} className="text-white hover:text-red-600 font-bold">&times;</button>
+          </div>
+          <div className="h-[420px] p-4 border border-purple-800 rounded-[16px]">
+            <div className="overflow-auto h-full">
+              {currentPostComments.map(comment => (
+                <div key={comment._id} className="flex items-start mb-4">
+                  {/* <img src={userImg} alt="Avatar" className="w-10 h-10 rounded-full mr-3" /> */}
+                  <div>
+                    <p className="text-white font-semibold">{comment.userId?.username}</p>
+                    <div className="bg-purple-800  rounded-lg p-2">
+                      <p className="text-sm text-white">{comment.text}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex p-1">
+            <input 
+              value={newComment} 
+              onChange={(e) => setNewComment(e.target.value)} 
+              placeholder="Add a comment" 
+              className="bg-purple-800 focus:outline-none rounded-[6px] h-[38px] w-full mt-3 pl-4 text-white" 
+              type="text" 
+            />
+            <button onClick={() => submitComment(currentPostId)} className="bg-purple-800 w-16 h-9 ml-2 mt-3 flex items-center justify-center rounded-[6px]">
+              <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </Modal>
             </div>
           </div>
         </div>

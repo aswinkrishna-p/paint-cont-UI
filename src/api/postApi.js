@@ -37,6 +37,16 @@ export const updateLike = async (data) =>{
     }
 }
 
+export const addComment = async (data) =>{
+    try {
+        let response = await axiosApi.post(postRoutes.addComment,data)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const reportPost = async (postId) =>{
     try {
         let response = await axiosApi.post(postRoutes.reportPost,{postId})

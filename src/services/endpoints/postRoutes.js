@@ -3,6 +3,7 @@ const postRoutes = {
     reportPost:'/post/report-post',
     getPainterPost:'/post/getpainterpost',
     updateLike:'/post/update-liked',
+    addComment:'/post/add-comment',
     deletePost:'/post/delete-post'
 }
 
