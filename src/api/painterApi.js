@@ -97,6 +97,16 @@ export const followPainter = async (data) =>{
     }
 }
 
+export const createSlot = async (painterId , data) =>{
+    try {
+        let response = await axiosApi.post(`${painterRoutes.createSlot}/${painterId}`,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getFollowers = async (painterId) =>{
     try {
         let response = await axiosApi.get(`${painterRoutes.followers}/${painterId}`)

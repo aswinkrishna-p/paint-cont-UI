@@ -16,7 +16,7 @@ import UserOtpPage from './Pages/Users/UserOtpPage';
 import AdminPainterManagement from './Pages/Admin/AdminPainterManagement';
 import ClientProtectedRoute from './Routes/ClientProtectedRoutes';
 import PainterProtectedRoute from './Routes/PainterProtectedRoutes';
-import PainterSlotadd from './Pages/Painters/PainterSlotadd';
+import PainterSlotAdd from './Pages/Painters/PainterSlotAdd';
 
 function App(props) {
   return (
@@ -44,7 +44,7 @@ function App(props) {
       <Route path='painter/login' element = {<PainterLogin/>} />
       <Route path='painter/otp' element = {<PainterOtpPage/>} />
       <Route path='painter/profile' element = {<PainterProtectedRoute allowedRole={'painter'}> <PainterProfile/> </PainterProtectedRoute>} />
-      <Route path='painter/slot' element = {<PainterSlotadd/>} />
+      <Route path='painter/slot' element = {<PainterSlotAdd/>} />
     </Routes>
 
    </BrowserRouter>

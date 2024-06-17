@@ -9,6 +9,7 @@ const painterRoutes = {
     followers:'/painter/followers',
     profilepic:'/painter/profile-update',
     createpost:'/painter/create-post',
+    createSlot:'/painter/create-slot',
     updateDetails:'/painter/update-details',
     logout:'/painter/logout'
 }
