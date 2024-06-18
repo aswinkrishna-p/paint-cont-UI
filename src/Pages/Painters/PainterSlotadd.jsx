@@ -5,8 +5,8 @@ import { createSlot } from '../../api/painterApi';
 import { useSelector } from 'react-redux';
 
 function PainterSlotAdd() {
-  const [slots, setSlots] = useState([{ date: '', startTime: '', endTime: '', amount: '' }]);
-  const [editedSlot, setEditedSlot] = useState({ date: '', startTime: '', endTime: '', amount: '' });
+  const [slots, setSlots] = useState([{ date: '', start: '', end: '', amount: '' }]);
+  const [editedSlot, setEditedSlot] = useState({ date: '', start: '', end: '', amount: '' });
   
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentSlotIndex, setCurrentSlotIndex] = useState(null);
@@ -29,7 +29,7 @@ function PainterSlotAdd() {
   };
 
   const handleAddSlot = () => {
-    setSlots([...slots, { date: '', startTime: '', endTime: '' }]);
+    setSlots([...slots, { date: '', start: '', end: '' }]);
   };
 
   const handleRemoveSlot = (index) => {
@@ -97,8 +97,8 @@ function PainterSlotAdd() {
                         Start Time:
                         <input
                           type="time"
-                          name="startTime"
-                          value={slot.startTime}
+                          name="start"
+                          value={slot.start}
                           onChange={(event) => handleInputChange(index, event)}
                           className="w-full mt-1 p-2 border rounded"
                           required
@@ -108,8 +108,8 @@ function PainterSlotAdd() {
                         End Time:
                         <input
                           type="time"
-                          name="endTime"
-                          value={slot.endTime}
+                          name="end"
+                          value={slot.end}
                           onChange={(event) => handleInputChange(index, event)}
                           className="w-full mt-1 p-2 border rounded"
                           required
@@ -183,8 +183,8 @@ function PainterSlotAdd() {
                   Start Time:
                   <input
                     type="time"
-                    name="startTime"
-                    value={editedSlot.startTime}
+                    name="start"
+                    value={editedSlot.start}
                     onChange={handleModalInputChange}
                     className="w-full mt-1 p-2 border rounded"
                     required
@@ -194,8 +194,8 @@ function PainterSlotAdd() {
                   End Time:
                   <input
                     type="time"
-                    name="endTime"
-                    value={editedSlot.endTime}
+                    name="end"
+                    value={editedSlot.end}
                     onChange={handleModalInputChange}
                     className="w-full mt-1 p-2 border rounded"
                     required
