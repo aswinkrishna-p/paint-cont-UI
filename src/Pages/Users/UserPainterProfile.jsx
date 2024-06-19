@@ -15,6 +15,7 @@ function UserPainterProfile() {
   const navigate = useNavigate()
   const {id} = useParams()
   const [painter ,setPainter] = useState(null)
+  const [slots ,setSlots] = useState([])
   const [ painterPosts, setPainterPosts] = useState([])
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
@@ -34,14 +35,16 @@ function UserPainterProfile() {
 
 const currentUser = useSelector((state) => state.user.currentUser);
 const userId = currentUser.user._id
-console.log('current user ',currentUser);
+// console.log('current user ',currentUser);
 
 const fetchPainter = async (id) => {
   try {
-    console.log('inside hereeeeeeeee');
+    // console.log('inside hereeeeeeeee');
     const response = await getPainter(id);
     if (response.data && response.data.painter) {
       setPainter(response.data.painter);
+      setSlots(response.data.painter.slot)
+      console.log('Painter slots:', response.data.painter.slot);
       console.log('Painter:', response.data.painter);
       setFollow(response.data.painter.followers.includes(userId))
       setCountFollow(response.data.painter.followers.length)
@@ -287,45 +290,34 @@ useEffect(() => {
           </div>
         </div>
         <div className="flex flex-col bg-white h-[35rem] w-[50rem] rounded-2xl mb-6">
-          <p className="m-3 uppercase font-semibold">Available slots:</p>
+  <p className="m-3 uppercase font-semibold">Available slots:</p>
 
-          {/* First set of blocks */}
-          <div className="flex flex-col sm:flex-row items-center justify-center m-5">
-            <div className="flex flex-col items-center justify-center">
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> 12:00 am</div>
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> 12:00 am</div>
-            </div>
-            <div className="flex flex-col items-center justify-center mt-5 sm:mt-0">
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> no slot Available</div>
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> no slot Available</div>
-            </div>
-          </div>
+  {/* Dynamically render slots */}
+  {slots?.length > 0? (
+    slots.map((slot, index) => (
+      <div key={index} className="flex flex-col items-center justify-center m-5">
+        <div className="bg-blue-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">{slot.start} - {slot.end}</div>
+        <div className="bg-green-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">Date: {slot.date.toString().split("T")[0]}</div>
+        <div className="bg-yellow-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">Status: {slot.status}</div>
+      </div>
+    ))
+  ) : (
+    <div className="flex flex-col items-center justify-center m-5">
+      <div className="bg-red-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">No slots available</div>
+    </div>
+  )}
 
-          {/* "Afternoon" text */}
-          <p className="text-center mt-5 mb-2 uppercase font-semibold ">After noon:</p>
+  {/* Buttons */}
+  <div className="flex flex-row items-center justify-center m-5">
+    <div className="bg-amber-500 rounded-lg p-3 m-2">
+      <p>Book slots</p>
+    </div>
+    <div className="bg-orange-900 p-3 rounded-lg">
+      <p>Cancel slot</p>
+    </div>
+  </div>
+</div>
 
-          {/* Second set of blocks */}
-          <div className="flex flex-col sm:flex-row items-center justify-center m-5">
-            <div className="flex flex-col items-center justify-center">
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> 12:00 am</div>
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> 12:00 am</div>
-            </div>
-            <div className="flex flex-col items-center justify-center mt-5 sm:mt-0">
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> no slot Available</div>
-            <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase"> no slot Available</div>
-            </div>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex flex-row items-center justify-center m-5">
-            <div className="bg-amber-500 rounded-lg p-3 m-2">
-              <p>Add new slot</p>
-            </div>
-            <div className="bg-orange-900 p-3 rounded-lg">
-              <p>Edit slot</p>
-            </div>
-          </div>
-        </div>
 
                 {/* My posts  */} 
                 {painterPosts.map((post) => (
