@@ -16,6 +16,7 @@ function UserPainterProfile() {
   const {id} = useParams()
   const [painter ,setPainter] = useState(null)
   const [slots ,setSlots] = useState([])
+  const [bookSlot, setBookSlot] = useState({});
   const [ painterPosts, setPainterPosts] = useState([])
   const [showReportButton, setShowReportButton] = useState(null);
   const [reportedPosts, setReportedPosts] = useState([]);
@@ -42,10 +43,11 @@ const fetchPainter = async (id) => {
     // console.log('inside hereeeeeeeee');
     const response = await getPainter(id);
     if (response.data && response.data.painter) {
-      setPainter(response.data.painter);
+      setPainter(response.data.painter.data);
+      console.log('painterreeeee',response.data.painter.data.username);
       setSlots(response.data.painter.slot)
       console.log('Painter slots:', response.data.painter.slot);
-      console.log('Painter:', response.data.painter);
+      console.log('Painter:', response.data.painter.data.followers);
       setFollow(response.data.painter.followers.includes(userId))
       setCountFollow(response.data.painter.followers.length)
     } else {
@@ -138,7 +140,11 @@ useEffect(() => {
     setShowChatModal(false);
   };
 
-
+  const handleSlot = (start, end, date,id) => {
+    // const data = { start, end, date,slotId:id };
+    // setBookSlot(data);
+    // // console.log(data, "-------------------------");
+  };
 
 
 
@@ -296,9 +302,16 @@ useEffect(() => {
   {slots?.length > 0? (
     slots.map((slot, index) => (
       <div key={index} className="flex flex-col items-center justify-center m-5">
-        <div className="bg-blue-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">{slot.start} - {slot.end}</div>
-        <div className="bg-green-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">Date: {slot.date.toString().split("T")[0]}</div>
-        <div className="bg-yellow-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">Status: {slot.status}</div>
+        {slot.status === "booked" ? (
+        <div className="bg-yellow-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">
+          <p>Booked</p>
+        </div>
+        ) :(
+          <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase hover:bg-gray-500 hover:cursor-pointer"
+          onClick={handleSlot(slot.start ,slot.end ,slot.date.toString().split("T")[0], slot._id)}
+          >
+            {slot.start} - {slot.end} <br/> (Date: {slot.date.toString().split("T")[0]})</div>
+        )}
       </div>
     ))
   ) : (
