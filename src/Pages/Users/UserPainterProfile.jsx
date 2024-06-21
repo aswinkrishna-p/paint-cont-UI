@@ -44,12 +44,12 @@ const fetchPainter = async (id) => {
     const response = await getPainter(id);
     if (response.data && response.data.painter) {
       setPainter(response.data.painter.data);
-      console.log('painterreeeee',response.data.painter.data.username);
+      console.log('painterreeeee',response.data.painter.data);
       setSlots(response.data.painter.slot)
       console.log('Painter slots:', response.data.painter.slot);
       console.log('Painter:', response.data.painter.data.followers);
-      setFollow(response.data.painter.followers.includes(userId))
-      setCountFollow(response.data.painter.followers.length)
+      setFollow(response.data.painter.data.followers.includes(userId))
+      setCountFollow(response.data.painter.data.followers.length)
     } else {
       console.error('No painter data found');
       setPainter(null);
