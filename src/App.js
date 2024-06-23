@@ -17,6 +17,7 @@ import AdminPainterManagement from './Pages/Admin/AdminPainterManagement';
 import ClientProtectedRoute from './Routes/ClientProtectedRoutes';
 import PainterProtectedRoute from './Routes/PainterProtectedRoutes';
 import PainterSlotAdd from './Pages/Painters/PainterSlotAdd';
+import Messages from './Pages/CommonPages/Messages';
 
 function App(props) {
   return (
@@ -35,6 +36,7 @@ function App(props) {
       <Route path='/register' element = {<Register/>} />
       <Route path='/login' element = {<Login/>} />
       <Route path='/otp' element = {<UserOtpPage/>} />
+      <Route path='/chat' element = {<Messages/>} />
       <Route path='/profile' element = {<ClientProtectedRoute allowedRole={'user'}> <Profile/> </ClientProtectedRoute> } />
       <Route path='/painterprofile/:id' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientPainterProfile/> </ClientProtectedRoute>} />
 
