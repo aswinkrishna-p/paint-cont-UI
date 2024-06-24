@@ -1,6 +1,6 @@
 import React from 'react'
 import './message.css'
-import pics from '../../../assets/borcelle-removebg-preview.png'
+// import pics from '../../../assets/borcelle-removebg-preview.png'
 
 function Message({own,msgData}) {
     return (

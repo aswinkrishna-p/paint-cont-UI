@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import ClientNavbar from '../../../Components/Clients/ClientNavbar'
-import './messages.css'
-import Conversations from '../../../Components/Common/Conversations/Conversations'
-import Message from '../../../Components/Common/Message/Message'
-import ChatOnline from '../../../Components/Common/Chatonline/ChatOnline'
+import ClientNav from '../../Components/Client/ClientNav'
+import './Messages.css'
+import Conversations from '../../Components/CommonComponents/Message/Conversations/Conversations'
+import Message from '../../Components/CommonComponents/Message/Message'
+import ChatOnline from '../../Components/CommonComponents/Message/Chatonline/ChatOnline'
 import { useSelector } from 'react-redux'
-import axios from '../../../Services/axiosService'
+// import axios from '../../../Services/axiosService'
 import { useParams } from 'react-router-dom'
 
-import { socket } from '../../../socket/socket'
+import {socket} from '../../services/Socket/socket'
 
 function Messages() {
 
@@ -36,17 +36,17 @@ function Messages() {
   useEffect(()=>{
     const getConversation = async () => {
       try {
-        if(id){ 
+        // if(id){ 
         
-          const res = await axios.post(`conversation`,{senderId:userId, receiverId:id})
-           socket.emit("joinNewUser",res.data)
-          setConversations(res.data)
-          }else{
-          const res = await axios.get(`conversation/${userId}`)
-          socket.emit("joinNewUser",res.data)
-          setConversations(res.data)
-        }
-        console.log(res.data,"🕺💃🕺🪩🕺💃")
+        //   const res = await axios.post(`conversation`,{senderId:userId, receiverId:id})
+        //    socket.emit("joinNewUser",res.data)
+        //   setConversations(res.data)
+        //   }else{
+        //   const res = await axios.get(`conversation/${userId}`)
+        //   socket.emit("joinNewUser",res.data)
+        //   setConversations(res.data)
+        // }
+        // console.log(res.data,"🕺💃🕺🪩🕺💃")
       }catch (error) {
         console.log("its an error");
         console.log(error);
@@ -57,19 +57,19 @@ function Messages() {
 
   const fetchMsg = async (id) => {
     
-        const data = {userId,painterId:id}
-        const response = await axios.post("/user/painter/profile/indMsg",data)
+        // const data = {userId,painterId:id}
+        // const response = await axios.post("/user/painter/profile/indMsg",data)
         
-        if(response.data.success){
-          setMessageHistory(response.data.messageHistory)
-        }
+        // if(response.data.success){
+        //   setMessageHistory(response.data.messageHistory)
+        // }
 
       }
 
       const fetchMsgh = async (id) => {
     
-          const response = await axios.get(`/message/${id}`)      
-          setMessageHistory(response.data)
+          // const response = await axios.get(`/message/${id}`)      
+          // setMessageHistory(response.data)
 
       }
 
@@ -93,9 +93,9 @@ function Messages() {
   const chatSubmit = async () => {
     try {
    
-      const obj ={conversationId:currentConv?._id,sender:userId,text:newMessage}
-      socket.emit("sendData",obj)
-      const response = await axios.post('/message/',obj)
+      // const obj ={conversationId:currentConv?._id,sender:userId,text:newMessage}
+      // socket.emit("sendData",obj)
+      // const response = await axios.post('/message/',obj)
       // console.log(response,"heeeeeeeeeeeeeyyyyyyyyy");
     } catch (error) {
       console.log(error);
@@ -107,7 +107,7 @@ function Messages() {
   return (
      <>
     <div>
-      <ClientNavbar />
+      <ClientNav />
     </div>
       
     <div className="messenger">
@@ -117,7 +117,7 @@ function Messages() {
             {/* {conversations.map((c) => ( */}
               <div >
                 {conversations.map((c)=>(
-                  <div onClick={()=>{setCurrentConv(c),fetchMsgh(c._id)}} >
+                  <div onClick={()=>{setCurrentConv(c);fetchMsgh(c._id)}} >
                     <Conversations  painterName={c.painterName.username} indConv={c} conversation={c} me={user} />
                   </div>
                 ))}
