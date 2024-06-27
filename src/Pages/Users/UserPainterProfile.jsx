@@ -5,6 +5,7 @@ import PainterNav from "../../Components/Painter/PainterNav";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import { loadStripe } from "@stripe/stripe-js";
 import { reportPost } from "../../api/postApi";
 import { getPainterPosts } from "../../api/postApi";
 import { followPainter, getFollowers, getPainter } from "../../api/painterApi";
@@ -141,13 +142,22 @@ useEffect(() => {
   };
 
   const handleSlot = (start, end, date,id) => {
-    // const data = { start, end, date,slotId:id };
-    // setBookSlot(data);
-    // // console.log(data, "-------------------------");
+    const data = { start, end, date,slotId:id };
+    setBookSlot(data);
+    // console.log(data, "-------------------------");
   };
 
 
+const makePayment = async () => {
+  try {
+    
+    const stripe = await loadStripe(import.meta.env.SECRET_STRIPE_KEY) 
 
+    const data = {slots,userId}
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -308,7 +318,7 @@ useEffect(() => {
         </div>
         ) :(
           <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase hover:bg-gray-500 hover:cursor-pointer"
-          onClick={handleSlot(slot.start ,slot.end ,slot.date.toString().split("T")[0], slot._id)}
+          onClick={() => handleSlot(slot.start ,slot.end ,slot.date.toString().split("T")[0], slot._id)}
           >
             {slot.start} - {slot.end} <br/> (Date: {slot.date.toString().split("T")[0]})</div>
         )}
