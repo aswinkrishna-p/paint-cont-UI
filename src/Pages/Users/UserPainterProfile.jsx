@@ -9,6 +9,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { reportPost } from "../../api/postApi";
 import { getPainterPosts } from "../../api/postApi";
 import { followPainter, getFollowers, getPainter } from "../../api/painterApi";
+import { make_payment } from "../../api/userApi";
 
 
 function UserPainterProfile() {
@@ -25,6 +26,7 @@ function UserPainterProfile() {
   const [countFollow, setCountFollow] = useState(0);
   const [followers, setFollowers] = useState([]);
   const [showChatModal, setShowChatModal] = useState(false);
+  const [outline,setOutline] = useState(false)
 
   const userToken = localStorage.getItem("user_token");
   const painterToken = localStorage.getItem("painter_token");
@@ -144,8 +146,13 @@ useEffect(() => {
   const handleSlot = (start, end, date,id) => {
     const data = { start, end, date,slotId:id };
     setBookSlot(data);
+    setOutline(id)
     // console.log(data, "-------------------------");
   };
+
+  const handleSlotBooking = () => {
+
+  }
 
 
 const makePayment = async () => {
@@ -154,6 +161,22 @@ const makePayment = async () => {
     const stripe = await loadStripe(import.meta.env.SECRET_STRIPE_KEY) 
 
     const data = {slots,userId}
+
+    const response = await make_payment(data)
+
+    const session = response.data
+
+    if(session.save === true){
+      handleSlotBooking()
+    }
+
+    const result = await stripe.redirectToCheckout({
+      sessionId:session.id
+    })
+
+    if(result.error){
+      console.log(result.error);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -317,7 +340,7 @@ const makePayment = async () => {
           <p>Booked</p>
         </div>
         ) :(
-          <div className="bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase hover:bg-gray-500 hover:cursor-pointer"
+          <div className={` ${outline === slot._id ? 'border-red-500' : ''}bg-gray-400 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase hover:bg-gray-500 hover:cursor-pointe`}
           onClick={() => handleSlot(slot.start ,slot.end ,slot.date.toString().split("T")[0], slot._id)}
           >
             {slot.start} - {slot.end} <br/> (Date: {slot.date.toString().split("T")[0]})</div>
@@ -333,7 +356,7 @@ const makePayment = async () => {
   {/* Buttons */}
   <div className="flex flex-row items-center justify-center m-5">
     <div className="bg-amber-500 rounded-lg p-3 m-2">
-      <p>Book slots</p>
+      <p onClick={makePayment}>Book slots</p>
     </div>
     <div className="bg-orange-900 p-3 rounded-lg">
       <p>Cancel slot</p>
