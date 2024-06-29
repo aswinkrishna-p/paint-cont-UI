@@ -157,8 +157,11 @@ useEffect(() => {
 
 const makePayment = async () => {
   try {
+
+    console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY); // Ensure this prints your publishable key correctly
+
     
-    const stripe = await loadStripe(import.meta.env.SECRET_STRIPE_KEY) 
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) 
 
     const data = {slots,userId}
 
@@ -355,7 +358,7 @@ const makePayment = async () => {
 
   {/* Buttons */}
   <div className="flex flex-row items-center justify-center m-5">
-    <div className="bg-amber-500 rounded-lg p-3 m-2">
+    <div className="bg-amber-500 rounded-lg p-3 m-2 cursor-pointer">
       <p onClick={makePayment}>Book slots</p>
     </div>
     <div className="bg-orange-900 p-3 rounded-lg">
