@@ -47,8 +47,8 @@ export const add_address = async (userData) =>{
 
 export const make_payment = async (data) =>{
     try {
-
-        let response = await axiosApi.post(userRoutes.make_payment, data)
+        console.log('inside make paymenttttttttttttttttttttt',data);
+        let response = await axiosApi.post(userRoutes.payment, data)
         console.log('response from backend' ,response);
         return response
     } catch (error) {

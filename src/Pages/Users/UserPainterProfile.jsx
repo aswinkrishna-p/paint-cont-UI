@@ -1,7 +1,7 @@
 import React, { useRef, useState,useEffect } from "react";
 import Modal from 'react-modal'
 import { FiMoreHorizontal, FiHeart, FiSend } from 'react-icons/fi'; // Importing additional icons
-import PainterNav from "../../Components/Painter/PainterNav";
+import ClientNav from '../../Components/Client/ClientNav';
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
@@ -160,10 +160,13 @@ const makePayment = async () => {
 
     console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY); // Ensure this prints your publishable key correctly
 
+    console.log('inside make payment');
     
     const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) 
 
     const data = {slots,userId}
+
+    console.log('inside make payment', data);
 
     const response = await make_payment(data)
 
@@ -191,7 +194,7 @@ const makePayment = async () => {
 
   return (
     <>
-      <PainterNav/>
+      <ClientNav/>
       <div className="flex h-full flex-col items-center bg-deep-orange-900">
         <Toaster/>
         <div className=" pt-8 w-full ">
