@@ -151,20 +151,24 @@ useEffect(() => {
   };
 
   const handleSlotBooking = () => {
-
+    console.log('in slot booking function');
   }
 
 
-const makePayment = async () => {
+const makePayment = async (slotId) => {
   try {
 
-    console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY); // Ensure this prints your publishable key correctly
-
-    console.log('inside make payment');
-    
+    console.log(slotId,'slot id');
+   
     const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) 
 
-    const data = {slots,userId}
+    let slotid
+
+    if(slotId !== null){
+       slotid = slotId
+    }
+
+    const data = {slotid,userId}
 
     console.log('inside make payment', data);
 
@@ -172,12 +176,12 @@ const makePayment = async () => {
 
     const session = response.data
 
-    if(session.save === true){
+    if(session.success){
       handleSlotBooking()
     }
 
     const result = await stripe.redirectToCheckout({
-      sessionId:session.id
+      sessionId:session.data
     })
 
     if(result.error){
@@ -362,7 +366,7 @@ const makePayment = async () => {
   {/* Buttons */}
   <div className="flex flex-row items-center justify-center m-5">
     <div className="bg-amber-500 rounded-lg p-3 m-2 cursor-pointer">
-      <p onClick={makePayment}>Book slots</p>
+      <p onClick={() => makePayment(bookSlot.slotId)}>Book slots</p>
     </div>
     <div className="bg-orange-900 p-3 rounded-lg">
       <p>Cancel slot</p>
