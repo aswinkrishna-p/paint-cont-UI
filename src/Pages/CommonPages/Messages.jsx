@@ -57,12 +57,12 @@ function Messages() {
 
   const fetchMsg = async (id) => {
     
-        // const data = {userId,painterId:id}
-        // const response = await axios.post("/user/painter/profile/indMsg",data)
+        const data = {userId,painterId:id}
+        const response = await axios.post("/user/painter/profile/indMsg",data)
         
-        // if(response.data.success){
-        //   setMessageHistory(response.data.messageHistory)
-        // }
+        if(response.data.success){
+          setMessageHistory(response.data.messageHistory)
+        }
 
       }
 
