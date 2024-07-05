@@ -55,34 +55,25 @@ function Messages() {
     getConversation()
   },[userId])
 
-  const fetchMsg = async (id) => {
-    
-        const data = {userId,painterId:id}
-        const response = await axios.post("/user/painter/profile/indMsg",data)
-        
-        if(response.data.success){
-          setMessageHistory(response.data.messageHistory)
-        }
+  // Fetch message history for a specific conversation id
+  // useEffect(() => {
+  //   const fetchMsg = async (id) => {
+  //     try {
+  //       const data = { userId, painterId: id };
+  //       const response = await axios.post("/user/painter/profile/indMsg", data);
+  //       if (response?.data?.success) {
+  //         setMessageHistory(response?.data?.messageHistory);
+  //       }
+  //     } catch (error) {
+  //       navigate("/user/error")
+  //       console.log("Error fetching messages:", error);
+  //     }
+  //   };
 
-      }
-
-      const fetchMsgh = async (id) => {
-    
-          // const response = await axios.get(`/message/${id}`)      
-          // setMessageHistory(response.data)
-
-      }
-
-  useEffect(()=>{
-
-    try {
-      if(id){
-        fetchMsg(id)
-      } 
-    } catch (error) {
-      console.log(error);
-    }
-  },[])
+  //   if (id) {
+  //     fetchMsg(id);
+  //   }
+  // }, [id, userId]);
 
   socket.on("sendToUser",(data)=>{
     // console.log(data,"--------------------;;;;;;-")
@@ -117,7 +108,7 @@ function Messages() {
             {/* {conversations.map((c) => ( */}
               <div >
                 {conversations.map((c)=>(
-                  <div onClick={()=>{setCurrentConv(c);fetchMsgh(c._id)}} >
+                  <div onClick={()=>{setCurrentConv(c);}} >
                     <Conversations  painterName={c.painterName.username} indConv={c} conversation={c} me={user} />
                   </div>
                 ))}
