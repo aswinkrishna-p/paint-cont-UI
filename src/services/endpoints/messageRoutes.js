@@ -1,7 +1,7 @@
 
 
 const messageRoutes = {
-    getConversation:'/conversation/getConversation'
+    createConversation:'/'
 }
 
 

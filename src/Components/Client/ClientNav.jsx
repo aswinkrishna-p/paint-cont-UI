@@ -61,9 +61,9 @@ function ClientNav(props) {
           <a href="#" className="text-white">
             Painter
           </a>
-          <a href="#" className="text-white">
+          <span onClick={() => Navigate('/chat')} className="text-white cursor-pointer">
             Chat
-          </a>
+          </span>
           <a href="#" className="text-white">
             Designs
           </a>
