@@ -38,6 +38,7 @@ function App(props) {
       <Route path='/login' element = {<Login/>} />
       <Route path='/otp' element = {<UserOtpPage/>} />
       <Route path='/chat' element = {<Messages/>} />
+      <Route path='/chat/:id' element = {<Messages/>} />
       <Route path='/profile' element = {<ClientProtectedRoute allowedRole={'user'}> <Profile/> </ClientProtectedRoute> } />
       <Route path='/painterprofile/:id' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientPainterProfile/> </ClientProtectedRoute>} />
       <Route path='/payment-success' element = {<ClientProtectedRoute allowedRole={'user'}> <UserSuccessPage/> </ClientProtectedRoute>} />

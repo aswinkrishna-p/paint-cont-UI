@@ -1,7 +1,8 @@
 
 
 const messageRoutes = {
-    createConversation:'/'
+    createConversation:'/',
+    getConversationByUserId:'/:userId'
 }
 
 
