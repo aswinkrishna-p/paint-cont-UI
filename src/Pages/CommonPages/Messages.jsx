@@ -6,7 +6,7 @@ import Message from '../../Components/CommonComponents/Message/Message'
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import {socket} from '../../services/Socket/socket'
-import { createConversation, getConversationByUserId } from '../../api/messageApi';
+import { createConversation, createMessage, getConversationByUserId, getMessages } from '../../api/messageApi';
 // import chatEmpty from "../../../assets/chat-removebg-preview.png";
 
 function Messages() {
@@ -58,11 +58,11 @@ function Messages() {
   useEffect(() => {
     const fetchMsg = async (id) => {
       try {
-        // const data = { userId, painterId: id };
-        // const response = await axios.post("/user/painter/profile/indMsg", data);
-        // if (response?.data?.success) {
-        //   setMessageHistory(response?.data?.messageHistory);
-        // }
+        const data = { userId, painterId: id };
+        const response = await getMessages(data)
+        if (response?.data?.success) {
+          setMessageHistory(response?.data?.messageHistory);
+        }
       } catch (error) {
         console.log("Error fetching messages:", error);
         // navigate("/user/error")
@@ -143,11 +143,11 @@ function Messages() {
   
   const chatSubmit = async () => {
     try {
-      // const obj = { conversationId: currentConv?._id, sender: userId, text: newMessage, createdAt: new Date(Date.now()) };
-      // socket.emit("sendData", obj);
-      // const response = await axios.post('/message/', obj);
-      // setNewMessage('');
-      // messageInputRef.current.value = '';
+      const obj = { conversationId: currentConv?._id, sender: userId, text: newMessage, createdAt: new Date(Date.now()) };
+      socket.emit("sendData", obj);
+      const response = await createMessage(obj);
+      setNewMessage('');
+      messageInputRef.current.value = '';
 
     } catch (error) {
       console.log("Error sending message:", error);
@@ -164,7 +164,7 @@ function Messages() {
         <div className="chatMenu">
           <div className="chatMenuWrapper">
             <div>
-              {!conversations.length ? (
+              {!conversations?.length ? (
                 <p className="text-center text-sm  mt-4">Sorry, there are no conversations available.</p>
               ) : (
                 conversations.map((c) => (

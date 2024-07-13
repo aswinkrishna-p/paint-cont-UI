@@ -1,8 +1,14 @@
 
 
 const messageRoutes = {
-    createConversation:'/',
-    getConversationByUserId:'/:userId'
+    createConversation:'/conversation/create-conversation',
+    getConversationByUserId:'/conversation/get-conversation',
+    // messages
+
+    createMessage:'/message/create-message',
+    getMessages:'/message/get-messages'
+    
+
 }
 
 

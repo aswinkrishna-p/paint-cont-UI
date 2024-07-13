@@ -22,3 +22,23 @@ export const  getConversationByUserId = async(userId) => {
         console.log(error);
     }
 }
+
+export const  getMessages = async(data) => {
+    try {
+        let response = await axiosApi.post(messageRoutes.getMessages, data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const  createMessage = async(obj) => {
+    try {
+        let response = await axiosApi.post(messageRoutes.createMessage, obj)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
