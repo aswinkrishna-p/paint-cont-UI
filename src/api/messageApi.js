@@ -23,6 +23,7 @@ export const  getConversationByUserId = async(userId) => {
     }
 }
 
+// no backend call made
 export const  getMessages = async(data) => {
     try {
         let response = await axiosApi.post(messageRoutes.getMessages, data)

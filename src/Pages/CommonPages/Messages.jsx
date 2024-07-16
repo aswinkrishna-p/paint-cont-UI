@@ -128,8 +128,8 @@ function Messages() {
 
   const fetchMsgh = async (id) => {
     try {
-      // const response = await axios.get(`/message/${id}`);
-      // setMessageHistory(response?.data);
+      const response = await axios.get(`/message/${id}`);
+      setMessageHistory(response?.data);
       // const data = { conversationId: id }
       // const updateIsSeen = await axios.post('/message/updateIsSeen', data)
     } catch (error) {
