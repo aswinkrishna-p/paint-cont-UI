@@ -10,6 +10,7 @@ import { reportPost } from "../../api/postApi";
 import { getPainterPosts } from "../../api/postApi";
 import { followPainter, getFollowers, getPainter } from "../../api/painterApi";
 import { make_payment } from "../../api/userApi";
+import { socket } from "../../services/Socket/socket";
 
 
 function UserPainterProfile() {
@@ -27,6 +28,7 @@ function UserPainterProfile() {
   const [followers, setFollowers] = useState([]);
   const [showChatModal, setShowChatModal] = useState(false);
   const [outline,setOutline] = useState(false)
+  const [booked,setBooked] = useState(false)
 
   const userToken = localStorage.getItem("user_token");
   const painterToken = localStorage.getItem("painter_token");
@@ -65,7 +67,22 @@ const fetchPainter = async (id) => {
 
 useEffect(() => {
   fetchPainter(id)
-  },[id])
+
+  socket.on("slotBooked", (data) => {
+    if (data.painterId === id) {
+        setSlots((prevSlots) =>
+            prevSlots.map((s) =>
+                s._id === data.slotId ? { ...s, status: "booked" } : s
+            )
+        );
+        fetchPainter()
+    }
+});
+
+return () => {
+    socket.off("slotBooked");
+  };
+ },[id , userId])
   
   // console.log('painter state',painter.username);
   const fetchPainterPosts = async (id) => {
@@ -192,6 +209,12 @@ const makePayment = async (slotId) => {
   }
 }
 
+
+const handleLockedMessage = () => {
+  if (!booked) {
+    toast.error("Book the slot for unlocking the message");
+  }
+};
 
 
 
@@ -368,9 +391,21 @@ const makePayment = async (slotId) => {
     <div className="bg-amber-500 rounded-lg p-3 m-2 cursor-pointer">
       <p onClick={() => makePayment(bookSlot.slotId)}>Book slots</p>
     </div>
-    <div className="bg-orange-900 p-3 rounded-lg">
-      <p>Cancel slot</p>
+
+    {!slots.filter((i)=>i.status === "booked").length ? (
+    <div className="bg-orange-900 p-3 rounded-lg" onClick={handleLockedMessage}>
+      <p> Message Painter</p>
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+       </svg>
     </div>
+
+    ) : (
+
+      <div className="bg-orange-900 p-3 rounded-lg" onClick={() => navigate(`/chat/${id}`)} >
+        <p> Message Painter</p>
+      </div>
+      )}
   </div>
 </div>
 

@@ -5,8 +5,9 @@ const messageRoutes = {
     getConversationByUserId:'/conversation/get-conversation',
     // messages
 
-    createMessage:'/message/create-message',
-    getMessages:'/message/get-messages'
+    createMessage:'/message/create-messages',
+    getMessages:'/message/get-messages',
+    getMessageByConvId:'/message/message-by-id'
     
 
 }

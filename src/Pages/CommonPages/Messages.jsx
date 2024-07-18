@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo, } from 'react';
 import ClientNav from '../../Components/Client/ClientNav';
 import './Messages.css'
 import Conversations from '../../Components/CommonComponents/Message/Conversations/Conversations'
@@ -6,7 +6,7 @@ import Message from '../../Components/CommonComponents/Message/Message'
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import {socket} from '../../services/Socket/socket'
-import { createConversation, createMessage, getConversationByUserId, getMessages } from '../../api/messageApi';
+import { createConversation, createMessage, getConversationByUserId, getMessageByconvId, getMessages } from '../../api/messageApi';
 // import chatEmpty from "../../../assets/chat-removebg-preview.png";
 
 function Messages() {
@@ -20,7 +20,9 @@ function Messages() {
   const navigate = useNavigate()
 
   const user = useSelector((state) => state.user);
-  const userId = user?.currentUser?._id;
+  console.log(user,'user in the page');
+  const userId = user.currentUser?.user?._id;
+  console.log(userId , 'user id');
   const { id } = useParams();
 
   useEffect(() => {
@@ -41,6 +43,7 @@ function Messages() {
         if (id) {
           const data = { senderId: userId, receiverId: id }
           const res = await createConversation(data);
+          console.log(res,'created conver');
           socket.emit("joinNewUser", res.data);
           setConversations(res?.data);
         } else {
@@ -128,7 +131,7 @@ function Messages() {
 
   const fetchMsgh = async (id) => {
     try {
-      const response = await axios.get(`/message/${id}`);
+      const response = await getMessageByconvId(id)
       setMessageHistory(response?.data);
       // const data = { conversationId: id }
       // const updateIsSeen = await axios.post('/message/updateIsSeen', data)
@@ -156,10 +159,8 @@ function Messages() {
 
   return (
     <>
-      <div>
+    
         <ClientNav />
-      </div>
-
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
