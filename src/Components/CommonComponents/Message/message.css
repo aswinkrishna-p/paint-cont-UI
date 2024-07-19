@@ -36,5 +36,5 @@
   
   .message.own .messageText{
     background: linear-gradient(to right, #64129e, #3114b1);
-      color: black;
+      color: orange;
   }

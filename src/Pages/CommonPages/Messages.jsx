@@ -25,6 +25,7 @@ function Messages() {
   console.log(userId , 'user id');
   const { id } = useParams();
 
+  console.log(id,'id in the page');
   useEffect(() => {
     socket.on("connection");
     socket.on("welcome", (data) => {
@@ -47,9 +48,10 @@ function Messages() {
           socket.emit("joinNewUser", res.data);
           setConversations(res?.data);
         } else {
+          console.log('if no id it comes here');
           const res = await getConversationByUserId(userId)
-          socket.emit("joinNewUser", res?.data);
-          setConversations(res?.data);
+          socket.emit("joinNewUser", res?.data.data);
+          setConversations(res?.data.data);
         }
       } catch (error) {
         console.log("Error fetching conversations:", error);
@@ -62,6 +64,7 @@ function Messages() {
     const fetchMsg = async (id) => {
       try {
         const data = { userId, painterId: id };
+        console.log('inside the getmessage fuction');
         const response = await getMessages(data)
         if (response?.data?.success) {
           setMessageHistory(response?.data?.messageHistory);
@@ -132,7 +135,7 @@ function Messages() {
   const fetchMsgh = async (id) => {
     try {
       const response = await getMessageByconvId(id)
-      setMessageHistory(response?.data);
+      setMessageHistory(response?.data.data);
       // const data = { conversationId: id }
       // const updateIsSeen = await axios.post('/message/updateIsSeen', data)
     } catch (error) {
@@ -166,7 +169,7 @@ function Messages() {
           <div className="chatMenuWrapper">
             <div>
               {!conversations?.length ? (
-                <p className="text-center text-sm  mt-4">Sorry, there are no conversations available.</p>
+                <p className="text-center text-sm  mt-4">Sorry, there are no conversations available. problem in getConversationByUserId have to be fixed</p>
               ) : (
                 conversations.map((c) => (
                   <div onClick={() => { setCurrentConv(c); fetchMsgh(c?._id); }} key={c._id}>
