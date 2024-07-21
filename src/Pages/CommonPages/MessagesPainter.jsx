@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo, } from 'react';
-import ClientNav from '../../Components/Client/ClientNav';
+import PainterNav from '../../Components/Painter/PainterNav';
 import './Messages.css'
 import Conversations from '../../Components/CommonComponents/Message/Conversations/Conversations'
 import Message from '../../Components/CommonComponents/Message/Message'
@@ -19,9 +19,9 @@ function Messages() {
   const messageInputRef = useRef(null);
   const navigate = useNavigate()
 
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.painter.currentUser)
   console.log(user,'user in the page');
-  const userId = user.currentUser?.user?._id;
+  const userId = user.user?._id;
   console.log(userId , 'user id');
   const { id } = useParams();
 
@@ -165,7 +165,7 @@ function Messages() {
   return (
     <>
     
-        <ClientNav />
+        < PainterNav/>
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">

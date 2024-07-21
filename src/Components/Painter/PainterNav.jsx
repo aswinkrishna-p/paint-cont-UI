@@ -48,9 +48,9 @@ function PainterNav(props) {
           <a href="#" className="text-white">
             Painter
           </a>
-          <a href="#" className="text-white">
+          <span onClick={() => Navigate('/painter/chat')} className="text-white cursor-pointer">
             Chat
-          </a>
+            </span>
           <a href="#" className="text-white">
             Works
           </a>

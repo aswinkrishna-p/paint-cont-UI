@@ -19,6 +19,7 @@ import PainterProtectedRoute from './Routes/PainterProtectedRoutes';
 import PainterSlotAdd from './Pages/Painters/PainterSlotAdd';
 import Messages from './Pages/CommonPages/Messages';
 import UserSuccessPage from './Pages/Users/userSuccessPage';
+import MessagesPainter from './Pages/CommonPages/MessagesPainter';
 
 function App(props) {
   return (
@@ -49,6 +50,7 @@ function App(props) {
       <Route path='painter/login' element = {<PainterLogin/>} />
       <Route path='painter/otp' element = {<PainterOtpPage/>} />
       <Route path='painter/profile' element = {<PainterProtectedRoute allowedRole={'painter'}> <PainterProfile/> </PainterProtectedRoute>} />
+      <Route path='painter/chat' element = {<PainterProtectedRoute allowedRole={'painter'}> <MessagesPainter/> </PainterProtectedRoute>} />
       <Route path='painter/slot' element = {<PainterSlotAdd/>} />
     </Routes>
 
