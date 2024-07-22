@@ -20,6 +20,7 @@ import PainterSlotAdd from './Pages/Painters/PainterSlotAdd';
 import Messages from './Pages/CommonPages/Messages';
 import UserSuccessPage from './Pages/Users/userSuccessPage';
 import MessagesPainter from './Pages/CommonPages/MessagesPainter';
+import AdminPostManagement from './Pages/Admin/AdminPostManagement';
 
 function App(props) {
   return (
@@ -32,6 +33,7 @@ function App(props) {
       <Route path='/dashboard' element = {<AdminDash/>} />
       <Route path='/user' element = {<AdminUserManagement/>} />
       <Route path='/painter' element = {<AdminPainterManagement/>} />
+      <Route path='/posts' element = {<AdminPostManagement/>} />
 
       {/* userRoutes */}
       <Route path='/' element = {<Home/>} />
