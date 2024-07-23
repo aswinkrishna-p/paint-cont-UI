@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import AdminNav from '../../Components/Admin/AdminNav';
 import ClientPosts from '../../Components/Client/ClientPosts';
 import toast from "react-hot-toast";
+import { deletePosts, GetDeletePosts } from '../../api/adminApi';
 
 function AdminPostManagement() {
   const [posts, setPosts] = useState([]);
 
   const fetchPost = async () => {
     try {
-      const response = await axios.get(AdminEndpoints.fetchpost);
+      console.log('inside fetch post');
+      const response = await GetDeletePosts()
       if (response.data) {
         setPosts(response.data.posts);
       }
@@ -19,9 +21,9 @@ function AdminPostManagement() {
 
   const deletePost = async (postId) => {
     try {
-      const response = await axios.delete(AdminEndpoints.deletePost(postId));
+      const response = await deletePosts(postId)
       console.log(response, "I'm here ");
-      if (response.status === 200) {
+      if (response.success) {
         toast.success("Post deleted successfully");
         fetchPost(); // Refresh the posts after deletion
       } else {

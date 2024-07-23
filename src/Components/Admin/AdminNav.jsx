@@ -57,11 +57,11 @@ function AdminNav() {
                     </ListItemPrefix>
                     Painters
                 </ListItem>
-                <ListItem className='m-2'>
+                <ListItem className='m-2'onClick={() => Navigate('/posts')}>
                     <ListItemPrefix>
-                        <UserCircleIcon className="h-5 w-5" />
+                        <InboxIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    Hashtags
+                    Posts
                 </ListItem>
                 <ListItem className='m-2'>
                     <ListItemPrefix>

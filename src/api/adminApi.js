@@ -66,3 +66,23 @@ export const BlockPainter = async (painterId) =>{
         console.log(error);
     }
 }
+
+export const deletePosts = async (postId) =>{
+    try {
+        const response = await axiosApi.delete(`${adminRoutes.deletePosts}/${postId}`)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const GetDeletePosts = async (painterId) =>{
+    try {
+        const response = await axiosApi.get(adminRoutes.getPosts)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
