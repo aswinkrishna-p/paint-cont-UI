@@ -11,14 +11,15 @@ function AdminPostManagement() {
     try {
       console.log('inside fetch post');
       const response = await GetDeletePosts()
-      if (response.data) {
-        setPosts(response.data.posts);
+      if (response.data.success) {
+        setPosts(response.data.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(posts ,typeof(posts) ,'posts in admin post mang');
   const deletePost = async (postId) => {
     try {
       const response = await deletePosts(postId)
@@ -61,14 +62,16 @@ function AdminPostManagement() {
             posts.map((post, index) => {
               return (
                 <div className="block rounded-xl bg-[#50187b67] m-1 md:m-5 h-100 md:h-[470px]" key={post._id}>
+                  <div className="flex justify-center ">
+                  <ClientPosts posts={posts} />
+                  </div>
                   <p
                     onClick={() => handleDeletePost(post._id)}  // Pass the postId correctly here
                     className="text-white text-center border border-white-500 bg-red-700 rounded-md px-4 py-2 cursor-pointer hover:bg-red-900 transition duration-300 ease-in-out"
                   >
                     Delete
                   </p>
-                  <div className="flex justify-center mr-5 mt-3"></div>
-                  <ClientPosts showcase={true} post={post} />
+
                 </div>
               );
             })
