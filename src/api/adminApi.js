@@ -16,6 +16,27 @@ export const adminLogin = async (username ,password) =>{
     }
 }
 
+export const adminDashBoard = async () =>{
+
+    try {
+        let response = await axiosApi.post(adminRoutes.dashboard)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const adminGraph = async () =>{
+
+    try {
+        let response = await axiosApi.post(adminRoutes.getGraph)
+        console.log('response from backend',response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const adminlogout = async () =>{
     try {

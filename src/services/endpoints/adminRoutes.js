@@ -8,7 +8,8 @@ const adminRoutes = {
     BlockUser:'/admin/blockuser',
     BlockPainter:'/admin/blockpainter',
     getPosts:'/admin/posts',
-    deletePosts:'/admin/delete-post'
+    deletePosts:'/admin/delete-post',
+    getGraph:'/admin/graph'
 }
 
 export default adminRoutes
