@@ -58,15 +58,16 @@ function ClientNav(props) {
           <span onClick={() => Navigate('/')} className="text-white cursor-pointer">
             Home
           </span>
-          <a href="#" className="text-white">
-            Painter
-          </a>
           <span onClick={() => Navigate('/chat')} className="text-white cursor-pointer">
             Chat
           </span>
-          <a href="#" className="text-white">
-            Designs
-          </a>
+          <span onClick={() => Navigate('/about')} className="text-white cursor-pointer">
+            About Us
+          </span>
+          <span onClick={() => Navigate('/chat')} className="text-white cursor-pointer">
+            Contact Us
+          </span>
+
         </div>
 
         <div className="relative flex w-full gap-2 md:w-max">

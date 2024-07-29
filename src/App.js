@@ -21,6 +21,7 @@ import Messages from './Pages/CommonPages/Messages';
 import UserSuccessPage from './Pages/Users/userSuccessPage';
 import MessagesPainter from './Pages/CommonPages/MessagesPainter';
 import AdminPostManagement from './Pages/Admin/AdminPostManagement';
+import ClientAboutPage from './Pages/Users/UserAboutPage';
 
 function App(props) {
   return (
@@ -42,6 +43,7 @@ function App(props) {
       <Route path='/otp' element = {<UserOtpPage/>} />
       <Route path='/chat' element = {<Messages/>} />
       <Route path='/chat/:id' element = {<Messages/>} />
+      <Route path='/about' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientAboutPage/> </ClientProtectedRoute> } />
       <Route path='/profile' element = {<ClientProtectedRoute allowedRole={'user'}> <Profile/> </ClientProtectedRoute> } />
       <Route path='/painterprofile/:id' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientPainterProfile/> </ClientProtectedRoute>} />
       <Route path='/payment-success' element = {<ClientProtectedRoute allowedRole={'user'}> <UserSuccessPage/> </ClientProtectedRoute>} />
