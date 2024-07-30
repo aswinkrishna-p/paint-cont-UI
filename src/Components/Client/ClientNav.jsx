@@ -64,7 +64,7 @@ function ClientNav(props) {
           <span onClick={() => Navigate('/about')} className="text-white cursor-pointer">
             About Us
           </span>
-          <span onClick={() => Navigate('/chat')} className="text-white cursor-pointer">
+          <span onClick={() => Navigate('/contact')} className="text-white cursor-pointer">
             Contact Us
           </span>
 
