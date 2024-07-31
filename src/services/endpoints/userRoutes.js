@@ -9,7 +9,8 @@ const userRoutes = {
     search_painter:"/user/search",
     profileupdate:"/user/profile-update",
     getPosts:'/user/get-all-posts',
-    payment:'/user/make-payment'
+    payment:'/user/make-payment',
+    contact:'/user/contact'
 }
 
 
