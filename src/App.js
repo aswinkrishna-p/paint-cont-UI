@@ -23,6 +23,7 @@ import MessagesPainter from './Pages/CommonPages/MessagesPainter';
 import AdminPostManagement from './Pages/Admin/AdminPostManagement';
 import ClientAboutPage from './Pages/Users/UserAboutPage';
 import ClientContact from './Pages/Users/UserContactPage';
+import NotFoundPage from './Pages/404';
 
 function App(props) {
   return (
@@ -30,6 +31,12 @@ function App(props) {
 
    <BrowserRouter>
     <Routes>
+
+
+      {/* Extraaa */}
+
+      <Route path='*' element={<NotFoundPage/>} />
+
       {/* adminRoutes */}
       <Route path='/adminlogin' element = {<AdminLogin/>} />
       <Route path='/dashboard' element = {<AdminDash/>} />
