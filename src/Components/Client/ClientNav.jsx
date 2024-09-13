@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 // import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
-import { RiUserLine ,RiLogoutCircleLine } from 'react-icons/ri'  // Importing profile and logout icons
+import { RiUserLine ,RiLogoutCircleLine ,RiMenuLine} from 'react-icons/ri'  // Importing profile and logout icons
 import {
  Navbar,
  Typography,
@@ -11,12 +11,18 @@ import {
 } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import { Logout, searchPainter } from '../../api/userApi';
+import Sidebar from '../CommonComponents/SideBar/Sidebar';
 
 function ClientNav(props) {
 
   const Navigate = useNavigate()
   const [searchQuery,setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   const handleSearch =  async () => {
     try {
@@ -40,6 +46,7 @@ function ClientNav(props) {
 
 
     return (
+      <div>
       <Navbar
         variant="gradient"
         color=""
@@ -55,7 +62,12 @@ function ClientNav(props) {
             Paintcont
           </Typography>
 
-          <div className="flex md:flex flex-wrap gap-4 sm:gap-14 md:mr-4 sm:mr-4">
+          <RiMenuLine
+              className="text-2xl cursor-pointer md:hidden"
+              onClick={toggleSidebar}
+            />
+
+          <div className="hidden md:flex md:flex-wrap gap-4 sm:gap-14 md:mr-4 sm:mr-4">
             {/* Convert text into links */}
             <span
               onClick={() => Navigate("/")}
@@ -119,7 +131,7 @@ function ClientNav(props) {
           </div>
 
           {/* Adding profile and logout icons */}
-          <div className="flex items-center gap-3">
+          <div className=" hidden md:flex items-center gap-3">
             <span
               onClick={() => Navigate("/profile")}
               className="cursor-pointer"
@@ -133,6 +145,9 @@ function ClientNav(props) {
           </div>
         </div>
       </Navbar>
+
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} Navigate={Navigate} logout={logout} />
+      </div>
     );
 }
 

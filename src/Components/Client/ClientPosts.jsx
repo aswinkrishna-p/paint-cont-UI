@@ -129,7 +129,7 @@ function ClientPosts({ posts }) {
   }
 
   return (
-    <div className="bg-[#0D0E26] w-full m-5 h-auto overflow-y-auto mt-[4rem] p-3"> {/* Adjusted margin-top */}
+    <div className="bg-[#0D0E26] w-full m-5 h-auto overflow-y-auto mt-[80rem] p-3"> {/* Adjusted margin-top */}
     <Toaster/>
       {posts.map((post) => (
         <div key={post._id} className="flex flex-col items-start mb-4 p-2">
@@ -182,9 +182,9 @@ function ClientPosts({ posts }) {
                 </button>
               </div>
               {/* Display comments */}
-              <Modal isOpen={showChatModal} onRequestClose={closeModal} className="fixed inset-0 flex items-center justify-center  bg-purple-950 bg-opacity-75 ">
+              <Modal isOpen={showChatModal} onRequestClose={closeModal} className="fixed inset-0 flex items-center justify-center bg-transparent  bg-opacity-75 " overlayClassName=" bg-opacity-75 fixed inset-0" >
          {/* from-purple-900 via-purple-900 to-indigo-800  */}
-        <div className=" bg-[#50187bc4] rounded-lg w-[700px] p-5 h-[560px]">
+        <div className=" bg-[#0D0E26] rounded-lg w-[700px] p-5 h-[560px]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-white">Comments</h2>
             <button onClick={closeModal} className="text-white hover:text-red-600 font-bold">&times;</button>

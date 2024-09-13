@@ -4,7 +4,7 @@ function ClientHash(props) {
     const hashtags = Array(20).fill('#Interior'); // Array to hold the hashtags
 
     return (
-        <div className=" rounded-[22px] bg-[#0D0E26] w-90 m-5 h-auto p-3 text-gray-400">
+        <div className=" rounded-[22px] bg-[#0D0E26] lg:w-[23rem] md:w-60 sm:w-30 mx-auto m-5 h-auto sm:h-48 md:h-56 lg:h-60 p-3 text-gray-400">
             <h2 className="text-lg font-semibold mb-1">#hashtags</h2>
             <div className="grid grid-cols-4 gap-2">
                 {hashtags.map((tag, index) => (
