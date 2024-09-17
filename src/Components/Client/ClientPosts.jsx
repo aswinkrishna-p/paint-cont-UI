@@ -129,7 +129,7 @@ function ClientPosts({ posts }) {
   }
 
   return (
-    <div className="bg-[#0D0E26] w-full m-5 h-auto overflow-y-auto mt-[80rem] p-3"> {/* Adjusted margin-top */}
+    <div className="bg-[#0D0E26] w-full m-5 h-full mt-[8rem] p-3"> {/* Adjusted margin-top */}
     <Toaster/>
       {posts.map((post) => (
         <div key={post._id} className="flex flex-col items-start mb-4 p-2">

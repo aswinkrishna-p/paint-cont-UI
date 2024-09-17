@@ -11,6 +11,7 @@ import { getPainterPosts } from "../../api/postApi";
 import { followPainter, getFollowers, getPainter } from "../../api/painterApi";
 import { make_payment } from "../../api/userApi";
 import { socket } from "../../services/Socket/socket";
+import ClientPosts from "../../Components/Client/ClientPosts";
 
 
 function UserPainterProfile() {
@@ -411,8 +412,8 @@ const handleLockedMessage = () => {
 
 
                 {/* My posts  */} 
-                {painterPosts.map((post) => (
-               <div className=" min-w-[90rem] max-auto rounded-2xl p-5 bg-[#0D0E26] min-h-[30rem]">
+                {/* {painterPosts.map((post) => (
+    <div className=" min-w-[90rem] max-auto rounded-2xl p-5 bg-[#0D0E26] min-h-[30rem]">
            
       <div key={post._id} className="flex flex-col items-start mb-4 p-2">
         <div className="flex items-center bg-gray-800 rounded-2xl mb-2 justify-between w-full h-16">
@@ -441,11 +442,10 @@ const handleLockedMessage = () => {
             )}
             </div>
         </div>
-        {/* Post content */}
+        
         <p className="text-white mb-2">{post.description}</p>
         {post.media && <img src={post.media} alt="Post Media" className="w-full h-[27rem] rounded-xl object-cover" />}
-        
-        {/* Like button and comment box */}
+      
         <div className="flex justify-between w-full mt-2">
           <button className="flex items-center text-white">
             <FiHeart className="mr-2" /> Like
@@ -461,18 +461,16 @@ const handleLockedMessage = () => {
                 <FiSend />
               </button>
             </div>
-            {/* Display comments */}
-            {/* <div className="mt-2 bg-gray-800 p-2 rounded-lg">
-              {post.comments && post.comments.map((comment, index) => (
-                <p key={index} className="text-white mb-1">{comment}</p>
-              ))}
-            </div> */}
           </div>
         </div>
       </div>
               
         </div>
-      ))}
+      ))} */}
+  <div className='h-auto w-full overflow-y-auto flex items-center justify-center'>
+
+      <ClientPosts posts={painterPosts}/>
+  </div>
       </div>
     </>
   );

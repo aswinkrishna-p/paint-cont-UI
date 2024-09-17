@@ -35,9 +35,10 @@ function Home(props) {
   }, []);
 
   return (
-    <div className='h-screen w-full flex flex-row '>
+    <>
       {userToken && <ClientNav />}
       {painterToken && <PainterNav />}
+    <div className='h-screen w-full flex flex-row '>
       <div className="w-[35rem] h-full bg-black">
         <ClientCard />
         <ClientHash />
@@ -47,6 +48,7 @@ function Home(props) {
         <ClientPosts posts={posts} />
       </div>
     </div>
+    </>
   );
 }
 
