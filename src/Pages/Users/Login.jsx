@@ -84,6 +84,16 @@ function Login(props) {
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={(e) => setPassword(e.target.value)}
           />
+
+           <div className="flex w-full justify-end">
+                <button
+                  type="button"
+                  onClick={() => navigate("/resetpass")}
+                  className="text-sm text-gray-700"
+                >
+                  forget password
+                </button>
+              </div>
           <button className=" text-white bg-[#3E45DF] rounded-2xl py-2 px-4 uppercase font-bold hover:bg-[#1c2294] transition duration-300 "> sign in</button>
           <button className=" text-white bg-[#BF0000] rounded-2xl py-2 px-4  font-bold hover:bg-[#bf0000c6] transition duration-300 "> Sign up with google</button>
         </form>

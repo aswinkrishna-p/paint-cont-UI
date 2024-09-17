@@ -24,6 +24,8 @@ import AdminPostManagement from './Pages/Admin/AdminPostManagement';
 import ClientAboutPage from './Pages/Users/UserAboutPage';
 import ClientContact from './Pages/Users/UserContactPage';
 import NotFoundPage from './Pages/404';
+import ClientResetPassword from './Components/Client/ClientResetPassword';
+import UserForgotPass from './Pages/Users/UserForgotPass';
 
 function App(props) {
   return (
@@ -49,6 +51,8 @@ function App(props) {
       <Route path='/register' element = {<Register/>} />
       <Route path='/login' element = {<Login/>} />
       <Route path='/otp' element = {<UserOtpPage/>} />
+      <Route path='/resetpass' element = {<ClientResetPassword/>} />
+      <Route path='/newpass' element = {<UserForgotPass/>} />
       <Route path='/chat' element = {<Messages/>} />
       <Route path='/chat/:id' element = {<Messages/>} />
       <Route path='/about' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientAboutPage/> </ClientProtectedRoute> } />
