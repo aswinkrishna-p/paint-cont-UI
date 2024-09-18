@@ -45,15 +45,18 @@ function PainterNav(props) {
           <span onClick={() => Navigate('/')} className="text-white cursor-pointer">
             Home
           </span>
-          <a href="#" className="text-white">
-            Painter
-          </a>
+          <span onClick={() => Navigate('/')} className="text-white cursor-pointer">
+            Dashboard
+          </span>
+          <span onClick={() => Navigate('/painter/chat')} className="text-white cursor-pointer">
+            Profile
+            </span>
           <span onClick={() => Navigate('/painter/chat')} className="text-white cursor-pointer">
             Chat
             </span>
-          <a href="#" className="text-white">
-            Works
-          </a>
+          <span onClick={() => Navigate('/painter/chat')} className="text-white cursor-pointer">
+            Schedule Slots
+            </span>
         </div>
 
         <div className="relative flex w-full gap-2 md:w-max">

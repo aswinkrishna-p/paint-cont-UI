@@ -1,12 +1,10 @@
-import React, { useRef, useState,useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import Modal from 'react-modal'
-import { FiMoreHorizontal, FiHeart, FiSend } from 'react-icons/fi'; // Importing additional icons
 import ClientNav from '../../Components/Client/ClientNav';
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
-import { reportPost } from "../../api/postApi";
 import { getPainterPosts } from "../../api/postApi";
 import { followPainter, getFollowers, getPainter } from "../../api/painterApi";
 import { make_payment } from "../../api/userApi";
@@ -22,8 +20,6 @@ function UserPainterProfile() {
   const [slots ,setSlots] = useState([])
   const [bookSlot, setBookSlot] = useState({});
   const [ painterPosts, setPainterPosts] = useState([])
-  const [showReportButton, setShowReportButton] = useState(null);
-  const [reportedPosts, setReportedPosts] = useState([]);
   const [follow, setFollow] = useState(false);
   const [countFollow, setCountFollow] = useState(0);
   const [followers, setFollowers] = useState([]);
@@ -102,31 +98,6 @@ return () => {
   useEffect(() =>{
     fetchPainterPosts(id)
   },[])
-
-
-  const toggleReportButton = (postId) => {
-    setShowReportButton(showReportButton === postId ? null :postId);
-  };
-
-  const handleReport = async (postId) => {
-    if (reportedPosts.includes(postId)) {
-      toast.error('You have already reported this post.');
-      return;
-    }
-
-    try {
-      console.log(postId);
-      const response = await reportPost(postId);
-      if (response.data.success) {
-        setReportedPosts([...reportedPosts, postId]);
-        toast.success('Reported successfully');
-      } else {
-        toast.error('Error in reporting the post.');
-      }
-    } catch (error) {
-      console.log('Error:', error.message);
-    }
-  };
 
   const openModal = async () =>{
     setShowChatModal(true)
@@ -300,77 +271,15 @@ const handleLockedMessage = () => {
             )}
           </div>
         </div>
-        {/* About Me Section */}
-        <div className="flex flex-col m-5 mb-7">
-          <div className="bg-[#0D0E26] shadow rounded-lg p-6">
-            <div>
-              <h2 className="text-xl font-bold mb-4">About Me</h2>
-            </div>
-            <p className="text-gray-700">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              finibus est vitae tortor ullamcorper, ut vestibulum velit
-              convallis. Aenean posuere risus non velit egestas suscipit. Nunc
-              finibus vel ante id euismod. Vestibulum ante ipsum primis in
-              faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam
-              erat volutpat. Nulla vulputate pharetra tellus, in luctus risus
-              rhoncus id.
-              {/* {currentpainter.user.aboutMe} */}
-            </p>
-
-            <h2 className="text-xl font-bold mt-6 mb-4">Experience</h2>
-            <div className="mb-6">
-              <div className="flex justify-between flex-wrap gap-2 w-full">
-                <span className="text-gray-700 font-bold">Web Developer</span>
-                <p>
-                  <span className="text-gray-700 mr-2">at ABC Company</span>
-                  <span className="text-gray-700">2017 - 2019</span>
-                </p>
-              </div>
-              <p className="mt-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                finibus est vitae tortor ullamcorper, ut vestibulum velit
-                convallis. Aenean posuere risus non velit egestas suscipit.
-              </p>
-            </div>
-            <div className="mb-6">
-              <div className="flex justify-between flex-wrap gap-2 w-full">
-                <span className="text-gray-700 font-bold">Web Developer</span>
-                <p>
-                  <span className="text-gray-700 mr-2">at ABC Company</span>
-                  <span className="text-gray-700">2017 - 2019</span>
-                </p>
-              </div>
-              <p className="mt-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                finibus est vitae tortor ullamcorper, ut vestibulum velit
-                convallis. Aenean posuere risus non velit egestas suscipit.
-              </p>
-            </div>
-            <div className="mb-6">
-              <div className="flex justify-between flex-wrap gap-2 w-full">
-                <span className="text-gray-700 font-bold">Web Developer</span>
-                <p>
-                  <span className="text-gray-700 mr-2">at ABC Company</span>
-                  <span className="text-gray-700">2017 - 2019</span>
-                </p>
-              </div>
-              <p className="mt-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                finibus est vitae tortor ullamcorper, ut vestibulum velit
-                convallis. Aenean posuere risus non velit egestas suscipit.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col bg-white h-[35rem] w-[50rem] rounded-2xl mb-6">
-  <p className="m-3 uppercase font-semibold">Available slots:</p>
+        <div className="flex flex-col bg-[#0D0E26] h-[35rem] w-[50rem] rounded-2xl mb-6">
+  <p className="m-3 uppercase text-white font-semibold">Available slots:</p>
 
   {/* Dynamically render slots */}
   {slots?.length > 0? (
     slots.map((slot, index) => (
       <div key={index} className="flex flex-col items-center justify-center m-5">
         {slot.status === "booked" ? (
-        <div className="bg-yellow-500 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">
+        <div className="bg-yellow-600 text-center p-3 px-6 m-2 max-w-52 min-w-52 uppercase">
           <p>Booked</p>
         </div>
         ) :(
@@ -467,10 +376,19 @@ const handleLockedMessage = () => {
               
         </div>
       ))} */}
-  <div className='h-auto w-full overflow-y-auto flex items-center justify-center'>
+      {painterPosts.length > 0 ? (
+        <div className='h-auto w-full overflow-y-auto flex items-center justify-center'>
 
-      <ClientPosts posts={painterPosts}/>
-  </div>
+           <ClientPosts posts={painterPosts}/>
+          </div>
+      ):(
+
+        <div className="flex justify-center items-center  min-w-[70rem] max-auto rounded-2xl p-5 bg-[#0D0E26] min-h-[20rem]">
+          <h1  className="text-white font-semibold text-2xl">no posts available</h1>
+        </div>
+
+      )}
+
       </div>
     </>
   );
