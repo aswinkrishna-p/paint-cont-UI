@@ -3,6 +3,8 @@ const painterRoutes = {
     register:'/painter/register',
     login:'/painter/login',
     otp:'/painter/otp',
+    resentotpverify:'/painter/verify-resentotp',
+    resetpass:'/painter/newpass',
     resendOTP:'/painter/resend-otp',
     getPainter:'/painter/get-painter',
     follow:'/painter/follow-painter',

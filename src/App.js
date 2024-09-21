@@ -26,6 +26,8 @@ import ClientContact from './Pages/Users/UserContactPage';
 import NotFoundPage from './Pages/404';
 import ClientResetPassword from './Components/Client/ClientResetPassword';
 import UserForgotPass from './Pages/Users/UserForgotPass';
+import PainterResetPassOtp from './Components/Painter/PainterResetPassOtp';
+import PainterForgotPass from './Pages/Painters/PainterForgotPass';
 
 function App(props) {
   return (
@@ -66,6 +68,8 @@ function App(props) {
       <Route path='painter/register' element = {<PainterRegister/>} />
       <Route path='painter/login' element = {<PainterLogin/>} />
       <Route path='painter/otp' element = {<PainterOtpPage/>} />
+      <Route path='painter/resetpass' element = {<PainterResetPassOtp/>} />
+      <Route path='painter/newpass' element = {<PainterForgotPass/>} />
       <Route path='painter/profile' element = {<PainterProtectedRoute allowedRole={'painter'}> <PainterProfile/> </PainterProtectedRoute>} />
       <Route path='painter/chat' element = {<PainterProtectedRoute allowedRole={'painter'}> <MessagesPainter/> </PainterProtectedRoute>} />
       <Route path='painter/slot' element = {<PainterSlotAdd/>} />

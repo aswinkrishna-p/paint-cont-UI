@@ -15,12 +15,12 @@ function PainterLogin(props) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-//   useEffect(() => {
-//     if (localStorage.getItem("painter_token")) {
-//       //if already logged in
-//       navigate('/')
-//     }
-//   }, [navigate])
+  useEffect(() => {
+    if (localStorage.getItem("painter_token")) {
+      //if already logged in
+      navigate('/')
+    }
+  }, [navigate])
 
   const handleSubmit = async (event) =>{
 
@@ -46,10 +46,9 @@ function PainterLogin(props) {
       if(res.data.success){
         dispatch(signInSuccess(res.data))
         localStorage.setItem('painter_token',res.data.token)
-      }
-      
-      if(res.data.success){
         navigate('/')
+      }else if(res.data){
+          toast.error(res.data.message)
       }else{
         toast.error(res.data.message)
       }
@@ -85,6 +84,16 @@ function PainterLogin(props) {
             className="block bg-[white] w-72 px-4 py-2 mt-2   border rounded-md "
             onChange={(e) => setPassword(e.target.value)}
           />
+
+            <div className="flex w-full justify-end">
+                <button
+                  type="button"
+                  onClick={() => navigate("/painter/resetpass")}
+                  className="text-sm text-gray-700"
+                >
+                  forget password
+                </button>
+              </div>
           <button className=" text-white bg-[#3E45DF] rounded-2xl py-2 px-4 uppercase font-bold hover:bg-[#1c2294] transition duration-300 ">sign in</button>
           <button className=" text-white bg-[#BF0000] rounded-2xl py-2 px-4  font-bold hover:bg-[#bf0000c6] transition duration-300 "> Sign up with google</button>
         </form>

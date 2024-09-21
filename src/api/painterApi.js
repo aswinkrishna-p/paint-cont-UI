@@ -35,11 +35,34 @@ export const otpVerification = async (email, otp) =>{
         console.log(error);
     }
 }
+
+export const resentOtpVerification = async (email, otp) =>{
+    try {
+        console.log('inside otp verify front');
+        let data = { email ,otp}
+        let response = await axiosApi.post(painterRoutes.resentotpverify ,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
 export const resendOTP = async (email) =>{
     try {
         console.log('inside otp verify front');
         let data = { email}
         let response = await axiosApi.post(painterRoutes.resendOTP ,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const resetPassword = async (email,newpass) =>{
+    try {
+        console.log('inside resetpass front');        
+        let response = await axiosApi.patch(painterRoutes.resetpass ,{email,newpass})
         console.log('response from backend' ,response);
         return response
     } catch (error) {
