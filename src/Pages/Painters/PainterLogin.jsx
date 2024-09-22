@@ -42,13 +42,10 @@ function PainterLogin(props) {
       dispatch(signInStart())
 
       const res = await login(email, password)
-      console.log('userdataa ',res.data.token);
-      if(res.data.success){
+      if(res.data && res.data.success){
         dispatch(signInSuccess(res.data))
         localStorage.setItem('painter_token',res.data.token)
         navigate('/')
-      }else if(res.data){
-          toast.error(res.data.message)
       }else{
         toast.error(res.data.message)
       }
