@@ -42,17 +42,25 @@ function PainterLogin(props) {
       dispatch(signInStart())
 
       const res = await login(email, password)
-      if(res.data && res.data.success){
+      console.log(res,'response from back painter');
+      
+      if(res.data.success){
         dispatch(signInSuccess(res.data))
         localStorage.setItem('painter_token',res.data.token)
         navigate('/')
-      }else{
+      }else {
         toast.error(res.data.message)
       }
     } catch (error) {
-      dispatch(signInFailure(error.message))
-      console.log(error.message);
+    if (error.response && error.response.data) {
+      // Display error returned by the backend
+      toast.error(error.response.data.message || "An error occurred");
+    } else {
+      toast.error("Something went wrong. Please try again.");
     }
+    dispatch(signInFailure(error.message));
+    console.log("Login error:", error.message);
+  }
   }
 
   return (

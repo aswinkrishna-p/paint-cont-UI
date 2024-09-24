@@ -42,7 +42,7 @@ function Login(props) {
       dispatch(signInStart())
 
       const res = await login(email, password)
-      console.log('userdataa ',res.data.token);
+      console.log('userdataa ',res);
       if(res.data && res.data.success){
         dispatch(signInSuccess(res.data))
         localStorage.setItem('user_token',res.data.token)
