@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import {useDispatch} from 'react-redux'
 import toast,{Toaster} from 'react-hot-toast'
 import {Link, useNavigate} from 'react-router-dom'
+import pfImage from '../../Assets/paint-roller1.gif'
 import { signup } from '../../api/userApi';
 import { signInStart ,signInFailure ,signInSuccess  } from '../../Redux/user/UserSlice';
 import { isValidEmail, isValidPassword, isValiduserName } from '../../services/validations';
@@ -84,6 +85,10 @@ const handleChange =(event) =>{
     return (
         <div className=" w-screen h-screen flex flex-col justify-center items-center bg-cover bg-center ">
           <Toaster/>
+          <div className='flex flex-row w-full justify-around'>
+          <div className="sm:flex-shrink-0 flex justify-center ">
+              <img src={pfImage} alt="Headline" className="w-[600px] h-[500px] rounded-[25px]" />
+       </div>
       <div className="flex flex-col items-center gap-4 w-96 h-auto  bg-[#0D0E26] rounded-md">
         <div>
           <h1 className="text-white uppercase mt-7 font-semibold text-3xl ">Create Account</h1>
@@ -126,6 +131,7 @@ const handleChange =(event) =>{
           <button className=" text-white bg-[#BF0000] rounded-2xl py-2 px-4  font-bold hover:bg-[#bf0000c6] transition duration-300 "> Sign up with google</button>
           <span className="text-white uppercase text-center">Already have an account? <Link to= '/login' className="font-bold text-blue-700" >Login</Link> </span>
         </form>
+      </div>
       </div>
     </div> 
     );
