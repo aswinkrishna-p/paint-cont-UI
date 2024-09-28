@@ -7,6 +7,7 @@ import { signInFailure, signInStart, signInSuccess } from "../../Redux/user/User
 import { login } from "../../api/userApi";
 import toast ,{Toaster} from "react-hot-toast";
 import { isValidEmail, isValidPassword } from "../../services/validations";
+import '../../index.css'
 
 
 function Login(props) {
@@ -65,10 +66,10 @@ function Login(props) {
     <div className=" w-screen h-screen flex flex-col justify-center  items-center bg-cover bg-center ">
       <Toaster/>
       <div className="flex flex-row w-full justify-around">
-      <div className="sm:flex-shrink-0 flex justify-center ">
-              <img src={pfImage} alt="Headline" className="w-[600px] h-[500px] rounded-[25px]" />
+      <div className="sm:flex-shrink-0 flex justify-center shadow-2xl">
+              <img src={pfImage} alt="Headline" className="w-[600px] h-[500px] rounded-[25px] " />
        </div>
-      <div className="flex flex-col items-center gap-4 w-96 bg-[#0D0E26] rounded-lg">
+      <div className="flex flex-col items-center gap-4 w-96 bg-white rounded-lg shadow-2xl ">
         <div>
           <h1 className="text-white uppercase mt-7 font-semibold text-3xl "> sign in</h1>
         </div>
