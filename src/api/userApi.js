@@ -124,6 +124,19 @@ export const searchPainter = async (data) =>{
     }
 }
 
+export const getBookings = async (userId) =>{
+    try {
+        
+        let response = await axiosApi.get(`${userRoutes.getBookings}/${userId}`)
+        console.log('response from backend',response);
+        return response
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 export const getContact = async (data) =>{
     try {
         let response = await axiosApi.post(userRoutes.contact, data)

@@ -50,9 +50,9 @@ function ClientNav(props) {
       <Navbar
         variant="gradient"
         color=""
-        className=" mx-auto max-w-full w-full px-4 py-3 rounded-none h-[60px] fixed z-50 bg-black"
+        className=" mx-auto max-w-full w-full px-4 py-3 rounded-none h-[60px] fixed z-50 bg-white custom-box-shadow"
       >
-        <div className="flex flex-wrap items-center justify-between gap-y-4 text-white">
+        <div className="flex flex-wrap items-center justify-between gap-y-4 text-black">
           <Typography
             as="a"
             href="#"
@@ -71,25 +71,31 @@ function ClientNav(props) {
             {/* Convert text into links */}
             <span
               onClick={() => Navigate("/")}
-              className="text-white cursor-pointer"
+              className="text-black cursor-pointer"
             >
               Home
             </span>
             <span
               onClick={() => Navigate("/chat")}
-              className="text-white cursor-pointer"
+              className="text-black cursor-pointer"
             >
               Chat
             </span>
             <span
+              onClick={() => Navigate("/bookings")}
+              className="text-black cursor-pointer"
+            >
+              Bookings
+            </span>
+            <span
               onClick={() => Navigate("/about")}
-              className="text-white cursor-pointer"
+              className="text-black cursor-pointer"
             >
               About Us
             </span>
             <span
               onClick={() => Navigate("/contact")}
-              className="text-white cursor-pointer"
+              className="text-black cursor-pointer"
             >
               Contact Us
             </span>
@@ -98,11 +104,11 @@ function ClientNav(props) {
           <div className="relative flex w-full gap-2 md:w-max">
             <Input
               type="search"
-              color="white"
+              color="black"
               label="Type here..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-10 bg-transparent border-b border-white focus:outline-none"
+              className="pr-10 bg-transparent border-b border-black focus:outline-none"
               containerProps={{
                 className: "min-w-[288px]",
               }}

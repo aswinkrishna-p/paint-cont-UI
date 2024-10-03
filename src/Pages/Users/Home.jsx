@@ -39,7 +39,7 @@ function Home(props) {
       {userToken && <ClientNav />}
       {painterToken && <PainterNav />}
     <div className='h-screen w-full flex flex-row '>
-      <div className="w-[35rem] h-full bg-black">
+      <div className="w-[35rem] h-full bg-white">
         <ClientCard />
         <ClientHash />
         <ClientVIP />

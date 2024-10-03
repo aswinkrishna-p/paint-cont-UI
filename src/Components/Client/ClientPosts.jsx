@@ -129,10 +129,10 @@ function ClientPosts({ posts }) {
   }
 
   return (
-    <div className="bg-[#0D0E26] w-full m-5 h-full mt-[8rem] p-3"> {/* Adjusted margin-top */}
+    <div className="bg-white  w-full m-5 h-full mt-[8rem] p-3"> {/* Adjusted margin-top */}
     <Toaster/>
       {posts.map((post) => (
-        <div key={post._id} className="flex flex-col items-start mb-4 p-2">
+        <div key={post._id} className="flex flex-col items-start mb-4 p-2 border custom-box-shadow">
           <div className="flex items-center bg-gray-800 rounded-2xl mb-2 justify-between w-full h-16">
             <div className="flex items-center">
               <div className="rounded-full overflow-hidden w-14 h-14 m-2">
@@ -142,42 +142,42 @@ function ClientPosts({ posts }) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="text-white font-semibold cursor-pointer" onClick={() => handleNavigate(post.painterId._id)}>{post.painterId.username}</p>
+              <p className="text-black font-semibold cursor-pointer" onClick={() => handleNavigate(post.painterId._id)}>{post.painterId.username}</p>
             </div>
             <div className="flex items-center">
-              <button className="text-white p-1 rounded-xl bg-blue-gray-300 mr-2">Connect</button>
-              <FiMoreHorizontal className="text-white cursor-pointer" onClick={() => toggleReportButton(post._id)} />
+              <button className="text-black p-1 rounded-xl bg-blue-gray-300 mr-2">Connect</button>
+              <FiMoreHorizontal className="text-black cursor-pointer" onClick={() => toggleReportButton(post._id)} />
               {showReportButton === post._id && !reportedPosts.includes(post._id) &&  (
-              <div className=" top-8 right-0 bg-gray-800 text-white rounded-md shadow-lg">
-                <button className="text-white" onClick={ () => handleReport(post._id)}>Report</button>
+              <div className=" top-8 right-0 bg-gray-800 text-black rounded-md shadow-lg">
+                <button className="text-black" onClick={ () => handleReport(post._id)}>Report</button>
               </div>
             )}
             {reportedPosts.includes(post._id) && (
               <div className="bg-gray-900 p-2 rounded-md bottom-7 right-0">
-                <p className="text-white">Reported</p>
+                <p className="text-black">Reported</p>
               </div>
             )}
             </div>
           </div>
           {/* Post content */}
-          <p className="text-white mb-2">{post.description}</p>
+          <p className="text-black mb-2">{post.description}</p>
           {post.media && <img src={post.media} alt="Post Media" className="w-full h-[27rem] rounded-xl object-cover" />}
           
           {/* Like button and comment box */}
           <div className="flex justify-between w-full mt-2">
-            <button className="flex items-center text-white" onClick={() => toggleLike(post._id)}>
-            <FiHeart className="mr-2" color={likedPosts.includes(post._id) ? "red" : "white"} /> Like
+            <button className="flex items-center text-black" onClick={() => toggleLike(post._id)}>
+            <FiHeart className="mr-2" color={likedPosts.includes(post._id) ? "red" : "black"} /> Like
               
             </button>
             <div className="flex flex-col w-52 ">
-              <div className="flex items-center justify-between border-b-2 rounded-md">
+              <div className="flex items-center justify-between border-b-2 border rounded-md">
                 <input 
                   type="text" 
                   placeholder="Add a comment..." 
-                  className="bg-transparent text-white flex-1 w-8 p-1 focus:outline-none"
+                  className="bg-transparent text-black flex-1 w-8 p-1 focus:outline-none shadow-lg"
                   onClick={() => openModal(post._id)}
                 />
-                <button className="text-white w-6 ">
+                <button className="text-black w-6 ">
                   <FiSend />
                 </button>
               </div>

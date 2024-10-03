@@ -100,9 +100,9 @@ export const updateDetails = async (painterId,details) =>{
     }
 }
 
-export const getPainter = async (painterId) =>{
+export const getPainter = async (painterId ,userId) =>{
     try {
-        let response = await axiosApi.get(`${painterRoutes.getPainter}/${painterId}`)
+        let response = await axiosApi.get(`${painterRoutes.getPainter}/${painterId}/${userId}`)
         console.log('response from backend' ,response);
         return response
     } catch (error) {

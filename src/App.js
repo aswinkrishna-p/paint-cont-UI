@@ -28,6 +28,7 @@ import ClientResetPassword from './Components/Client/ClientResetPassword';
 import UserForgotPass from './Pages/Users/UserForgotPass';
 import PainterResetPassOtp from './Components/Painter/PainterResetPassOtp';
 import PainterForgotPass from './Pages/Painters/PainterForgotPass';
+import Bookings from './Pages/Users/Bookings';
 
 function App(props) {
   return (
@@ -57,6 +58,7 @@ function App(props) {
       <Route path='/newpass' element = {<UserForgotPass/>} />
       <Route path='/chat' element = {<Messages/>} />
       <Route path='/chat/:id' element = {<Messages/>} />
+      <Route path='/bookings' element = {<Bookings/>} />
       <Route path='/about' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientAboutPage/> </ClientProtectedRoute> } />
       <Route path='/contact' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientContact/> </ClientProtectedRoute> } />
       <Route path='/profile' element = {<ClientProtectedRoute allowedRole={'user'}> <Profile/> </ClientProtectedRoute> } />

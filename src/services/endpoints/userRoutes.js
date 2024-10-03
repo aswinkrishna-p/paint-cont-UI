@@ -10,7 +10,7 @@ const userRoutes = {
     add_address:"/user/add-address",
     search_painter:"/user/search",
     profileupdate:"/user/profile-update",
-    getPosts:'/user/get-all-posts',
+    getBookings:'/user/bookings',
     payment:'/user/make-payment',
     contact:'/user/contact'
 }

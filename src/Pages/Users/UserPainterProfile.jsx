@@ -39,11 +39,13 @@ function UserPainterProfile() {
 const currentUser = useSelector((state) => state.user.currentUser);
 const userId = currentUser.user._id
 // console.log('current user ',currentUser);
+// console.log(id,'painter id');
+
 
 const fetchPainter = async (id) => {
   try {
     // console.log('inside hereeeeeeeee');
-    const response = await getPainter(id);
+    const response = await getPainter(id , userId);
     if (response.data && response.data.painter) {
       setPainter(response.data.painter.data);
       console.log('painterreeeee',response.data.painter.data);
@@ -194,14 +196,14 @@ const handleLockedMessage = () => {
   return (
     <>
       <ClientNav/>
-      <div className="flex h-full flex-col items-center bg-deep-orange-900">
+      <div className="flex h-full flex-col items-center ">
         <Toaster/>
         <div className=" pt-8 w-full ">
           <div className="flex flex-col gap-6 mt-7 w-full">
             {/* Profile Section */}
             {painter ? (
               <div className="relative mb-6">
-                <div className="bg-white shadow rounded-lg p-6">
+                <div className="bg-white shadow-2xl rounded-lg p-6">
                   <div className="flex flex-col items-start">
                     <img
                       src={imageUrl || painter.profile || "https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"}
@@ -271,8 +273,8 @@ const handleLockedMessage = () => {
             )}
           </div>
         </div>
-        <div className="flex flex-col bg-[#0D0E26] h-[35rem] w-[50rem] rounded-2xl mb-6">
-  <p className="m-3 uppercase text-white font-semibold">Available slots:</p>
+        <div className="flex flex-col bg-white border custom-box-shadow h-[35rem] w-[50rem] rounded-2xl mb-6">
+  <p className="m-3 uppercase text-black font-semibold">Available slots:</p>
 
   {/* Dynamically render slots */}
   {slots?.length > 0? (
