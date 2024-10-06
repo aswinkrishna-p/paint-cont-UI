@@ -100,9 +100,39 @@ export const updateDetails = async (painterId,details) =>{
     }
 }
 
-export const getPainter = async (painterId ,userId) =>{
+export const editSlots = async (slotId,data) =>{
     try {
-        let response = await axiosApi.get(`${painterRoutes.getPainter}/${painterId}/${userId}`)
+        let response = await axiosApi.patch(`${painterRoutes.editSlot}/${slotId}`,data)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteSlots = async (slotId) =>{
+    try {
+        let response = await axiosApi.delete(`${painterRoutes.deleteSlot}/${slotId}`)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getPainter = async (painterId) =>{
+    try {
+        let response = await axiosApi.get(`${painterRoutes.getPainter}/${painterId}`)
+        console.log('response from backend' ,response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getPainterDashBoard = async (painterId) =>{
+    try {
+        let response = await axiosApi.get(`${painterRoutes.getDashboard}/${painterId}`)
         console.log('response from backend' ,response);
         return response
     } catch (error) {

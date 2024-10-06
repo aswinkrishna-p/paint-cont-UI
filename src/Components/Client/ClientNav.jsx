@@ -115,7 +115,7 @@ function ClientNav(props) {
             />
             <Button
               size="sm"
-              color="white"
+              color="black"
               className="!absolute right-1 top-1 rounded"
               onClick={handleSearch}
             >

@@ -2,7 +2,7 @@ import React from 'react';
 
 function ClientVIP(props) {
     return (
-        <div className="mt-5 p-5 rounded-[22px] bg-white custom-box-shadow lg:w-[23rem] md:w-60 sm:w-30 mx-auto h-60 w-90 sm:h-48 md:h-56 lg:h-60 m-5 text-white">
+        <div className="mt-5 p-5 rounded-[22px] bg-white custom-box-shadow lg:w-[23rem] md:w-60 sm:w-30 mx-auto h-60 w-90 sm:h-48 md:h-56 lg:h-56 m-5 text-white">
             <div className="flex items-center mb-2">
                 <div className="bg-gray-400 rounded-full p-1 flex items-center justify-center w-8 h-8 mr-2">
                     <span className="text-black font-bold">VIP</span>

@@ -45,7 +45,7 @@ const userId = currentUser.user._id
 const fetchPainter = async (id) => {
   try {
     // console.log('inside hereeeeeeeee');
-    const response = await getPainter(id , userId);
+    const response = await getPainter(id);
     if (response.data && response.data.painter) {
       setPainter(response.data.painter.data);
       console.log('painterreeeee',response.data.painter.data);

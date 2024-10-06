@@ -28,33 +28,33 @@ function PainterNav(props) {
         <Navbar
       variant="gradient"
       color=""
-      className=" mx-auto max-w-full w-full px-4 py-3 rounded-none h-[60px] fixed z-50 bg-black"
+      className=" mx-auto max-w-full w-full px-4 py-3 rounded-none h-[60px] fixed z-50 bg-white custom-box-shadow"
     >
-      <div className="flex flex-wrap items-center justify-between gap-y-4 text-white">
+      <div className="flex flex-wrap items-center justify-between gap-y-4 text-black">
         <Typography
           as="a"
           href="#"
           variant="h6"
-          className="mr-4 ml-2 cursor-pointer py-1.5"
+          className="mr-4 ml-2 cursor-pointer py-1.5 "
         >
           Paintcont
         </Typography>
 
         <div className="flex md:flex flex-wrap gap-4 sm:gap-14 md:mr-4 sm:mr-4">
           {/* Convert text into links */}
-          <span onClick={() => Navigate('/')} className="text-white cursor-pointer">
+          <span onClick={() => Navigate('/')} className="text-black cursor-pointer">
             Home
           </span>
-          <span onClick={() => Navigate('/')} className="text-white cursor-pointer">
+          <span onClick={() => Navigate('/painter/dashboard')} className="text-black cursor-pointer">
             Dashboard
           </span>
-          <span onClick={() => Navigate('/painter/chat')} className="text-white cursor-pointer">
+          <span onClick={() => Navigate('/painter/chat')} className="text-black cursor-pointer">
             Profile
             </span>
-          <span onClick={() => Navigate('/painter/chat')} className="text-white cursor-pointer">
+          <span onClick={() => Navigate('/painter/chat')} className="text-black cursor-pointer">
             Chat
             </span>
-          <span onClick={() => Navigate('/painter/chat')} className="text-white cursor-pointer">
+          <span onClick={() => Navigate('/painter/slot')} className="text-black cursor-pointer">
             Schedule Slots
             </span>
         </div>
@@ -62,7 +62,7 @@ function PainterNav(props) {
         <div className="relative flex w-full gap-2 md:w-max">
           <Input
             type="search"
-            color="white"
+            color="black"
             label='Type here...'
             className="pr-10 bg-transparent border-b border-white focus:outline-none"
             containerProps={{
@@ -71,7 +71,7 @@ function PainterNav(props) {
           />
           <Button
             size="sm"
-            color="white"
+            color="black"
             className="!absolute right-1 top-1 rounded"
           >
             Search
