@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
   const navigate = useNavigate();
   const token = localStorage.getItem('painter_token');
 
-  console.log(token,"oooooooooooooooooooooooo");
 
   useEffect(() => {
     try {
@@ -16,16 +15,16 @@ import { useNavigate } from 'react-router-dom';
         if (decode.role !== allowedRole) {
           navigate('/painter/login');
         }
-        // No need for an else block, you can proceed with the rendering logic
+        
       } else {
         navigate('/painter/login');
       }
     } catch (error) {
       navigate('/painter/login');
     }
-  }, [token,navigate,allowedRole]); // Dependency array is empty to run the effect only once
+  }, [token,navigate,allowedRole]); 
 
-  // Render the content based on conditions
+ 
   return <>{children}</>;
 };
 

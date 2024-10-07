@@ -107,9 +107,9 @@ function PainterDashboard(props) {
           <h2 className="text-3xl font-bold mb-6 underline font-serif text-black">Painter Dashboard</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Slots Section */}
-            <div className="bg-[#50187b] p-6 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-semibold mb-4 text-white">My Slots</h3>
-              <div className='border w-20 h-10 flex justify-center items-center bg-green-500 m-2'>
+            <div className="bg-[#edebeb]  p-6 rounded-lg custom-box-shadow">
+              <h3 className="text-2xl font-semibold mb-4 text-black">My Slots</h3>
+              <div className='border w-20 h-10 flex justify-center items-center bg-blue-gray-500 rounded-md m-2'>
                 <Link to={"/painter/slot"}>
                   Add Slot
                 </Link>
@@ -151,27 +151,27 @@ function PainterDashboard(props) {
               />
             </div>
             {/* Payments Section */}
-            <div className="bg-[#50187b] p-6 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-semibold mb-4 text-white">My Payments</h3>
-              <div className="text-lg font-medium mb-4 text-white">
+            <div className="bg-[#edebeb] p-6 rounded-lg custom-box-shadow">
+              <h3 className="text-2xl font-semibold mb-4 text-black">My Payments</h3>
+              <div className="text-lg font-medium mb-4 text-black">
                 Total Profit: {calculateTotalProfit()}₹
               </div>
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                   <tr>
-                    <th className="px-6 py-3 bg-[#6920a4] text-left text-xs font-medium text-white uppercase tracking-wider">No</th>
-                    <th className="px-6 py-3 bg-[#6920a4] text-left text-xs font-medium text-white uppercase tracking-wider">User</th>
-                    <th className="px-6 py-3 bg-[#6920a4] text-left text-xs font-medium text-white uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 bg-[#6920a4] text-left text-xs font-medium text-white uppercase tracking-wider">Amount</th>
+                    <th className="px-6 py-3 bg-blue-gray-500 text-left text-xs font-medium text-white uppercase tracking-wider">No</th>
+                    <th className="px-6 py-3 bg-blue-gray-500 text-left text-xs font-medium text-white uppercase tracking-wider">User</th>
+                    <th className="px-6 py-3 bg-blue-gray-500 text-left text-xs font-medium text-white uppercase tracking-wider">Date</th>
+                    <th className="px-6 py-3 bg-blue-gray-500 text-left text-xs font-medium text-white uppercase tracking-wider">Amount</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {paginate(payments, currentPagePayments).map((payment, index) => (
                     <tr key={index}>
-                      <td className="px-6 py-4 whitespace-nowrap bg-[#6920a4] text-white">{(currentPagePayments - 1) * itemsPerPage + index + 1}</td>
-                      <td className="px-6 py-4 whitespace-nowrap bg-[#6920a4] text-white">{payment?.userId?.username}</td>
-                      <td className="px-6 py-4 whitespace-nowrap bg-[#6920a4] text-white">{new Date(payment?.date).toLocaleDateString()}</td>
-                      <td className="px-6 py-4 whitespace-nowrap bg-[#6920a4] text-white">{payment?.amount}₹</td>
+                      <td className="px-6 py-4 whitespace-nowrap bg-blue-gray-300 text-white">{(currentPagePayments - 1) * itemsPerPage + index + 1}</td>
+                      <td className="px-6 py-4 whitespace-nowrap bg-blue-gray-300 text-white">{payment?.userId?.username}</td>
+                      <td className="px-6 py-4 whitespace-nowrap bg-blue-gray-300 text-white">{new Date(payment?.date).toLocaleDateString()}</td>
+                      <td className="px-6 py-4 whitespace-nowrap bg-blue-gray-300 text-white">{payment?.amount}₹</td>
                     </tr>
                   ))}
                 </tbody>

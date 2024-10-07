@@ -30,6 +30,7 @@ import PainterResetPassOtp from './Components/Painter/PainterResetPassOtp';
 import PainterForgotPass from './Pages/Painters/PainterForgotPass';
 import Bookings from './Pages/Users/Bookings';
 import PainterDashboard from './Pages/Painters/PainterDashboard';
+import AdminProtectedRoute from './Routes/AdminProtectedRoutes';
 
 function App(props) {
   return (
@@ -45,10 +46,10 @@ function App(props) {
 
       {/* adminRoutes */}
       <Route path='/adminlogin' element = {<AdminLogin/>} />
-      <Route path='/dashboard' element = {<AdminDash/>} />
-      <Route path='/user' element = {<AdminUserManagement/>} />
-      <Route path='/painter' element = {<AdminPainterManagement/>} />
-      <Route path='/posts' element = {<AdminPostManagement/>} />
+      <Route path='/dashboard' element = {<AdminProtectedRoute allowedRole={'admin'}> <AdminDash/> </AdminProtectedRoute>} />
+      <Route path='/user' element = { <AdminProtectedRoute allowedRole={'admin'}> <AdminUserManagement/> </AdminProtectedRoute> } />
+      <Route path='/painter' element = { <AdminProtectedRoute allowedRole={'admin'}> <AdminPainterManagement/> </AdminProtectedRoute>} />
+      <Route path='/posts' element = { <AdminProtectedRoute allowedRole={'admin'}> <AdminPostManagement/> </AdminProtectedRoute> } />
 
       {/* userRoutes */}
       <Route path='/' element = {<Home/>} />
@@ -57,9 +58,9 @@ function App(props) {
       <Route path='/otp' element = {<UserOtpPage/>} />
       <Route path='/resetpass' element = {<ClientResetPassword/>} />
       <Route path='/newpass' element = {<UserForgotPass/>} />
-      <Route path='/chat' element = {<Messages/>} />
-      <Route path='/chat/:id' element = {<Messages/>} />
-      <Route path='/bookings' element = {<Bookings/>} />
+      <Route path='/chat' element = { <ClientProtectedRoute allowedRole={'user'}> <Messages/> </ClientProtectedRoute> } />
+      <Route path='/chat/:id' element = { <ClientProtectedRoute allowedRole={'user'}> <Messages/> </ClientProtectedRoute> } />
+      <Route path='/bookings' element = { <ClientProtectedRoute allowedRole={'user'}> <Bookings/> </ClientProtectedRoute> } />
       <Route path='/about' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientAboutPage/> </ClientProtectedRoute> } />
       <Route path='/contact' element = {<ClientProtectedRoute allowedRole={'user'}> <ClientContact/> </ClientProtectedRoute> } />
       <Route path='/profile' element = {<ClientProtectedRoute allowedRole={'user'}> <Profile/> </ClientProtectedRoute> } />
@@ -73,10 +74,10 @@ function App(props) {
       <Route path='painter/otp' element = {<PainterOtpPage/>} />
       <Route path='painter/resetpass' element = {<PainterResetPassOtp/>} />
       <Route path='painter/newpass' element = {<PainterForgotPass/>} />
-      <Route path='painter/dashboard' element = {<PainterDashboard/>} />
+      <Route path='painter/dashboard' element = { <PainterProtectedRoute allowedRole={'painter'}> <PainterDashboard/> </PainterProtectedRoute>} />
       <Route path='painter/profile' element = {<PainterProtectedRoute allowedRole={'painter'}> <PainterProfile/> </PainterProtectedRoute>} />
       <Route path='painter/chat' element = {<PainterProtectedRoute allowedRole={'painter'}> <MessagesPainter/> </PainterProtectedRoute>} />
-      <Route path='painter/slot' element = {<PainterSlotAdd/>} />
+      <Route path='painter/slot' element = { <PainterProtectedRoute allowedRole={'painter'}> <PainterSlotAdd/> </PainterProtectedRoute>} />
     </Routes>
 
    </BrowserRouter>

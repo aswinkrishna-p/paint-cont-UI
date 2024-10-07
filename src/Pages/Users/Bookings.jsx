@@ -40,12 +40,12 @@ function Bookings() {
                     <h1 className="font-bold flex justify-center items-center text-xl p-4 ">Your Bookings</h1>
                     {bookings.length > 0 ? (
                         bookings.map((booking) => (
-                            <div key={booking.id} className="flex flex-row justify-evenly border-b-2 py-4">
-                                <h2 className="text-xl font-semibold">{booking.painterId.username}</h2>
-                                <p className="text-gray-600">Date: {booking.slotId.date}</p>
+                            <div key={booking.id} className="flex flex-row justify-evenly bg-blue-gray-400 m-3 mb-2 hover:bg-[#94b1c0] rounded-md border-b-2 py-4">
+                                <h2 className="text-xl font-semibold">Name: {booking.painterId.username}</h2>
+                                <h2 className="text-gray-900 font-semibold ">Date: {booking.slotId.date}</h2>
                                 <button 
                                     onClick={() => handleChatRedirect(booking.painterId._id)} 
-                                    className="bg-blue-500 text-white py-1 px-4 rounded-md mt-2 hover:bg-blue-600"
+                                    className="bg-blue-500 text-white py-1 px-4 rounded-md  hover:bg-blue-600"
                                 >
                                     Message Painter
                                 </button>

@@ -101,7 +101,7 @@ function Login(props) {
                 </button>
               </div>
           <button className=" text-white bg-[#3E45DF] rounded-2xl py-2 px-4 uppercase font-bold hover:bg-[#1c2294] transition duration-300 "> sign in</button>
-          <button className=" text-white bg-[#BF0000] rounded-2xl py-2 px-4  font-bold hover:bg-[#bf0000c6] transition duration-300 "> Sign up with google</button>
+          {/* <button className=" text-white bg-[#BF0000] rounded-2xl py-2 px-4  font-bold hover:bg-[#bf0000c6] transition duration-300 "> Sign up with google</button> */}
         </form>
           <span className="text-white uppercase mb-3 text-center">Don't have an account? <Link to= '/register' className="font-bold text-blue-700" >Register</Link> </span>
       </div>

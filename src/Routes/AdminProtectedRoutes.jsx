@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
- const ClientProtectedRoute = ({ children, allowedRole }) => {
+ const AdminProtectedRoute = ({ children, allowedRole }) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('user_token');
+  const token = localStorage.getItem('admin_token');
 
 
   useEffect(() => {
@@ -13,14 +13,14 @@ import { useNavigate } from 'react-router-dom';
         const decode = jwtDecode(token);
 
         if (decode.role !== allowedRole) {
-          navigate('/login');
+          navigate('/admin/login');
         }
        
       } else {
-        navigate('/login');
+        navigate('/admin/login');
       }
     } catch (error) {
-      navigate('/login');
+      navigate('/admin/login');
     }
   }, [token,navigate,allowedRole]); 
 
@@ -28,4 +28,4 @@ import { useNavigate } from 'react-router-dom';
   return <>{children}</>;
 };
 
-export default ClientProtectedRoute;
+export default AdminProtectedRoute;
